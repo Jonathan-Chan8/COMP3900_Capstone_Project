@@ -1,0 +1,31 @@
+
+You should also include in this diary the following information (if applicable) about the project progress: 
+    -   What was planned for the period since the last work diary entry 
+    -   What was finished 
+    -   What were the main technical and non-technical obstacles and how they were overcome (or what was tried and did not work) 
+    -   What was not finished, why this happened, how this affects the overall project progress and what adjustments (if any) are needed so the success of the project is not endangered 
+    -   What is planned for the next period (e.g., next week)
+
+Week 1:
+    -   Group formed
+    -   Discussion of new project idea proposed by Lance; to collate news topics and produce an online tool for analysing and observing trends in journalism
+    -   The project would use readily available APIs and analytical software to model topics and present a visual representation of news data
+    -   Starting with the API provided from The Guardian, though we intend to expand this. 
+    -   I suggested being able to track topics over time, and comparing them with others on a visual line graph
+    -   All members contributed to the inital proposal to Ali, where we defined the project description and project objectives. 
+    -   Submission of project idea to Ali
+
+Week 2:
+    -   I created mock-up designs for the website, as well as defining additional functions and began working on user stories
+    -   As a team we collaborated on user stories and acceptance crtieria
+    -   We finalised the features we wished to include by consulting with Ali, and decided upon adding in a registered user option
+
+Week 3:
+    -   I have chosen to create the storyboards for the project, and have completed wireframe panels for each page and popup on the website.
+    -   I have created storyboard for each and every user story, showing all options and connections wit descriptions of each, as well as a universal diagram showing all links and connections between all pages and popups.
+    -   Lance has begon creating our software architecture diagram and the description of our backend
+    -   Jono is working on comparisons between our project and others that may exist
+    -   James and Ronan are working on the background of our project, as well as defining what we hpe to achieve with this product and how it differs from existing products
+
+
+
