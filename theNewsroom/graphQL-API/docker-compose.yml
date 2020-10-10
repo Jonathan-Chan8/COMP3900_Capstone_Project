@@ -13,6 +13,7 @@ services:
     # environmental variables that will be used when docker
     # is loading up the container
     environment:
+      POSTGRES_DB: thenewsroom_database
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
 
