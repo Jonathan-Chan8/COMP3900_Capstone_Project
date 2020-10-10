@@ -1,0 +1,18 @@
+To install Vue.js
+
+1.  Download and install NPM from https://www.npmjs.com/get-npm then go to https://nodejs.org/en/download/current/ and download the 64 bit package file
+
+2.  Run the following command:
+    'sudo npm install -g @vue/cli'
+
+3.  To create a new project, you can run 'vue create <name>' and select option 2 to run in Vue 3
+
+
+4.  Once the project is created, or if you are wanting to access an existing project, simply cd into the created folder (if <name> was site_v1, there will be a folder in this name). 
+
+5.  In the src folder, you have App.vue and a components folder. App.vue is building the site based on the components specified in the components folder. You can run the application by entering in the command line 'npm run serve'. This will provide you with links for the local and network sites.
+
+6.  Whenever you modify a component and save it, the Vue.app will automatically build the site (assuming no errors) and it can be viewed on the server provided by 'npm run serve'.
+
+7. If at any point you have issues regarding installing view, as I did, I recommend that you uninstall vue and, if needed, uninstall node.js. Then, reinstall these components, making sure to include sudo at the front, as often adminstrator access is needed. 
+

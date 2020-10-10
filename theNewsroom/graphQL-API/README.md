@@ -14,26 +14,26 @@ If Linux
 ## Starting docker-compose to run
 
 1. Navigate to the 'graphQL-API' directory
-2. Execute the following command `docker-compose up`
+2. Execute the following command 'docker-compose up'
 	- It's gonna print some stuff out and hopefully the last line looks something like this
-	```
-postgresdb_1  | 2020-10-10 05:07:30.894 UTC [1] LOG:  database system is ready to accept connections
-	```
+	'''
+	postgresdb_1  | 2020-10-10 05:07:30.894 UTC [1] LOG:  database system is ready to accept connections
+	'''
 3. BOOM, ready to go. The postgres database is listening on port 5432 of your local machine.
 
 
 ## Entering into the postgres database
 
 1. Execute the following command
-```
-psql -h 127.0.0.1 -p 5432 -U postgres
-```
+	'''
+	psql -h 127.0.0.1 -p 5432 -U postgres
+	'''
 - password is stored in the docker-compose file (all local so no security worries)
-- I set it to `password` 
+- I set it to 'password'
 
-2. If you do `\dt` and no tables show up, do the following:
-	- `\l` -> see that there is a database called newsroom_something...
-	- execute `\c <name of the newsroom database here>` 
+2. If you do '\dt' and no tables show up, do the following:
+	- '\l' -> see that there is a database called newsroom_something...
+	- execute '\c <name of the newsroom database here>' 
 		- By default, one connects to the 'postgres' database
 		- We just need to switch 
-3. After connecting to the right db, you should be able to do `\dt` to see the tables that I've set up to be pre-populated
+3. After connecting to the right db, you should be able to do '\dt' to see the tables that I've set up to be pre-populated
