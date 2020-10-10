@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  # this is service name
+  postgresDatabase:
+    ### DOCKER IMAGE
+    # this is the docker image that will be used to
+    # create the postgres container
+    # note the tag is 'alpine' which is a minimal, lightweight 
+    # image of postgres
+    image: postgres:alpine
+
+    ### MOUNTING FILES
+    # Mounts the file on the local machine into the exact filepath
+    # where postgres automatically looks for sql data scripts to run
+    # to populate itself with schemas and data
+    volumes:
+      - "./dbdata:/var/lib/postgresql/data"
+
+    ### ENVIRONMENTAL VARIABLES
+    # environmental variables that will be used when docker
+    # is loading up the container
+    environment:
+      POSTGRES_DB: newsroom_database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+
+    ### NETWORKING
+    # this will expose it to the localhost on port 5432 
+    # this let's us directly psql into it
+    # note - when running docker-compose up, the --service-ports 
+    # tag is required to make this work
+    ports:
+      - "127.0.0.1:5432:5432"
+    # Internally exposes it to other docker compose services
+    # not to the localhost machine
+    # the api should connect to the pgdatabase through this port
+    expose:
+      - "5431"
