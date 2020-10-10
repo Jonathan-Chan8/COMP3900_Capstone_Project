@@ -1,26 +1,18 @@
 version: "3.8"
 services:
   # this is service name
-  postgresDatabase:
-    ### DOCKER IMAGE
-    # this is the docker image that will be used to
-    # create the postgres container
-    # note the tag is 'alpine' which is a minimal, lightweight 
-    # image of postgres
+  postgresdb:
+    # lightweight version of postgres
     image: postgres:alpine
 
-    ### MOUNTING FILES
-    # Mounts the file on the local machine into the exact filepath
-    # where postgres automatically looks for sql data scripts to run
-    # to populate itself with schemas and data
+    ### MOUNT FILES INTO CONTAINER
     volumes:
-      - "./dbdata:/var/lib/postgresql/data"
+      - "./postgres_db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
 
     ### ENVIRONMENTAL VARIABLES
     # environmental variables that will be used when docker
     # is loading up the container
     environment:
-      POSTGRES_DB: newsroom_database
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
 
