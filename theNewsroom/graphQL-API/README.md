@@ -37,4 +37,5 @@ If Linux
 		- By default, one connects to the 'postgres' database
 		- We just need to switch 
 3. After connecting to the right db, you should be able to do '\dt' to see the tables that I've set up to be pre-populated
-	- Note: If '\dt' returns: "Did not find any relations.", it could be because on mac, a default schema called 'Public' is created and this schema is the one being searched, as opposed to 'thenewsroom_database' schema. To get around this: SET search_path TO thenewsroom_database,public;  
+	- Note: If '\dt' returns: "Did not find any relations.", it could be because on mac, a default schema called 'Public' is created and this schema is the one being searched, as opposed to 'thenewsroom_database' schema. To get around this: 
+	'SET search_path TO thenewsroom_database,public;'  
