@@ -2,7 +2,7 @@
 <nav>
     <v-toolbar flat app>
 
-        <v-btn flat color="grey" to="/">
+        <v-btn flat color="grey" to='/'>
             <v-toolbar-title class="text-uppercase grey--text">
                 <span class="font-weight-light">The</span>
                 <span>Newsroom</span>
