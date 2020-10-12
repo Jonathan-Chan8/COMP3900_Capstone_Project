@@ -12,34 +12,36 @@
             </v-toolbar-title>
         </v-btn>
         <v-spacer></v-spacer>
-
-        <v-toolbar-items class="hidden-sm-and-down">
-            <v-btn text v-for="item in menu" :key="item.icon" :to="item.route" depressed>{{ item.title }}
-            </v-btn>
-            <v-menu offset-y>
+        <div class="d-none d-sm-block">
+            <v-toolbar-items>
+                <v-btn text v-for="item in menu" :key="item.icon" :to="item.route" depressed>{{ item.title }}
+                </v-btn>
+                <v-menu offset-y>
+                    <template v-slot:activator="{ on }">
+                        <v-btn text v-on="on">
+                            <span>My Account</span>
+                        </v-btn>
+                    </template>
+                    <v-list class="responsiveMenu">
+                        <v-list-item text v-for="item in unreg_links" :key="item.icon" :to="item.route" depressed>{{ item.title }}
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </v-toolbar-items>
+        </div>
+        <div class="d-sm-none">
+            <v-menu>
                 <template v-slot:activator="{ on }">
-                    <v-btn text v-on="on">
-                        <span>My Account</span>
-                    </v-btn>
+                    <v-app-bar-nav-icon v-on="on"></v-app-bar-nav-icon>
                 </template>
                 <v-list class="responsiveMenu">
+                    <v-list-item text v-for="item in menu" :key="item.icon" :to="item.route" depressed>{{ item.title }}
+                    </v-list-item>
                     <v-list-item text v-for="item in unreg_links" :key="item.icon" :to="item.route" depressed>{{ item.title }}
                     </v-list-item>
                 </v-list>
             </v-menu>
-        </v-toolbar-items>
-
-        <v-menu class="hidden-md-and-up">
-            <template v-slot:activator="{ on }">
-                <v-app-bar-nav-icon v-on="on"></v-app-bar-nav-icon>
-            </template>
-            <v-list class="responsiveMenu">
-                <v-list-item text v-for="item in menu" :key="item.icon" :to="item.route" depressed>{{ item.title }}
-                </v-list-item>
-                <v-list-item text v-for="item in unreg_links" :key="item.icon" :to="item.route" depressed>{{ item.title }}
-                </v-list-item>
-            </v-list>
-        </v-menu>
+        </div>
 
     </v-toolbar>
 </v-container>
