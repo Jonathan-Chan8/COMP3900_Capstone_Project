@@ -5,30 +5,26 @@
     <v-container fluid>
         <v-row justify=“center” align=“center”>
             <v-col v-for="card in cards" :key="card.id" cols='auto' sm='6'>
-                <v-card rounded height="100%">
-                    <div class="flex-wrap justify-space-between">
-                        <div>
-                            <v-card-title class="headline" v-text="card.title"></v-card-title>
+                <v-card class="card-outter flex-wrap text-justify justify-space-between" rounded height="100%" hover>
+                    <v-card-title class="headline" v-text="card.title"></v-card-title>
 
-                            <v-card-text> {{ card.text }} </v-card-text>
+                    <v-card-text> {{ card.text }} </v-card-text>
 
-                            <v-card-actions v-if="card.id === 'unreg'">
-                                <v-btn depressed small>
-                                    Register
-                                </v-btn>
+                    <v-card-actions v-if="card.id === 'unreg'" class="card-actions">
+                        <v-btn depressed small>
+                            Register
+                        </v-btn>
 
-                                <v-btn depressed small>
-                                    Log In
-                                </v-btn>
-                            </v-card-actions>
-                            <v-card-actions v-else>
-                                <v-btn depressed small>
-                                    View {{ card.title }}
-                                </v-btn>
-                            </v-card-actions>
-                        </div>
+                        <v-btn depressed small>
+                            Log In
+                        </v-btn>
+                    </v-card-actions>
+                    <v-card-actions v-else class="card-actions">
+                        <v-btn depressed small>
+                            View {{ card.title }}
+                        </v-btn>
+                    </v-card-actions>
 
-                    </div>
                 </v-card>
             </v-col>
         </v-row>
@@ -49,8 +45,8 @@ export default {
                 },
                 {
                     id: 'totd',
-                    title: 'Topic of the Day',
-                    text: 'We will have here some function to request the most popular topic in the last 24 hours, and clicking it will open the associated overlay',
+                    title: "Today's Topic",
+                    text: 'We will have here some function to request the most popular topic in the last 24 hours, and clicking it will open the associated overlay. Or, we could simply have this as that topics popup info. Lots of options!',
                     route: '/'
                 },
                 {
@@ -79,4 +75,13 @@ export default {
 </script>
 
 <style>
+.card-outter {
+    position: relative;
+    padding-bottom: 50px;
+}
+
+.card-actions {
+    position: absolute;
+    bottom: 0;
+}
 </style>
