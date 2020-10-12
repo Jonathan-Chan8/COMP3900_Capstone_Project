@@ -1,14 +1,12 @@
 <template>
 <v-container>
     <v-toolbar flat class="mainHeader">
-
         <v-btn text>
             <v-toolbar-title class="text-uppercase">
                 <router-link to="/">
                     <span class="font-weight-light black--text">The</span>
                     <span class="black--text">Newsroom</span>
                 </router-link>
-
             </v-toolbar-title>
         </v-btn>
         <v-spacer></v-spacer>
