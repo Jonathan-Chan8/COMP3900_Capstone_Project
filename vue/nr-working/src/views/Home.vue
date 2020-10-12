@@ -5,25 +5,9 @@
     <v-container fluid>
         <v-row justify=“center” align=“center”>
             <v-col v-for="card in cards" :key="card.id" cols='auto' sm='6'>
-                <v-card class="card-outter flex-wrap text-justify justify-space-between" rounded height="100%" hover>
+                <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover :to='card.route'>
                     <v-card-title class="headline" v-text="card.title"></v-card-title>
-
                     <v-card-text> {{ card.text }} </v-card-text>
-
-                    <v-card-actions v-if="card.id === 'unreg'" class="card-actions">
-                        <v-btn depressed small>
-                            Register
-                        </v-btn>
-
-                        <v-btn depressed small>
-                            Log In
-                        </v-btn>
-                    </v-card-actions>
-                    <v-card-actions v-else class="card-actions">
-                        <v-btn depressed small>
-                            View {{ card.title }}
-                        </v-btn>
-                    </v-card-actions>
 
                 </v-card>
             </v-col>
@@ -32,6 +16,8 @@
 
 </div>
 </template>
+
+<!-- Need to figure out a way to only show the correct cards for if a user is signed in or not -->
 
 <script>
 export default {
@@ -73,6 +59,8 @@ export default {
     }
 }
 </script>
+
+<!-- Defining a v-cards class as card-outter will provide enough spacing for buttons beneath. Not necessary if the entire v-card is a route, but important if we want to include buttons as well -->
 
 <style>
 .card-outter {
