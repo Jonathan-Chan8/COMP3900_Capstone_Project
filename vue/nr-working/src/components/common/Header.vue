@@ -10,24 +10,22 @@
             </v-toolbar-title>
         </v-btn>
         <v-spacer></v-spacer>
-        <div class="d-none d-sm-block">
-            <v-toolbar-items>
-                <v-btn text v-for="item in menu" :key="item.icon" :to="item.route" depressed>{{ item.title }}
-                </v-btn>
-                <v-menu offset-y>
-                    <template v-slot:activator="{ on }">
-                        <v-btn text v-on="on">
-                            <span>My Account</span>
-                        </v-btn>
-                    </template>
-                    <v-list class="responsiveMenu">
-                        <v-list-item text v-for="item in unreg_links" :key="item.icon" :to="item.route" depressed>{{ item.title }}
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
-            </v-toolbar-items>
-        </div>
-        <div class="d-sm-none">
+        <v-toolbar-items class="d-none d-md-block">
+            <v-btn text v-for="item in menu" :key="item.icon" :to="item.route" depressed>{{ item.title }}
+            </v-btn>
+            <v-menu offset-y>
+                <template v-slot:activator="{ on }">
+                    <v-btn text v-on="on">
+                        <span>My Account</span>
+                    </v-btn>
+                </template>
+                <v-list class="responsiveMenu">
+                    <v-list-item text v-for="item in unreg_links" :key="item.icon" :to="item.route" depressed>{{ item.title }}
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+        </v-toolbar-items>
+        <div class="d-md-none">
             <v-menu>
                 <template v-slot:activator="{ on }">
                     <v-app-bar-nav-icon v-on="on"></v-app-bar-nav-icon>
