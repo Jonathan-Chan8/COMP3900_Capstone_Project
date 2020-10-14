@@ -15,6 +15,11 @@
                     </v-card-actions>
 
                 </v-card>
+                <v-card v-else-if='card.id==="totd"' class="pb-0 flex-wrap text-justify justify-space-between" rounded height="100%" hover>
+                    <v-card-title class="headline" v-text="card.title"></v-card-title>
+                    <v-card-text> {{ card.text }} </v-card-text>
+
+                </v-card>
                 <v-card v-else class="flex-wrap text-justify justify-space-between" rounded height="100%" hover :to='card.route'>
                     <v-card-title class="headline" v-text="card.title"></v-card-title>
                     <v-card-text> {{ card.text }} </v-card-text>
@@ -32,6 +37,9 @@
 export default {
     data() {
         return {
+            absolute: true,
+            opacity: 10,
+            overlay: false,
             cards: [{
                     id: 'totd',
                     title: "Today's Topic",
