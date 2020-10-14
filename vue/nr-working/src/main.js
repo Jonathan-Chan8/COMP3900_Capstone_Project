@@ -34,7 +34,6 @@ const router = new VueRouter({
 //-----------------------------------------------
 //Added for auth0, will merge when working 
 //
-import router2 from './router'
 
 // Import the Auth0 configuration
 import { domain, clientId } from "../auth_config.json";
@@ -47,7 +46,7 @@ Vue.use(Auth0Plugin, {
   domain,
   clientId,
   onRedirectCallback: appState => {
-    router2.push(
+    router.push(
       appState && appState.targetUrl
         ? appState.targetUrl
         : window.location.pathname
@@ -58,7 +57,6 @@ Vue.use(Auth0Plugin, {
 
 new Vue({
   router,
-  router2,
   vuetify,
   render: h => h(App)
 }).$mount('#app')
