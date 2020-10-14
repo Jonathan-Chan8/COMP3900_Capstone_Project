@@ -1,34 +1,78 @@
 import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify';
-import VueRouter from 'vue-router'
+import Router from 'vue-router'
 
 import Home from './views/Home';
-import About from './views/About';
 import NotFound from './views/NotFound';
 import Topics from './views/Topics';
 import Trends from './views/Trends';
 import Login from './views/Login';
 import Register from './views/Register';
+import Saved from './views/Saved';
 
 
-Vue.use(VueRouter)
+
+Vue.use(Router)
 
 import './scss/main.scss';
 
 Vue.config.productionTip = false
 
-const router = new VueRouter({
+let router = new Router({
+  mode: 'history',
   routes: [
-    { path: '/', component: Home },
-    { path: '/about', component: About },
-    { path: '*', component: NotFound },
-    { path: '/topics', component: Topics },
-    { path: '/trends', component: Trends },
-    { path: '/login', component: Login },
-    { path: '/register', component: Register }
-  ],
-  mode: 'hash'
+      {   
+          path: '*', 
+          name: 'notfound',
+          component: NotFound 
+      },
+      {
+          path: '/',
+          name: 'home',
+          component: Home
+      },
+      {
+          path: '/login',
+          name: 'login',
+          component: Login,
+          meta: {
+              guest: true
+          }
+      },
+      {
+          path: '/register',
+          name: 'register',
+          component: Register,
+          meta: {
+              guest: true
+          }
+      },
+      {
+          path: '/topics',
+          name: 'topics',
+          component: Topics,
+          meta: {
+            guest: true
+          }
+      },
+      {
+          path: '/trends',
+          name: 'trends',
+          component: Trends,
+          meta: {
+            guest: true
+          }
+      },
+      {
+        path: '/saved',
+        name: 'saved',
+        component: Saved,
+        meta: {
+          requiresAuth: true,
+        }
+    },
+  ]
 })
 
 new Vue({

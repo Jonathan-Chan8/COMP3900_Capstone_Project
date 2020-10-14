@@ -4,7 +4,7 @@
 
     <v-container fluid>
         <v-row justify=“center” align=“center”>
-            <v-col v-for="card in cards" :key="card.id" cols='auto' sm='6'>
+            <v-col v-for="card in cards" :key="card.id" cols='auto' md='6'>
                 <v-card v-if='card.id==="unreg"' class="pb-0 flex-wrap text-justify justify-space-between" rounded height="100%" hover>
                     <v-card-title class="headline" v-text="card.title"></v-card-title>
                     <v-card-text> {{ card.text }} </v-card-text>
@@ -58,7 +58,7 @@ export default {
                     id: 'saved',
                     title: 'Saved Trends',
                     text: 'Click here to view your saved trends, and explore how your selected topics are behaving!',
-                    route: '/trends'
+                    route: '/saved'
                 }
             ]
 
