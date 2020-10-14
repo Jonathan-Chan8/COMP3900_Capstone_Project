@@ -27,5 +27,11 @@ Week 3:
     -   Jono is working on comparisons between our project and others that may exist
     -   James and Ronan are working on the background of our project, as well as defining what we hpe to achieve with this product and how it differs from existing products
 
+Week 4:
+    -   This week involved mainly planning for how to approach the first progressive demo.
+    -   I have undertaken the task of building a sample front end using Vue.js and Vuetify, so that when the backend components and the sample database are ready we can visualise ti immediately. So far, I have had success in building a homepage and a navigaiton bar. Learning to work with vue alone took a lot of time, and ensuring that all the packages and components and compatible was an arduous task. 
+
+
+
 
 
