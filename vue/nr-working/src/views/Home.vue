@@ -7,28 +7,28 @@
         <v-row justify=“center” align=“center”>
 
             <template v-if="!$auth.loading">
-                <template v-if="!$auth.isAuthenticated">
-                    <v-col v-for="card in unreg_cards" :key="card.id" cols='auto' md='6'>
-                        <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover :to='card.route'>
-                            <v-card-title class="headline" v-text="card.title"></v-card-title>
-                            <v-card-text> {{ card.text }} </v-card-text>
-                            <v-card-actions>
-                                <!-- show login/register when not authenticated -->
-                                <v-btn depressed width=49% large v-if="!$auth.isAuthenticated" @click="login">Log In</v-btn>
-                                <v-btn depressed width=49% large v-if="!$auth.isAuthenticated" @click="login">Register</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-col>
-                </template>
-                <template v-if="$auth.isAuthenticated">
-                    <v-col v-for="card in reg_cards" :key="card.id" cols='auto' md='6'>
-                        <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover :to='card.route'>
-                            <v-card-title class="headline" v-text="card.title"></v-card-title>
-                            <v-card-text> {{ card.text }} </v-card-text>
-                        </v-card>
-                    </v-col>
-                </template>
+                <!-- only shown when user is not logged in -->
+                <v-col v-if="!$auth.isAuthenticated" cols='auto' md='6'>
+                    <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover>
+                        <v-card-title class="headline" v-text="unauth.title"></v-card-title>
+                        <v-card-text> {{ unauth.text }} </v-card-text>
+                        <v-card-actions>
+                            <!-- show login/register when not authenticated -->
+                            <v-btn depressed width=49% large v-if="!$auth.isAuthenticated" @click="login">Log In</v-btn>
+                            <v-btn depressed width=49% large v-if="!$auth.isAuthenticated" @click="login">Register</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-col>
+
+                <!-- only shown when user is logged in -->
+                <v-col v-if="$auth.isAuthenticated" cols='auto' md='6'>
+                    <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover>
+                        <v-card-title class="headline" v-text="saved.title"></v-card-title>
+                        <v-card-text> {{ saved.text }} </v-card-text>
+                    </v-card>
+                </v-col>
             </template>
+
             <v-col v-for="card in cards" :key="card.id" cols='auto' md='6'>
                 <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover :to='card.route'>
                     <v-card-title class="headline" v-text="card.title"></v-card-title>
@@ -66,19 +66,19 @@ export default {
             absolute: true,
             opacity: 10,
             overlay: false,
-            unreg_cards: [{
+            unauth: {
                 id: 'unreg',
                 title: 'Register or Log In',
                 text: ' Log in or register an account to get access to additional features, such as selecting more topics on your Trends graph and saving topics for later!',
                 route: '/register'
-            }, ],
-            reg_cards: [{
+            },
+            saved: {
 
                 id: 'saved',
                 title: 'My Saved Trends',
                 text: 'Click here to view your saved trends, and explore how your selected topics are behaving!',
                 route: '/saved'
-            }, ],
+            },
             cards: [{
                     id: 'totd',
                     title: "Topic of the Day",
