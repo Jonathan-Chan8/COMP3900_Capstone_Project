@@ -3,36 +3,38 @@
     <h1 class="subheading grey--text text-center">Welcome to the Newsroom</h1>
 
     <v-container fluid>
+
         <v-row justify=“center” align=“center”>
+
+            <template v-if="!$auth.loading">
+                <template v-if="!$auth.isAuthenticated">
+                    <v-col v-for="card in unreg_cards" :key="card.id" cols='auto' md='6'>
+                        <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover :to='card.route'>
+                            <v-card-title class="headline" v-text="card.title"></v-card-title>
+                            <v-card-text> {{ card.text }} </v-card-text>
+                            <v-card-actions>
+                                <!-- show login/register when not authenticated -->
+                                <v-btn depressed width=49% large v-if="!$auth.isAuthenticated" @click="login">Log In</v-btn>
+                                <v-btn depressed width=49% large v-if="!$auth.isAuthenticated" @click="login">Register</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-col>
+                </template>
+                <template v-if="$auth.isAuthenticated">
+                    <v-col v-for="card in reg_cards" :key="card.id" cols='auto' md='6'>
+                        <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover :to='card.route'>
+                            <v-card-title class="headline" v-text="card.title"></v-card-title>
+                            <v-card-text> {{ card.text }} </v-card-text>
+                        </v-card>
+                    </v-col>
+                </template>
+            </template>
             <v-col v-for="card in cards" :key="card.id" cols='auto' md='6'>
                 <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover :to='card.route'>
                     <v-card-title class="headline" v-text="card.title"></v-card-title>
                     <v-card-text> {{ card.text }} </v-card-text>
                 </v-card>
             </v-col>
-
-            <template v-if=auth>
-                <v-col v-for="card in reg_cards" :key="card.id" cols='auto' md='6'>
-                    <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover :to='card.route'>
-                        <v-card-title class="headline" v-text="card.title"></v-card-title>
-                        <v-card-text> {{ card.text }} </v-card-text>
-                    </v-card>
-                </v-col>
-            </template>
-
-            <template v-if=!auth>
-                <v-col v-for="card in unreg_cards" :key="card.id" cols='auto' md='6'>
-                    <v-card class="pb-0 flex-wrap text-justify justify-space-between" rounded height="100%" hover>
-                        <v-card-title class="headline" v-text="card.title"></v-card-title>
-                        <v-card-text> {{ card.text }} </v-card-text>
-
-                        <v-card-actions>
-                            <v-btn depressed width=49% large to='/register'>Register</v-btn>
-                            <v-btn depressed width=49% large class="ml-auto" to='login'>Log In</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-col>
-            </template>
 
         </v-row>
     </v-container>
@@ -44,7 +46,7 @@
 
 <script>
 export default {
-    name: 'home',
+    name: "Home",
     methods: {
         // Log the user in
         login() {
