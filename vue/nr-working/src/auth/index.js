@@ -19,7 +19,7 @@ export const useAuth0 = ({
   ...options
 }) => {
   if (instance) return instance;
-  
+
   // The 'instance' is simply a Vue object
   instance = new Vue({
     data() {

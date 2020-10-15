@@ -1,6 +1,6 @@
 <template>
 <v-app>
-    <v-app-bar flat max-height="65">
+    <v-app-bar dense fixed flat max-height="65">
         <Header />
     </v-app-bar>
 
