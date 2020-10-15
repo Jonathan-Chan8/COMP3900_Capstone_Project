@@ -48,7 +48,7 @@ export default {
     methods: {
         // Log the user in
         login() {
-            this.$auth.loginWithRedirect();
+            this.$auth.loginWithPopup();
         },
         // Log the user out
         logout() {
