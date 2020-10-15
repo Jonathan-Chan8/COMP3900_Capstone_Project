@@ -12,8 +12,7 @@
                         <v-card-title class="headline" v-text="unauth.title"></v-card-title>
                         <v-card-text> {{ unauth.text }} </v-card-text>
                         <v-card-actions>
-                            <v-btn depressed width=49% large v-if="!$auth.isAuthenticated" @click="login">Log In</v-btn>
-                            <v-btn depressed width=49% large v-if="!$auth.isAuthenticated" @click="login">Register</v-btn>
+                            <v-btn depressed width=100% large v-if="!$auth.isAuthenticated" @click="login">Log In / Register</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-col>

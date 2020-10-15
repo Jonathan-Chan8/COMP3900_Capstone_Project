@@ -17,8 +17,7 @@
 
             <template v-if="!$auth.loading">
                 <!-- show login/register when not authenticated -->
-                <v-btn text depressed v-if="!$auth.isAuthenticated" @click="login">Log In</v-btn>
-                <v-btn text depressed v-if="!$auth.isAuthenticated" @click="login">Register</v-btn>
+                <v-btn text depressed v-if="!$auth.isAuthenticated" @click="login">Log In / Register</v-btn>
 
                 <!-- show saved/logout when authenticated -->
                 <v-menu v-if="$auth.isAuthenticated" offset-y>
