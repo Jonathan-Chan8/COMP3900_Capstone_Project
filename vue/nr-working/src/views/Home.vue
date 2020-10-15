@@ -3,15 +3,10 @@
     <h1 class="subheading grey--text text-center">Welcome to the Newsroom</h1>
     <v-container fluid>
         <v-row justify=“center” align=“center”>
-
-            <!-- Place the if-statements inside the following:
-                <template v-if="!$auth.loading">
-                </template>
-            -->
-            <!-- show login/register when user is not authenticated -->
             <template v-if="!$auth.loading">
-
                 <v-col cols='auto' md='6'>
+
+                    <!-- show login/register when user is not authenticated -->
                     <v-card v-if="!$auth.isAuthenticated" class="flex-wrap text-justify justify-space-between" rounded height="100%" hover>
                         <v-card-title class="headline" v-text="unauth.title"></v-card-title>
                         <v-card-text> {{ unauth.text }} </v-card-text>
@@ -19,6 +14,8 @@
                             <v-btn depressed width=100% large @click="login">Log In / Register</v-btn>
                         </v-card-actions>
                     </v-card>
+
+                    <!-- show saved/logout when user is authenticated -->
                     <v-card v-else class="flex-wrap text-justify justify-space-between" rounded height="100%" hover>
                         <v-card-title class="headline" v-text="saved.title"></v-card-title>
                         <v-card-text> {{ saved.text }} </v-card-text>

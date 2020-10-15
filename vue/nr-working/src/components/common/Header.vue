@@ -48,23 +48,22 @@
                 </template>
                 <v-list class="responsiveMenu" size="auto">
                     <!-- Always shown -->
-
                     <v-list-item text v-for="item in menu" :key="item.icon" :to="item.route" depressed>{{ item.title }}
                     </v-list-item>
-                    <!-- Place the if-statements inside the following:
-                        <template v-if="!$auth.loading">
-                        </template>
-                    -->
-                    <template v-if="!$auth.loading">
 
+                    <template v-if="!$auth.loading">
                         <!-- show login/register when not authenticated -->
-                        <v-list-item text v-if="!$auth.isAuthenticated" @click="login">Log In</v-list-item>
-                        <v-list-item text v-if="!$auth.isAuthenticated" @click="login">Register</v-list-item>
+                        <template v-if="!$auth.isAuthenticated">
+                            <v-list-item text @click="login">Log In</v-list-item>
+                            <v-list-item text @click="login">Register</v-list-item>
+                        </template>
 
                         <!-- show saved/logout when authenticated -->
-                        <v-list-item text v-if="$auth.isAuthenticated" to='/profile'>Profile</v-list-item>
-                        <v-list-item text v-if="$auth.isAuthenticated" to='/saved'>Saved Trends</v-list-item>
-                        <v-list-item text v-if="$auth.isAuthenticated" @click="logout">Log Out</v-list-item>
+                        <template v-else>
+                            <v-list-item text to='/profile'>Profile</v-list-item>
+                            <v-list-item text to='/saved'>Saved Trends</v-list-item>
+                            <v-list-item text @click="logout">Log Out</v-list-item>
+                        </template>
                     </template>
 
                 </v-list>
