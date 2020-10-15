@@ -10,6 +10,8 @@ let instance;
 /** Returns the current instance of the SDK */
 export const getInstance = () => instance;
 
+
+
 /** Creates an instance of the Auth0 SDK. If one has already been created, it returns that instance */
 export const useAuth0 = ({
   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
@@ -17,7 +19,7 @@ export const useAuth0 = ({
   ...options
 }) => {
   if (instance) return instance;
-
+  
   // The 'instance' is simply a Vue object
   instance = new Vue({
     data() {
@@ -60,6 +62,7 @@ export const useAuth0 = ({
           this.loading = false;
         }
       },
+    
       /** Authenticates the user using the redirect method */
       loginWithRedirect(o) {
         return this.auth0Client.loginWithRedirect(o);
@@ -89,7 +92,7 @@ export const useAuth0 = ({
         domain: options.domain,
         client_id: options.clientId,
         audience: options.audience,
-        redirect_uri: redirectUri
+        redirect_uri: redirectUri,
       });
 
       try {
