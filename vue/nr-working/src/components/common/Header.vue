@@ -14,13 +14,13 @@
         <v-toolbar-items class="d-none d-md-block">
             <v-btn text v-for="item in menu" :key="item.icon" :to="item.route" depressed>{{ item.title }}
             </v-btn>
-
-            <!-- show login/register when not authenticated -->
-            <v-btn text depressed v-if="!$auth.isAuthenticated" @click="login">Log In / Register</v-btn>
             <!-- Place the if-statements inside the following:
                 <template v-if="!$auth.loading">
                 </template>
             -->
+            <!-- show login/register when not authenticated -->
+            <v-btn text depressed v-if="!$auth.isAuthenticated" @click="login">Log In / Register</v-btn>
+
             <!-- show saved/logout when authenticated -->
             <v-menu v-if="$auth.isAuthenticated" offset-y>
                 <template v-slot:activator=" { on }">
