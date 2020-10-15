@@ -15,24 +15,24 @@
             <v-btn text v-for="item in menu" :key="item.icon" :to="item.route" depressed>{{ item.title }}
             </v-btn>
 
-            <!-- Only shown if not logged in -->
-            <template v-if="!auth">
-                <v-btn text v-for="item in unreg_links" :key="item.icon" :to="item.route" depressed>{{ item.title }}
-                </v-btn>
-            </template>
+            <template v-if="!$auth.loading">
+                <!-- show login/register when not authenticated -->
+                <v-btn text depressed v-if="!$auth.isAuthenticated" @click="login">Log In</v-btn>
+                <v-btn text depressed v-if="!$auth.isAuthenticated" @click="register">Register</v-btn>
 
-            <!-- Only shown if logged in -->
-            <v-menu v-if="auth" offset-y>
-                <template v-slot:activator=" { on }">
-                    <v-btn text v-on="on">
-                        <span>My Account</span>
-                    </v-btn>
-                </template>
-                <v-list class="responsiveMenu">
-                    <v-list-item text v-for="item in reg_links" :key="item.icon" :to="item.route" depressed>{{ item.title }}
-                    </v-list-item>
-                </v-list>
-            </v-menu>
+                <!-- show saved/logout when authenticated -->
+                <v-menu v-if="$auth.isAuthenticated" offset-y>
+                    <template v-slot:activator=" { on }">
+                        <v-btn text v-on="on">
+                            <span>My Account</span>
+                        </v-btn>
+                    </template>
+                    <v-list class="responsiveMenu">
+                        <v-list-item text v-for="item in reg_links" :key="item.icon" :to="item.route" depressed>{{ item.title }}
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </template>
         </v-toolbar-items>
 
         <div class="d-md-none">
@@ -40,19 +40,22 @@
                 <template v-slot:activator="{ on }">
                     <v-app-bar-nav-icon v-on="on"></v-app-bar-nav-icon>
                 </template>
-                <v-list class="responsiveMenu">
+                <v-list class="responsiveMenu" size="auto">
                     <!-- Always shown -->
 
                     <v-list-item text v-for="item in menu" :key="item.icon" :to="item.route" depressed>{{ item.title }}
                     </v-list-item>
 
-                    <!-- Only shown if not logged in -->
-                    <v-list-item text v-for="item in unreg_links" :key="item.icon" :to="item.route" depressed>{{ item.title }}
-                    </v-list-item>
+                    <template v-if="!$auth.loading">
+                        <!-- show login/register when not authenticated -->
+                        <v-list-item text v-if="!$auth.isAuthenticated" @click="login">Log In</v-list-item>
+                        <v-list-item text v-if="!$auth.isAuthenticated" @click="login">Register</v-list-item>
 
-                    <!-- Only shown if logged in -->
-                    <v-list-item text v-for="item in reg_links" :key="item.icon" :to="item.route" depressed>{{ item.title }}
-                    </v-list-item>
+                        <!-- show saved/logout when authenticated -->
+                        <v-list-item text v-if="$auth.isAuthenticated" @click="saved">Saved Trends</v-list-item>
+                        <v-list-item text v-if="$auth.isAuthenticated" @click="logout">Log Out</v-list-item>
+                    </template>
+
                 </v-list>
             </v-menu>
         </div>
@@ -64,6 +67,18 @@
 <script>
 export default {
     name: "Header",
+    methods: {
+        // Log the user in
+        login() {
+            this.$auth.loginWithRedirect();
+        },
+        // Log the user out
+        logout() {
+            this.$auth.logout({
+                returnTo: window.location.origin
+            });
+        }
+    },
     data: () => ({
         auth: true,
         drawer: false,
