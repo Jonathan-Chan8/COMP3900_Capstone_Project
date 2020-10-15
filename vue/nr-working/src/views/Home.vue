@@ -3,24 +3,22 @@
     <h1 class="subheading grey--text text-center">Welcome to the Newsroom</h1>
 
     <v-container fluid>
-
         <v-row justify=“center” align=“center”>
 
             <template v-if="!$auth.loading">
-                <!-- only shown when user is not logged in -->
+                <!-- show login/register when user is not authenticated -->
                 <v-col v-if="!$auth.isAuthenticated" cols='auto' md='6'>
                     <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover>
                         <v-card-title class="headline" v-text="unauth.title"></v-card-title>
                         <v-card-text> {{ unauth.text }} </v-card-text>
                         <v-card-actions>
-                            <!-- show login/register when not authenticated -->
                             <v-btn depressed width=49% large v-if="!$auth.isAuthenticated" @click="login">Log In</v-btn>
                             <v-btn depressed width=49% large v-if="!$auth.isAuthenticated" @click="login">Register</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-col>
 
-                <!-- only shown when user is logged in -->
+                <!-- show saved when user is authenticated -->
                 <v-col v-if="$auth.isAuthenticated" cols='auto' md='6'>
                     <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover>
                         <v-card-title class="headline" v-text="saved.title"></v-card-title>

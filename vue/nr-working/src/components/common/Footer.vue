@@ -13,6 +13,9 @@
                 <strong>Ronan O'Hara</strong>
             </v-card-text>
             <v-divider></v-divider>
+            <div>For a list of attributions and credits, see <a href="http://localhost:8080/credits">here.</a></div>
+            <v-divider></v-divider>
+
             <v-card-text>
                 {{ new Date().getFullYear() }} —
                 <strong>The Newsroom</strong>

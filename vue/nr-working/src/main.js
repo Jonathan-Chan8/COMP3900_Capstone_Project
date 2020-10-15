@@ -10,13 +10,17 @@ import Trends from './views/Trends';
 import Login from './views/Login';
 import Register from './views/Register';
 import Saved from './views/Saved';
+import Profile from './views/Profile.vue';
+import Credits from './views/Credits.vue';
 
-// Import the Auth0 configuration
+
+import './scss/main.scss';
 import { domain, clientId } from "../auth_config.json";
-
-// Import the plugin here
 import { Auth0Plugin } from "./auth";
+import { authGuard } from "./auth/authGuard";
+Vue.config.productionTip = false
 
+Vue.use(Router)
 Vue.use(Auth0Plugin, {
   domain,
   clientId,
@@ -29,16 +33,14 @@ Vue.use(Auth0Plugin, {
   }
 });
 
-Vue.config.productionTip = false;
 
-Vue.use(Router)
 
-import './scss/main.scss';
 
-Vue.config.productionTip = false
 
 let router = new Router({
   mode: 'history',
+  base: process.env.BASE_URL,
+
   routes: [
       {   
           path: '*', 
@@ -54,42 +56,48 @@ let router = new Router({
           path: '/login',
           name: 'login',
           component: Login,
-          meta: {
-              guest: true
-          }
+
       },
       {
           path: '/register',
           name: 'register',
           component: Register,
-          meta: {
-              guest: true
-          }
+
       },
       {
           path: '/topics',
           name: 'topics',
           component: Topics,
-          meta: {
-            guest: true
-          }
+
       },
       {
           path: '/trends',
           name: 'trends',
           component: Trends,
-          meta: {
-            guest: true
-          }
+
       },
+
+      {
+        path: '/credits',
+        name: 'credits',
+        component: Credits,
+
+    },
       {
         path: '/saved',
         name: 'saved',
         component: Saved,
-        meta: {
-          requiresAuth: true,
-        }
-    },
+        beforeEnter: authGuard
+
+
+      },
+      {
+        path: "/profile",
+        name: "profile",
+        component: Profile,
+        beforeEnter: authGuard
+
+      }
   ]
 })
 

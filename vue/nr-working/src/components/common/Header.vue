@@ -29,7 +29,8 @@
                     </template>
                     <v-list class="responsiveMenu">
                         <!-- show saved/logout when authenticated -->
-                        <v-list-item text v-if="$auth.isAuthenticated" @click="saved">Saved Trends</v-list-item>
+                        <v-list-item text v-if="$auth.isAuthenticated" to='/profile'>Profile</v-list-item>
+                        <v-list-item text v-if="$auth.isAuthenticated" to='/saved'>Saved Trends</v-list-item>
                         <v-list-item text v-if="$auth.isAuthenticated" @click="logout">Log Out</v-list-item>
                     </v-list>
                 </v-menu>
@@ -53,7 +54,8 @@
                         <v-list-item text v-if="!$auth.isAuthenticated" @click="login">Register</v-list-item>
 
                         <!-- show saved/logout when authenticated -->
-                        <v-list-item text v-if="$auth.isAuthenticated" @click="saved">Saved Trends</v-list-item>
+                        <v-list-item text v-if="$auth.isAuthenticated" to='/profile'>Profile</v-list-item>
+                        <v-list-item text v-if="$auth.isAuthenticated" to='/saved'>Saved Trends</v-list-item>
                         <v-list-item text v-if="$auth.isAuthenticated" @click="logout">Log Out</v-list-item>
                     </template>
 
@@ -71,7 +73,7 @@ export default {
     methods: {
         // Log the user in
         login() {
-            this.$auth.loginWithRedirect();
+            this.$auth.loginWithPopup();
         },
         // Log the user out
         logout() {
@@ -83,28 +85,11 @@ export default {
     data: () => ({
         auth: true,
         drawer: false,
-        unreg_links: [{
-                icon: 'login',
-                title: 'Log In',
-                route: '/login'
-            },
-            {
-                icon: 'register',
-                title: 'Register',
-                route: '/register'
-            }
-        ],
-        reg_links: [{
-                icon: 'mytrends',
-                title: 'My Saved Trends',
-                route: '/mytrends'
-            },
-            {
-                icon: 'logout',
-                title: 'Log Out',
-                route: '/logout'
-            }
-        ],
+        saved: {
+            icon: 'saved',
+            title: 'Saved Trends',
+            route: '/saved'
+        },
         menu: [{
                 icon: 'topics',
                 title: 'Topics',
