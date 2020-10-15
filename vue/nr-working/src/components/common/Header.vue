@@ -19,22 +19,26 @@
                 </template>
             -->
             <!-- show login/register when not authenticated -->
-            <v-btn text depressed v-if="!$auth.isAuthenticated" @click="login">Log In / Register</v-btn>
+            <template v-if="!$auth.loading">
 
-            <!-- show saved/logout when authenticated -->
-            <v-menu v-if="$auth.isAuthenticated" offset-y>
-                <template v-slot:activator=" { on }">
-                    <v-btn text v-on="on">
-                        <span>My Account</span>
-                    </v-btn>
-                </template>
-                <v-list class="responsiveMenu">
-                    <!-- show saved/logout when authenticated -->
-                    <v-list-item text v-if="$auth.isAuthenticated" to='/profile'>Profile</v-list-item>
-                    <v-list-item text v-if="$auth.isAuthenticated" to='/saved'>Saved Trends</v-list-item>
-                    <v-list-item text v-if="$auth.isAuthenticated" @click="logout">Log Out</v-list-item>
-                </v-list>
-            </v-menu>
+                <v-btn text depressed v-if="!$auth.isAuthenticated" @click="login">Log In / Register</v-btn>
+
+                <!-- show saved/logout when authenticated -->
+                <v-menu v-else offset-y>
+                    <template v-slot:activator=" { on }">
+                        <v-btn text v-on="on">
+                            <span>My Account</span>
+                        </v-btn>
+                    </template>
+                    <v-list class="responsiveMenu">
+                        <!-- show saved/logout when authenticated -->
+                        <v-list-item text v-if="$auth.isAuthenticated" to='/profile'>Profile</v-list-item>
+                        <v-list-item text v-if="$auth.isAuthenticated" to='/saved'>Saved Trends</v-list-item>
+                        <v-list-item text v-if="$auth.isAuthenticated" @click="logout">Log Out</v-list-item>
+                    </v-list>
+                </v-menu>
+            </template>
+
         </v-toolbar-items>
 
         <div class="d-md-none">
@@ -51,15 +55,17 @@
                         <template v-if="!$auth.loading">
                         </template>
                     -->
+                    <template v-if="!$auth.loading">
 
-                    <!-- show login/register when not authenticated -->
-                    <v-list-item text v-if="!$auth.isAuthenticated" @click="login">Log In</v-list-item>
-                    <v-list-item text v-if="!$auth.isAuthenticated" @click="login">Register</v-list-item>
+                        <!-- show login/register when not authenticated -->
+                        <v-list-item text v-if="!$auth.isAuthenticated" @click="login">Log In</v-list-item>
+                        <v-list-item text v-if="!$auth.isAuthenticated" @click="login">Register</v-list-item>
 
-                    <!-- show saved/logout when authenticated -->
-                    <v-list-item text v-if="$auth.isAuthenticated" to='/profile'>Profile</v-list-item>
-                    <v-list-item text v-if="$auth.isAuthenticated" to='/saved'>Saved Trends</v-list-item>
-                    <v-list-item text v-if="$auth.isAuthenticated" @click="logout">Log Out</v-list-item>
+                        <!-- show saved/logout when authenticated -->
+                        <v-list-item text v-if="$auth.isAuthenticated" to='/profile'>Profile</v-list-item>
+                        <v-list-item text v-if="$auth.isAuthenticated" to='/saved'>Saved Trends</v-list-item>
+                        <v-list-item text v-if="$auth.isAuthenticated" @click="logout">Log Out</v-list-item>
+                    </template>
 
                 </v-list>
             </v-menu>
