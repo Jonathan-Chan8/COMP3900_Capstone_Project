@@ -18,7 +18,7 @@
             <template v-if="!$auth.loading">
                 <!-- show login/register when not authenticated -->
                 <v-btn text depressed v-if="!$auth.isAuthenticated" @click="login">Log In</v-btn>
-                <v-btn text depressed v-if="!$auth.isAuthenticated" @click="register">Register</v-btn>
+                <v-btn text depressed v-if="!$auth.isAuthenticated" @click="login">Register</v-btn>
 
                 <!-- show saved/logout when authenticated -->
                 <v-menu v-if="$auth.isAuthenticated" offset-y>
@@ -28,8 +28,9 @@
                         </v-btn>
                     </template>
                     <v-list class="responsiveMenu">
-                        <v-list-item text v-for="item in reg_links" :key="item.icon" :to="item.route" depressed>{{ item.title }}
-                        </v-list-item>
+                        <!-- show saved/logout when authenticated -->
+                        <v-list-item text v-if="$auth.isAuthenticated" @click="saved">Saved Trends</v-list-item>
+                        <v-list-item text v-if="$auth.isAuthenticated" @click="logout">Log Out</v-list-item>
                     </v-list>
                 </v-menu>
             </template>
