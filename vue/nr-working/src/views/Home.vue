@@ -2,10 +2,10 @@
 <div class="home">
     <h1 class="subheading grey--text text-center">Welcome to the Newsroom</h1>
     <v-container fluid>
-        <v-row justify=“center” align=“center”>
+        <v-row>
+            <!-- Login/Register/Saved -->
             <template v-if="!$auth.loading">
                 <v-col cols='auto' md='6'>
-
                     <!-- show login/register when user is not authenticated -->
                     <v-card v-if="!$auth.isAuthenticated" class="flex-wrap text-justify justify-space-between" rounded height="100%" hover>
                         <v-card-title class="headline" v-text="unauth.title"></v-card-title>
@@ -13,6 +13,7 @@
                         <v-card-actions>
                             <v-btn depressed width=100% large @click="login">Log In / Register</v-btn>
                         </v-card-actions>
+
                     </v-card>
 
                     <!-- show saved/logout when user is authenticated -->
@@ -20,9 +21,21 @@
                         <v-card-title class="headline" v-text="saved.title"></v-card-title>
                         <v-card-text> {{ saved.text }} </v-card-text>
                     </v-card>
+
                 </v-col>
             </template>
 
+            <!-- Topic of the Day -->
+            <v-col cols='auto' md='6'>
+                <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover @click.stop="popup=true">
+                    <v-card-title class="headline" v-text="totd.title"></v-card-title>
+                    <v-card-text> {{ totd.text }} </v-card-text>
+                </v-card>
+                <Popup v-model="popup" />
+
+            </v-col>
+
+            <!-- Topics/Trends -->
             <v-col v-for="card in cards" :key="card.id" cols='auto' md='6'>
                 <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover :to='card.route'>
                     <v-card-title class="headline" v-text="card.title"></v-card-title>
@@ -39,10 +52,14 @@
 <!-- Need to figure out a way to only show the correct cards for if a user is signed in or not -->
 
 <script>
+import Popup from "../components/common/Popup";
+
 export default {
     name: "Home",
+    components: {
+        Popup
+    },
     methods: {
-        // Log the user in
         login() {
             this.$auth.loginWithPopup();
         },
@@ -55,6 +72,7 @@ export default {
     },
     data() {
         return {
+            popup: false,
             auth: true,
 
             absolute: true,
@@ -73,12 +91,14 @@ export default {
                 text: 'Click here to view your saved trends, and explore how your selected topics are behaving!',
                 route: '/saved'
             },
+            // totd: get_totd() ------ When we have connected to db
+            totd: {
+                id: 'totd',
+                title: "Topic of the Day",
+                text: 'We will have here some function to request the most popular topic in the last 24 hours, and clicking it will open the associated overlay.',
+                route: ''
+            },
             cards: [{
-                    id: 'totd',
-                    title: "Topic of the Day",
-                    text: 'We will have here some function to request the most popular topic in the last 24 hours, and clicking it will open the associated overlay. Or, we could simply have this as that topics popup info. Lots of options!',
-                    route: ''
-                }, {
                     id: 'topics',
                     title: 'What is Topics?',
                     text: 'Sometimes, you just need to see the big picture. On the Topics page, you can explore the most popular news topics however you want. Adjust the time period, and filter by media outlets, to view which topics are the most prominent in the media landscape. Click to go to Topics!',
