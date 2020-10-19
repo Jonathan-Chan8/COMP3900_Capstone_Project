@@ -15,11 +15,11 @@
 
                 <v-text-field v-model="media" prepend-icon="mdi-book-open-variant" label="Media" single-line hide-details></v-text-field>
 
-                <v-menu v-model="menu" :close-on-content-click="true" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
+                <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                     <template v-slot:activator="{ on, attrs }">
                         <v-text-field v-model="date" label="Start Date" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                     </template>
-                    <v-date-picker no-title v-model="date" :max='todaysDate' @click="$refs.menu.save(date)"></v-date-picker>
+                    <v-date-picker no-title v-model="date" :max='todaysDate' @click="$refs.menu.save(date)" @input="menu=false"></v-date-picker>
                 </v-menu>
             </v-flex>
 
@@ -153,9 +153,3 @@ export default {
     }
 }
 </script>
-
-<style>
-.v-data-table td {
-    font-size: 29px;
-}
-</style>
