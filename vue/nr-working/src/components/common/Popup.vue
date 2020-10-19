@@ -1,7 +1,7 @@
 <template>
 <v-dialog d-flex v-model="show" max-width="1000px" max-height="500px">
     <v-card class="flex-wrap text-justify justify-space-between">
-        <v-card-title class="headline"> Topic Title </v-card-title>
+        <v-card-title class="headline"> Coronavirus </v-card-title>
         <v-divider />
 
         <v-card-title class="subheading"> Related Topics </v-card-title>
@@ -21,19 +21,19 @@
             <v-row dense>
                 <!-- we would need ot make sure we limit the number of characters shown -->
                 <v-col v-for="article in articles" :key="article.id" md=6>
-                    <v-btn width=100% depressed>{{ article.title }}</v-btn>
+                    <v-btn small width=100% depressed>{{ article.title }}</v-btn>
                 </v-col>
             </v-row>
         </v-card-actions>
 
         <v-divider />
         <v-card-actions>
-            <v-btn v-if="isSelected" depressed large>Remove from Trends</v-btn>
-            <v-btn v-if="!isSelected" depressed large>Add to Trends</v-btn>
+            <v-btn v-if="isSelected" depressed>Remove from Trends</v-btn>
+            <v-btn v-if="!isSelected" depressed>Add to Trends</v-btn>
 
             <v-spacer></v-spacer>
-            <v-btn v-if="!isRoot" depressed large>Back</v-btn>
-            <v-btn depressed large @click.stop="show=false">Close</v-btn>
+            <v-btn v-if="root" depressed>Back</v-btn>
+            <v-btn depressed @click.stop="show=false">Close</v-btn>
         </v-card-actions>
 
     </v-card>
@@ -45,7 +45,11 @@ export default {
     props: {
         value: Boolean
     },
-
+    methods: {
+        root() {
+            return this.$store.isRoot();
+        },
+    },
     computed: {
         isRoot() {
             // return this.$store.isRoot()

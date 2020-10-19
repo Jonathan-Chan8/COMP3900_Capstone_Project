@@ -11,6 +11,7 @@ export default new Vuex.Store({
 		popups: [],
 		selected: []
 	},
+
 	mutations: {
 		openTopic: (state) => (topic) => {
 			state.current_topic = topic
@@ -25,7 +26,6 @@ export default new Vuex.Store({
 		closeTopic: (state) => {
 			state.current_topic = null
 			state.popups = []
-			state.dialog = false
 		},
 		addSelected: (state) => (topic) => {
 			state.selected.push(topic)
@@ -35,9 +35,11 @@ export default new Vuex.Store({
 			state.selected.splice(index, 1)
 		}
 	},
+
 	actions: {
 		// fetchTopics() ---> to retrieve all topics in db
 	},
+	
 	getters: {
 		isRoot: (state) => {
 			if (state.popups.length == 0) return true 

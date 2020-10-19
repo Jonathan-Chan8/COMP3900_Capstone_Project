@@ -9,22 +9,23 @@
             <v-spacer />
 
             <v-flex xs12 md3>
-                <v-text-field prepend-icon="mdi-magnify" label="Search" single-line hide-details @input="filterSearch"></v-text-field>
+                <v-text-field prepend-icon="mdi-magnify" label="Search" single-line hide-details @input="filterSearch"> </v-text-field>
 
                 <v-text-field prepend-icon="mdi-book-open-variant" label="Media Outlet" single-line hide-details @input="filterMedia"></v-text-field>
+
                 <template>
                     <v-row>
                         <v-col>
                             <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date" transition="scale-transition" offset-y min-width="290px">
                                 <template v-slot:activator="{ on, attrs }">
-                                    <v-text-field v-model="date" label="Time Period" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
+                                    <v-text-field v-model="dateRangeText" label="Date Range" prepend-icon="mdi-calendar" v-bind="attrs" v-on="on"></v-text-field>
                                 </template>
-                                <v-date-picker v-model="date" no-title scrollable>
+                                <v-date-picker v-model="dates" range :show-current='true' @input:>
                                     <v-spacer></v-spacer>
                                     <v-btn text color="primary" @click="menu = false">
                                         Cancel
                                     </v-btn>
-                                    <v-btn text color="primary" @click="$refs.menu.save(date)">
+                                    <v-btn text color="primary" @click="$refs.menu.save(dates)">
                                         OK
                                     </v-btn>
                                 </v-date-picker>
@@ -34,28 +35,19 @@
                     </v-row>
                 </template>
             </v-flex>
+
             <v-spacer />
-            <v-flex xs12 md8>
 
-                <v-data-table v-model="selected" :headers="headers" :items="rows" :pagination.sync="pagination" select-all item-key="name" class="elevation-1" :rows-per-page-items="[-1]" :hide-actions=true :search="filters" :custom-filter="customFilter">
-                    <template slot="items" slot-scope="props">
-                        <tr :active="props.selected" @click="props.selected = !props.selected">
-                            <td>
-                                <v-checkbox :input-value="props.selected" primary hide-details></v-checkbox>
-                            </td>
-                            <td>{{ props.item.name }}</td>
-                            <td class="text-xs-right">{{ props.item.birth_date | formatDate}}</td>
-                            <td class="text-xs-right">{{ props.item.added_by }}</td>
-                        </tr>
-                    </template>
-                </v-data-table>
-                <v-spacer />
-
+            <v-flex xs12 md6>
+                <v-data-table sortable='false' disable-sort="true" v-model="selected" :headers="headers" :items="rows" :pagination.sync="pagination" item-key="name" :rows-per-page-items="[-1]" :search="filters" :custom-filter="customFilter" @click:row="popup=true" />
             </v-flex>
+            <Popup v-model="popup" />
+            <v-col />
 
         </v-layout>
         <v-spacer />
         <v-flex>
+
             <v-card>
                 <v-card-title primary-title>
                     <h3>Filters log:</h3>
@@ -71,73 +63,73 @@
 </template>
 
 <script>
+import Popup from "../components/common/Popup";
+
 export default {
-    data: () => ({
-        computed: {
-            dateRangeText() {
-                return this.dates.join(' ~ ')
-            },
+    name: "Topics",
+    components: {
+        Popup
+    },
+    computed: {
+        dateRangeText() {
+            return this.dates.join(' ~ ')
         },
-        date: new Date().toLocaleDateString(0, 10),
+    },
+    data: () => ({
+        dates: ['', ''],
+        popup: false,
+
         menu: false,
-        show_start_date: false,
-        start_date: null,
-        show_end_date: false,
-        end_date: null,
         filters: {
             search: '',
             media: '',
-            time: null,
+            dates: ['', '']
         },
         media: ['ABC', 'The Guardian', 'The New York Times'],
-        times: ['Today', 'This Week', 'This Month', 'Last Six Months', ' This Year'],
 
         pagination: {
-            sortBy: 'name'
+            sortBy: 'articles'
         },
         selected: [],
         headers: [{
                 text: 'Articles',
                 value: 'articles',
-                width: "15%",
-                align: 'left'
+                width: "30%",
+                align: 'center',
+                sortable: false
             },
             {
                 text: 'Topic',
                 value: 'topic',
                 width: "100%",
-                align: 'left'
+                align: 'center',
+                sortable: false,
             }
         ],
         rows: [{
                 value: false,
-                name: 'Marcelo Tosco',
-                birth_date: 1538006400000,
-                added_by: 'admin'
+                articles: '5',
+                topic: 'Coronavirus'
             },
             {
                 value: false,
-                name: 'Carlos Campos',
-                birth_date: 1537401600000,
-                added_by: 'admin'
+                articles: '4',
+                topic: 'U.S. Election'
             },
             {
                 value: false,
-                name: 'Luis Gonzalez',
-                birth_date: 1536537600000,
-                added_by: 'foo'
+                articles: '3',
+                topic: 'Californian Bushfires',
             },
             {
                 value: false,
-                name: 'Keopx',
-                birth_date: 1536364800000,
-                added_by: 'foo'
+                articles: '2',
+                topic: 'New Zealand'
             },
             {
                 value: false,
-                name: 'Marco Marocchi',
-                birth_date: 1535846400000,
-                added_by: 'Admin'
+                articles: '1',
+                topic: 'Melbourne'
             },
         ]
     }),
@@ -230,22 +222,10 @@ export default {
         /**
          * Handler when select a date on "From" date picker.
          */
-        filterTime(val) {
+        filterDates(val) {
             this.filters = this.$MultiFilters.updateFilters(this.filters, {
-                time: val
+                dates: val
             });
-        }
-    },
-    filters: {
-        /**
-         * Format a timestamp into a d/m/yyy (because spanish format).
-         *
-         * @param value
-         * @returns {string}
-         */
-        formatDate: function (value) {
-            if (!value) return '';
-            return new Date(value).toLocaleDateString("es-ES");
         }
     }
 };
