@@ -26,7 +26,17 @@
             <v-spacer />
 
             <v-flex align-center xs12 md6>
-                <v-data-table :mobile-breakpoint="0" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :headers="headers" :items="topics" :search="search" @click:row="popup=true" />
+                <v-data-table :mobile-breakpoint="0" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :headers="headers" :items="topics" :search="search">
+
+                    <template v-slot:item="{ item }">
+
+                        <tr @click="rowClicked(item)">
+                            <td>{{item.articles}}</td>
+                            <td>{{item.topic}}</td>
+                        </tr>
+                    </template>
+
+                </v-data-table>
 
             </v-flex>
             <Popup v-model="popup" />
@@ -39,19 +49,16 @@
 <script>
 import Popup from "../components/common/Popup";
 
+import {
+    mapGetters,
+    mapState,
+    mapMutations
+} from 'vuex';
+
 export default {
     name: "Topics",
     components: {
         Popup
-    },
-    computed: {
-        todaysDate() {
-            const today = new Date();
-            return this.formatDate(today);
-        },
-        dateRange() {
-            return this.todaysDate() + '-' + this.formatDate(this.start_date)
-        },
     },
 
     data: () => ({
@@ -80,54 +87,45 @@ export default {
         topics: [{
                 articles: '908',
                 topic: 'Coronavirus',
-                date: '2020-10-08'
             },
             {
                 articles: '1462',
                 topic: 'U.S. Election',
-                date: '2020-10-02'
             },
             {
                 articles: '826',
                 topic: 'Californian Bushfires',
-                date: '2020-10-2'
             },
             {
                 articles: '142',
                 topic: 'New Zealand',
-                date: '2020-10-17'
             },
             {
                 articles: '637',
                 topic: 'Melbourne',
-                date: '2020-10-12'
             }, {
                 articles: '341',
                 topic: 'Scott Morrison',
-                date: '2020-10-14'
             },
             {
                 articles: '1004',
                 topic: 'Iran',
-                date: '2020-10-03'
             },
             {
                 articles: '837',
                 topic: 'Brexit',
-                date: '2020-10-05'
             },
             {
                 articles: '463',
                 topic: 'Vaccine',
-                date: '2020-10-16'
             },
             {
                 articles: '1349',
                 topic: 'ACT',
-                date: '2020-10-13'
             },
         ]
     }),
+
     methods: {
         formatDate(date) {
             let month = `${date.getMonth() + 1}`;
@@ -139,7 +137,41 @@ export default {
 
             return [year, month, day].join('-');
         },
-
-    }
+        ...mapMutations([
+            'addSelected',
+            'removeSelected',
+            'openTopic',
+            'nextTopic',
+            'previousTopic',
+            'closeTopic'
+        ]),
+        login() {
+            this.$auth.loginWithPopup();
+        },
+        // Log the user out
+        logout() {
+            this.$auth.logout({
+                returnTo: window.location.origin
+            });
+        },
+        rowClicked(row) {
+            this.open(row.topic)
+            console.log(row);
+        },
+        open(topic) {
+            this.popup = true
+            this.openTopic(topic)
+        }
+    },
+    computed: {
+        ...mapState(['popup', 'popups', 'selected', 'current_topic']),
+        ...mapGetters(['isRoot', 'numSelected', 'isSelected']),
+    },
 }
 </script>
+
+<style scoped>
+td {
+    text-align: center !important;
+}
+</style>

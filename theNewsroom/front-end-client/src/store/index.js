@@ -7,33 +7,37 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
 	state: {
-		current_topic: null,
+		current_topic: '',
 		popups: [],
 		selected: []
 	},
 
 	mutations: {
-		addSelected({ selected }, topic) {
-			selected.push(topic)
+		addSelected(state, topic) {
+			state.selected.push(topic)
 		},
-		removeSelected({ selected }, topic) {
-			const topicIndex = selected.findIndex(item => item.id === topic.id)
-			selected.splice(topicIndex, 1)
+		removeSelected(state, topic) {
+			const topicIndex = state.selected.findIndex(item => {
+				return item.title === topic
+			})
+			state.selected.splice(topicIndex, 1)
 		},
-		openTopic(topic) {
-			this.state.current_topic = topic
+		openTopic(state, topic) {
+			state.current_topic = topic
+
 		},
 
-		nextTopic({popups}, topic) {
-			popups.push(this.state.current_topic)
-			this.state.current_topic = topic
+		nextTopic(state, topic) {
+			state.popups.push(state.current_topic)
+			state.current_topic = topic
 		},
-		previousTopic({popups}) {
-			this.state.current_topic = popups.pop()
+		previousTopic(state) {
+			state.current_topic = state.popups.pop()
 		},
-		closeTopic() {
-			this.state.current_topic = null
-			this.state.popups = []
+		
+		closeTopic(state) {
+			state.current_topic = null
+			state.popups = []
 		},
 	},
 
@@ -58,6 +62,8 @@ export default new Vuex.Store({
 				return true
 			}
 			return false
-		}
+		},
+
+
 	}
 })

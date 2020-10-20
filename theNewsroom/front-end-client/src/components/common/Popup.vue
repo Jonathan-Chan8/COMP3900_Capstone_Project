@@ -1,7 +1,7 @@
 <template>
 <v-dialog d-flex v-model="show" max-width="1000px" max-height="500px">
     <v-card class="flex-wrap text-justify justify-space-between">
-        <v-card-title class="headline"> Coronavirus </v-card-title>
+        <v-card-title class="headline"> {{ current_topic }} </v-card-title>
         <v-divider />
 
         <v-card-title class="subheading"> Related Topics </v-card-title>
@@ -9,7 +9,7 @@
             <v-row dense>
                 <!-- we would need ot make sure we limit the number of characters shown -->
                 <v-col v-for="topic in topics" :key="topic.id">
-                    <v-btn width=100% depressed>{{ topic.title }}</v-btn>
+                    <v-btn width=100% depressed @click="nextTopic(topic.title)">{{ topic.title }}</v-btn>
                 </v-col>
             </v-row>
         </v-card-actions>
@@ -32,8 +32,9 @@
             <v-btn v-else depressed>Add to Trends</v-btn>
 
             <v-spacer></v-spacer>
-            <v-btn v-if='!isRoot' depressed>Back</v-btn>
-            <v-btn depressed @click.stop="show=false">Close</v-btn>
+
+            <v-btn v-if='!isRoot' depressed @click="previousTopic()">Previous Topic</v-btn>
+            <v-btn depressed @click.stop="close">Close</v-btn>
         </v-card-actions>
 
     </v-card>
@@ -51,20 +52,11 @@ export default {
     props: {
         value: Boolean
     },
-    methods: {
-        ...mapMutations([
-            'addSelected',
-            'removeSelected',
-            'openTopic',
-            'nextTopic',
-            'previousTopic',
-            'closeTopic'
-        ])
-    },
 
     computed: {
         ...mapState(['popups', 'selected', 'current_topic']),
         ...mapGetters(['isRoot', 'numSelected', 'isSelected']),
+
         show: {
             get() {
                 return this.value
@@ -74,32 +66,45 @@ export default {
             }
         }
     },
+    methods: {
+        ...mapMutations([
+            'addSelected',
+            'removeSelected',
+            'openTopic',
+            'nextTopic',
+            'previousTopic',
+            'closeTopic'
+        ]),
+        close() {
+            this.show = false
+            this.closeTopic()
+        }
+    },
+
     data: () => ({
         topics: [{
                 id: '1',
-                title: 'covid'
-
+                title: 'Coronavirus',
             },
             {
                 id: '2',
-                title: 'election'
+                title: 'U.S. Election',
             },
             {
                 id: '3',
-                title: 'melbourne'
-            }, {
+                title: 'Californian Bushfires',
+            },
+            {
                 id: '4',
-                title: 'covid'
-
+                title: 'New Zealand',
             },
             {
                 id: '5',
-                title: 'election'
-            },
-            {
+                title: 'Melbourne',
+            }, {
                 id: '6',
-                title: 'melbourne'
-            }
+                title: 'Scott Morrison',
+            },
         ],
 
         articles: [{

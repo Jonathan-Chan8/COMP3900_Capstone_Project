@@ -27,7 +27,9 @@
 
             <!-- Topic of the Day -->
             <v-col cols='auto' md='6'>
-                <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover @click.stop="popup=true">
+                <!-- <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover @click="open()"> -->
+                <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover @click.stop="open(totd.topic)">
+
                     <v-card-title class="headline" v-text="totd.title"></v-card-title>
                     <v-card-text> {{ totd.text }} </v-card-text>
                 </v-card>
@@ -54,22 +56,18 @@
 <script>
 import Popup from "../components/common/Popup";
 
+import {
+    mapGetters,
+    mapState,
+    mapMutations
+} from 'vuex';
+
 export default {
     name: "Home",
     components: {
         Popup
     },
-    methods: {
-        login() {
-            this.$auth.loginWithPopup();
-        },
-        // Log the user out
-        logout() {
-            this.$auth.logout({
-                returnTo: window.location.origin
-            });
-        }
-    },
+
     data() {
         return {
             popup: false,
@@ -94,6 +92,7 @@ export default {
             // totd: get_totd() ------ When we have connected to db
             totd: {
                 id: 'totd',
+                topic: 'Coronavirus',
                 title: "Topic of the Day",
                 text: 'We will have here some function to request the most popular topic in the last 24 hours, and clicking it will open the associated overlay.',
                 route: ''
@@ -113,7 +112,52 @@ export default {
             ]
 
         }
-    }
+    },
+
+    methods: {
+        ...mapMutations([
+            'addSelected',
+            'removeSelected',
+            'openTopic',
+            'nextTopic',
+            'previousTopic',
+            'closeTopic'
+        ]),
+        login() {
+            this.$auth.loginWithPopup();
+        },
+        // Log the user out
+        logout() {
+            this.$auth.logout({
+                returnTo: window.location.origin
+            });
+        },
+        // ...mapMutations([
+        //     'openTopic',
+        // ]),
+        open(topic) {
+            this.popup = true
+            this.openTopic(topic)
+        }
+        // No idea why the above wont work!
+        // open(topic) {
+        //     this.popup = true
+        //     this.$store.state.current_topic = topic
+        // }
+    },
+    computed: {
+        ...mapState(['popup', 'popups', 'selected', 'current_topic']),
+        ...mapGetters(['isRoot', 'numSelected', 'isSelected']),
+
+        show: {
+            get() {
+                return this.value
+            },
+            set(value) {
+                this.$emit('input', value)
+            }
+        }
+    },
 }
 </script>
 

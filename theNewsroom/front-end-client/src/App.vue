@@ -23,7 +23,6 @@ export default {
         Header,
         Footer
     },
-
     data: () => ({
         //
     })

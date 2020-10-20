@@ -33,12 +33,11 @@ Vue.use(Auth0Plugin, {
 
 
 
-
-
 new Vue({
   el: '#app',
 	store,
 	router,
   vuetify,
-  render: h => h(App)
+  render: h => h(App),
+
 })
