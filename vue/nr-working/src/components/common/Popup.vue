@@ -28,11 +28,11 @@
 
         <v-divider />
         <v-card-actions>
-            <v-btn v-if='isSelected=true' depressed>Remove from Trends</v-btn>
+            <v-btn v-if='isSelected' depressed>Remove from Trends</v-btn>
             <v-btn v-else depressed>Add to Trends</v-btn>
 
             <v-spacer></v-spacer>
-            <v-btn depressed>Back</v-btn>
+            <v-btn v-if='!isRoot' depressed>Back</v-btn>
             <v-btn depressed @click.stop="show=false">Close</v-btn>
         </v-card-actions>
 

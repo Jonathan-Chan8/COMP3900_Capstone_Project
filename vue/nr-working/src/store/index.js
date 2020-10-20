@@ -43,10 +43,7 @@ export default new Vuex.Store({
 	
 	getters: {
 		isRoot: state => {
-			let num = 0
-			state.popups.forEach(num += 1)
-
-			if (num === 0) return true
+			if (state.popups.length === 0) return true
 			return false
 		},
 
@@ -57,7 +54,7 @@ export default new Vuex.Store({
 		},
 
 		isSelected: state => {
-			if (state.selectedstate.current_topic.includes(state.current_topic)) {
+			if (state.selected.includes(state.current_topic)) {
 				return true
 			}
 			return false
