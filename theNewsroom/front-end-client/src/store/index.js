@@ -17,10 +17,8 @@ export default new Vuex.Store({
 			state.selected.push(topic)
 		},
 		removeSelected(state, topic) {
-			const topicIndex = state.selected.findIndex(item => {
-				return item.title === topic
-			})
-			state.selected.splice(topicIndex, 1)
+			let index = state.selected.findIndex(item => item == topic)
+			state.selected.splice(index, 1)
 		},
 		openTopic(state, topic) {
 			state.current_topic = topic
@@ -64,6 +62,13 @@ export default new Vuex.Store({
 			return false
 		},
 
+		getSelected: state => {
+			return state.selected
+		},
+
+		getPopups: state => {
+			return state.popups
+		}
 
 	}
 })

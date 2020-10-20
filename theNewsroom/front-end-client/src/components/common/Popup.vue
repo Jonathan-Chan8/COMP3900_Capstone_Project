@@ -28,14 +28,18 @@
 
         <v-divider />
         <v-card-actions>
-            <v-btn v-if='isSelected' depressed>Remove from Trends</v-btn>
-            <v-btn v-else depressed>Add to Trends</v-btn>
+            <v-btn v-if='isSelected' depressed @click='removeSelected(current_topic)'>Remove from Trends</v-btn>
+            <v-btn v-else depressed @click='addSelected(current_topic)'>Add to Trends</v-btn>
 
             <v-spacer></v-spacer>
 
-            <v-btn v-if='!isRoot' depressed @click="previousTopic()">Previous Topic</v-btn>
+            <v-btn v-if='!isRoot' depressed @click="previousTopic">Previous Topic</v-btn>
             <v-btn depressed @click.stop="close">Close</v-btn>
         </v-card-actions>
+
+        <v-text> Popup Stack: {{ getPopups}} </v-text>
+        <v-spacer />
+        <v-text> Selected Topics: {{ getSelected}} </v-text>
 
     </v-card>
 </v-dialog>
@@ -55,7 +59,7 @@ export default {
 
     computed: {
         ...mapState(['popups', 'selected', 'current_topic']),
-        ...mapGetters(['isRoot', 'numSelected', 'isSelected']),
+        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getPopups']),
 
         show: {
             get() {
