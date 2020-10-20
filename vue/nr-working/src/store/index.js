@@ -13,27 +13,28 @@ export default new Vuex.Store({
 	},
 
 	mutations: {
-		openTopic: (state) => (topic) => {
-			state.current_topic = topic
+		addSelected({ selected }, topic) {
+			selected.push(topic)
 		},
-		nextTopic: (state) => (topic) => {
-			state.popups.push(state.current_topic)
-			state.current_topic = topic
+		removeSelected({ selected }, topic) {
+			const topicIndex = selected.findIndex(item => item.id === topic.id)
+			selected.splice(topicIndex, 1)
 		},
-		previousTopic: (state) => {
-			state.current_topic = state.popups.pop()
+		openTopic(topic) {
+			this.state.current_topic = topic
 		},
-		closeTopic: (state) => {
-			state.current_topic = null
-			state.popups = []
+
+		nextTopic({popups}, topic) {
+			popups.push(this.state.current_topic)
+			this.state.current_topic = topic
 		},
-		addSelected: (state) => (topic) => {
-			state.selected.push(topic)
+		previousTopic({popups}) {
+			this.state.current_topic = popups.pop()
 		},
-		removeSelected: (state) => (topic) => {
-			const index = state.selected.findIndex(item => item.id === topic.id)
-			state.selected.splice(index, 1)
-		}
+		closeTopic() {
+			this.state.current_topic = null
+			this.state.popups = []
+		},
 	},
 
 	actions: {
@@ -41,12 +42,22 @@ export default new Vuex.Store({
 	},
 	
 	getters: {
-		isRoot: (state) => {
-			if (state.popups.length == 0) return true 
+		isRoot: state => {
+			let num = 0
+			state.popups.forEach(num += 1)
+
+			if (num === 0) return true
 			return false
 		},
-		isSelected : (state) => (topic) => {
-			if(state.selected.includes(topic)) {
+
+		numSelected: state => {
+			let num = 0
+			state.selected.forEach(num += 1)
+			return num
+		},
+
+		isSelected: state => {
+			if (state.selectedstate.current_topic.includes(state.current_topic)) {
 				return true
 			}
 			return false

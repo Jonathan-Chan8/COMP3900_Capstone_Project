@@ -78,60 +78,50 @@ export default {
             }
         ],
         topics: [{
-                value: false,
                 articles: '908',
                 topic: 'Coronavirus',
                 date: '2020-10-08'
             },
             {
-                value: false,
                 articles: '1462',
                 topic: 'U.S. Election',
                 date: '2020-10-02'
             },
             {
-                value: false,
                 articles: '826',
                 topic: 'Californian Bushfires',
                 date: '2020-10-2'
             },
             {
-                value: false,
                 articles: '142',
                 topic: 'New Zealand',
                 date: '2020-10-17'
             },
             {
-                value: false,
                 articles: '637',
                 topic: 'Melbourne',
                 date: '2020-10-12'
             }, {
-                value: false,
-                articles: '2341',
+                articles: '341',
                 topic: 'Scott Morrison',
                 date: '2020-10-14'
             },
             {
-                value: false,
                 articles: '1004',
                 topic: 'Iran',
                 date: '2020-10-03'
             },
             {
-                value: false,
                 articles: '837',
                 topic: 'Brexit',
                 date: '2020-10-05'
             },
             {
-                value: false,
                 articles: '463',
                 topic: 'Vaccine',
                 date: '2020-10-16'
             },
             {
-                value: false,
                 articles: '1349',
                 topic: 'ACT',
                 date: '2020-10-13'
