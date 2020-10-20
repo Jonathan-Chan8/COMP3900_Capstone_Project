@@ -64,8 +64,6 @@
                     </v-list>
                 </v-card>
 
-                <v-text> Dates: {{ dates }} </v-text>
-
             </v-flex>
 
             <v-spacer />
@@ -180,7 +178,7 @@ export default {
                 this.start_date = this.dates[1]
                 this.end_date = this.dates[0]
             }
-
+            this.dates = [this.start_date, this.end_date]
         }
     },
     computed: {
