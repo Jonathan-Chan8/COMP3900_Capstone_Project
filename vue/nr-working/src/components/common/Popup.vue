@@ -28,8 +28,8 @@
 
         <v-divider />
         <v-card-actions>
-            <v-btn depressed>Remove from Trends</v-btn>
-            <v-btn depressed>Add to Trends</v-btn>
+            <v-btn v-if='isSelected=true' depressed>Remove from Trends</v-btn>
+            <v-btn v-else depressed>Add to Trends</v-btn>
 
             <v-spacer></v-spacer>
             <v-btn depressed>Back</v-btn>
@@ -40,33 +40,40 @@
 </v-dialog>
 </template>
 
-// 
-
 <script>
-// import {
-//     mapGetters,
-//     mapState,
-//     mapMutations
-// } from 'vuex';
+import {
+    mapGetters,
+    mapState,
+    mapMutations
+} from 'vuex';
 
 export default {
     props: {
         value: Boolean
     },
-    // methods: {
-    //     ...mapMutations([
-    //         'addSelected',
-    //         'removeSelected',
-    //         'openTopic',
-    //         'nextTopic',
-    //         'previousTopic',
-    //         'closeTopic'
-    //     ])
-    // },
-    // computed: {
-    //     ...mapState(['popups', 'selected', 'current_topic']),
-    //     ...mapGetters(['isRoot', 'numSelected', 'isSelected'])
-    // },
+    methods: {
+        ...mapMutations([
+            'addSelected',
+            'removeSelected',
+            'openTopic',
+            'nextTopic',
+            'previousTopic',
+            'closeTopic'
+        ])
+    },
+
+    computed: {
+        ...mapState(['popups', 'selected', 'current_topic']),
+        ...mapGetters(['isRoot', 'numSelected', 'isSelected']),
+        show: {
+            get() {
+                return this.value
+            },
+            set(value) {
+                this.$emit('input', value)
+            }
+        }
+    },
     data: () => ({
         topics: [{
                 id: '1',
