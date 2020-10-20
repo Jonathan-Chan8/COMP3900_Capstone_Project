@@ -42,7 +42,7 @@ CREATE TABLE NewsCollectorInfo.ArticleInfo (
 	api_content_url		URL,
 	api_given_category 	VARCHAR(50),
 	article_type 		TYPEOFARTICLE 	NOT NULL,
-	publication_date 	TIMESTAMP 		NOT NULL DEFAULT NOW(), 
+	publication_date 	TIMESTAMP 		NOT NULL, 
 	author				VARCHAR(50),
 	media_outlet_id 	INT    			NOT NULL,
 	content_id 			INT,
