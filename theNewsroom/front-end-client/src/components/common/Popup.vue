@@ -37,6 +37,8 @@
             <v-btn depressed @click.stop="close">Close</v-btn>
         </v-card-actions>
 
+        <v-text> Current Topic: {{ current_topic}} </v-text>
+        <v-spacer />
         <v-text> Popup Stack: {{ getPopups}} </v-text>
         <v-spacer />
         <v-text> Selected Topics: {{ getSelected}} </v-text>

@@ -11,16 +11,24 @@
             <v-flex xs10 md3>
                 <!-- Really, these filters wont actually filter the datatable, but rather will be used as input to our db query, thus changing the reuslts of the topics list returned by the database -->
 
-                <v-text-field v-model="search" prepend-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
+                <!-- For now this filters the datatable, really we want it to produce a popup with possible matches on 'enter', and selecting a match will produce the corresponding topic popup. This field ought to be in the same position of the page on both Topics and Trends, to show continuity -->
+                <v-text-field v-model="search" prepend-icon="mdi-magnify" label="Search for a topic" single-line hide-details></v-text-field>
 
-                <v-text-field v-model="media" prepend-icon="mdi-book-open-variant" label="Media" single-line hide-details></v-text-field>
+                <v-text-field v-model="media" prepend-icon="mdi-book-open-variant" label="Filter by media outlet" single-line hide-details></v-text-field>
 
-                <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
+                <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date" transition="scale-transition" offset-y min-width="290px">
                     <template v-slot:activator="{ on, attrs }">
-                        <v-text-field v-model="date" label="Start Date" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
+                        <v-text-field v-model="dateRange" label="Select time period" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                     </template>
-                    <v-date-picker no-title v-model="date" :max='todaysDate' @click="$refs.menu.save(date)" @input="menu=false"></v-date-picker>
+                    <v-date-picker v-model="dates" :max='todaysDate' range no-title scrollable>
+                        <v-spacer></v-spacer>
+                        <v-btn text color="primary" @click="saveDates">
+                            OK
+                        </v-btn>
+                    </v-date-picker>
                 </v-menu>
+                <v-text> Dates: {{ dates }} </v-text>
+
             </v-flex>
 
             <v-spacer />
@@ -63,8 +71,10 @@ export default {
 
     data: () => ({
         popup: false,
+        start_date: '',
+        end_date: '',
+        dates: [],
 
-        date: '',
         menu: false,
         search: '',
         medias: ['ABC', 'The Guardian', 'The New York Times'],
@@ -131,10 +141,8 @@ export default {
             let month = `${date.getMonth() + 1}`;
             let day = `${date.getDate()}`;
             const year = date.getFullYear();
-
             if (month.length < 2) month = `0${month}`;
             if (day.length < 2) day = `0${day}`;
-
             return [year, month, day].join('-');
         },
         ...mapMutations([
@@ -145,15 +153,6 @@ export default {
             'previousTopic',
             'closeTopic'
         ]),
-        login() {
-            this.$auth.loginWithPopup();
-        },
-        // Log the user out
-        logout() {
-            this.$auth.logout({
-                returnTo: window.location.origin
-            });
-        },
         rowClicked(row) {
             this.open(row.topic)
             console.log(row);
@@ -161,9 +160,27 @@ export default {
         open(topic) {
             this.popup = true
             this.openTopic(topic)
+        },
+        saveDates() {
+            this.$refs.menu.save(this.dates)
+            if (this.dates[0] < this.dates[1]) {
+                this.start_date = this.dates[0]
+                this.end_date = this.dates[1]
+            } else {
+                this.start_date = this.dates[1]
+                this.end_date = this.dates[0]
+            }
+            this.dates = [this.start_date, this.end_date]
         }
     },
     computed: {
+        todaysDate() {
+            const today = new Date();
+            return this.formatDate(today);
+        },
+        dateRange() {
+            return this.dates.join(' to ')
+        },
         ...mapState(['popup', 'popups', 'selected', 'current_topic']),
         ...mapGetters(['isRoot', 'numSelected', 'isSelected']),
     },

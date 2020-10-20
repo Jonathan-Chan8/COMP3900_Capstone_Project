@@ -28,7 +28,7 @@
             <!-- Topic of the Day -->
             <v-col cols='auto' md='6'>
                 <!-- <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover @click="open()"> -->
-                <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover @click.stop="open(totd.topic)">
+                <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover @click="open(totd.topic)">
 
                     <v-card-title class="headline" v-text="totd.title"></v-card-title>
                     <v-card-text> {{ totd.text }} </v-card-text>

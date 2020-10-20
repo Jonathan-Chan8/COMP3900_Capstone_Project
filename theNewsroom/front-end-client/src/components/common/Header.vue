@@ -10,7 +10,8 @@
             </v-toolbar-title>
         </v-btn>
         <v-spacer></v-spacer>
-        <!-- Need to properly implement the login authorisation methods once that story is completed -->
+
+        <!-- Full screen size -->
         <v-toolbar-items class="d-none d-md-block">
             <v-btn text v-for="item in menu" :key="item.icon" :to="item.route" depressed>{{ item.title }}
             </v-btn>
@@ -41,6 +42,7 @@
 
         </v-toolbar-items>
 
+        <!-- Small screen size -->
         <div class="d-md-none">
             <v-menu>
                 <template v-slot:activator="{ on }">
