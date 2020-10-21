@@ -1,6 +1,6 @@
 <template>
 <div class="topics">
-    <h1 class="subheading grey--text">Topics</h1>
+    <h1 class="body grey--text text-center"></h1>
 
     <template>
         <v-spacer />

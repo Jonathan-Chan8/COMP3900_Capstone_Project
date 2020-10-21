@@ -67,6 +67,10 @@ export const useAuth0 = ({
       loginWithRedirect(o) {
         return this.auth0Client.loginWithRedirect(o);
       },
+      /** Authenticates the user using the redirect method */
+      loginWithOverlay(o) {
+        return this.auth0Client.loginWithOverlay(o);
+      },
       /** Returns all the claims present in the ID token */
       getIdTokenClaims(o) {
         return this.auth0Client.getIdTokenClaims(o);
