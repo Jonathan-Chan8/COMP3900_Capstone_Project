@@ -1,6 +1,6 @@
 <template>
-<div class="topics">
-    <h1 class="subheading grey--text">Topics</h1>
+<div class="trends">
+    <h1 class="body grey--text text-center"></h1>
 
     <template>
         <v-spacer />
@@ -179,6 +179,9 @@ export default {
                 this.end_date = this.dates[0]
             }
             this.dates = [this.start_date, this.end_date]
+
+            // this.db = queryDB()
+
         }
     },
     computed: {

@@ -37,6 +37,17 @@ export default new Vuex.Store({
 			state.current_topic = null
 			state.popups = []
 		},
+
+		emptySelected(state) {
+			state.selected = []
+		},
+		setSelected(state, topics) {
+			state.emptySelected()
+			var i
+			for (i = 0; i < topics.length; i++) {
+				state.addSelected(topics[i])
+			}
+		}
 	},
 
 	actions: {
