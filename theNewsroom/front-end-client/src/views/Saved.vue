@@ -3,34 +3,26 @@
     <h1 class="subheading grey--text text-center">Saved Trends</h1>
     <v-container fluid>
         <v-row>
-            <v-card tile flat class="flex-wrap text-justify justify-space-between">
-                <v-card-title>Saved Trends</v-card-title>
-                <v-list width=100% rounded>
-                    <v-card tile flat class="saved flex-wrap text-justify justify-space-between" v-for="config in saved" :key="config" @click="viewTrends(config.topics)">
-                        <v-card-title class="headline" v-text="config.title"> </v-card-title>
-
+            <v-list two-line width=100% rounded>
+                <v-list-item flat class="saved flex-wrap text-justify justify-space-between" v-for="config in saved" :key="config" @click="viewTrends(config.topics)" depressed hover>
+                    <v-col>
+                        <v-list-item-title class="headline" v-text="config.title"> </v-list-item-title>
                         <v-card-actions>
                             <v-row dense>
                                 <!-- we would need ot make sure we limit the number of characters shown -->
                                 <v-col v-for="topic in config.topics" :key="topic.title">
-                                    <v-btn width=100% depressed @click="open(topic.title)">{{ topic.title }}</v-btn>
+                                    <v-btn rounded width=100% depressed @click="open(topic.title)">{{ topic.title }}</v-btn>
                                 </v-col>
                                 <Popup v-model="popup" />
                             </v-row>
                         </v-card-actions>
-                        <v-divider />
-                        <div />
-                    </v-card>
-                </v-list>
-            </v-card>
-
+                    </v-col>
+                </v-list-item>
+            </v-list>
         </v-row>
     </v-container>
-
 </div>
 </template>
-
-<!-- Need to figure out a way to only show the correct cards for if a user is signed in or not -->
 
 <script>
 import Popup from "../components/common/Popup";
@@ -51,22 +43,19 @@ export default {
         popup: false,
         saved: {
             config1: {
-                title: "Politics",
+                title: "U.S. Politics",
                 topics: [{
-                        title: 'Coronavirus',
+                        title: 'Joe Biden',
                     },
                     {
                         title: 'U.S. Election',
                     },
                     {
-                        title: 'Californian Bushfires',
+                        title: 'Donald Trume',
                     },
                     {
-                        title: 'New Zealand',
-                    },
-                    {
-                        title: 'Melbourne',
-                    },
+                        title: 'Supreme Court',
+                    }
                 ],
             },
             config2: {
@@ -75,10 +64,10 @@ export default {
                         title: 'Coronavirus',
                     },
                     {
-                        title: 'U.S. Election',
+                        title: 'Vaccine',
                     },
                     {
-                        title: 'Californian Bushfires',
+                        title: 'Australia',
                     },
                     {
                         title: 'New Zealand',
@@ -89,7 +78,7 @@ export default {
                 ],
             },
             config3: {
-                title: "Australia",
+                title: "World Events",
                 topics: [{
                         title: 'Coronavirus',
                     },
@@ -103,22 +92,7 @@ export default {
                         title: 'New Zealand',
                     },
                     {
-                        title: 'Melbourne',
-                    },
-                    {
-                        title: 'Coronavirus',
-                    },
-                    {
-                        title: 'U.S. Election',
-                    },
-                    {
-                        title: 'Californian Bushfires',
-                    },
-                    {
-                        title: 'New Zealand',
-                    },
-                    {
-                        title: 'Melbourne',
+                        title: 'Brexit',
                     },
                 ],
             }

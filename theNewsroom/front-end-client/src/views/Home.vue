@@ -17,7 +17,7 @@
                     </v-card>
 
                     <!-- show saved/logout when user is authenticated -->
-                    <v-card v-else class="flex-wrap text-justify justify-space-between" rounded height="100%" hover>
+                    <v-card v-else class="flex-wrap text-justify justify-space-between" rounded height="100%" hover :to='saved.route'>
                         <v-card-title class="headline" v-text="saved.title"></v-card-title>
                         <v-card-text> {{ saved.text }} </v-card-text>
                     </v-card>
