@@ -28,12 +28,18 @@
                                 OK
                             </v-btn>
                         </v-date-picker>
+                        
                     </v-menu>
                 </v-card>
 
                 <v-card flat tile width='80%'>
                     <v-text-field v-model="media" prepend-icon="mdi-book-open-variant" label="Filter by media outlet" single-line hide-details></v-text-field>
                 </v-card>
+
+                <v-card flat tile width='80%'>
+                    <HelpTopics />
+                </v-card>
+                
 
             </v-flex>
 
@@ -62,6 +68,7 @@
 
 <script>
 import Popup from "../components/common/Popup";
+import HelpTopics from "../components/common/HelpTopics";
 
 import {
     mapGetters,
@@ -72,7 +79,8 @@ import {
 export default {
     name: "Topics",
     components: {
-        Popup
+        Popup,
+        HelpTopics
     },
 
     data: () => ({
