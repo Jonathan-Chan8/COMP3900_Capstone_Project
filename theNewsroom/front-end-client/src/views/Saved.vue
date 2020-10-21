@@ -41,8 +41,7 @@ export default {
 
     data: () => ({
         popup: false,
-        saved: {
-            config1: {
+        saved: [{
                 title: "U.S. Politics",
                 topics: [{
                         title: 'Joe Biden',
@@ -58,7 +57,7 @@ export default {
                     }
                 ],
             },
-            config2: {
+            {
                 title: "Coronavirus",
                 topics: [{
                         title: 'Coronavirus',
@@ -77,7 +76,7 @@ export default {
                     },
                 ],
             },
-            config3: {
+            {
                 title: "World Events",
                 topics: [{
                         title: 'Coronavirus',
@@ -96,7 +95,8 @@ export default {
                     },
                 ],
             }
-        }
+        ],
+
     }),
 
     methods: {
