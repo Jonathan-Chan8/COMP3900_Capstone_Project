@@ -1,5 +1,5 @@
 <template>
-<v-app>
+<v-app background-color="white">
     <v-app-bar dense fixed flat max-height="65">
         <Header />
     </v-app-bar>

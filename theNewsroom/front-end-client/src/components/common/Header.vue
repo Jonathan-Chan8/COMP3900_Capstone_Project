@@ -1,79 +1,77 @@
 <template>
-<v-container>
-    <v-toolbar flat class="mainHeader">
-        <v-btn text>
-            <v-toolbar-title class="text-uppercase">
-                <router-link to="/">
-                    <span class="font-weight-light black--text">The</span>
-                    <span class="black--text">Newsroom</span>
-                </router-link>
-            </v-toolbar-title>
-        </v-btn>
-        <v-spacer></v-spacer>
+<v-toolbar flat class="toolbar">
+    <v-btn text>
+        <v-toolbar-title class="text-uppercase">
+            <router-link to="/">
+                <span class="font-weight-light black--text">The</span>
+                <span class="black--text">Newsroom</span>
+            </router-link>
+        </v-toolbar-title>
+    </v-btn>
+    <v-spacer></v-spacer>
 
-        <!-- Full screen size -->
-        <v-toolbar-items class="d-none d-md-block">
-            <v-btn text v-for="item in menu" :key="item.icon" :to="item.route" depressed>{{ item.title }}
-            </v-btn>
-            <!-- Place the if-statements inside the following:
+    <!-- Full screen size -->
+    <v-toolbar-items class="d-none d-md-block">
+        <v-btn text v-for="item in menu" :key="item.icon" :to="item.route" depressed>{{ item.title }}
+        </v-btn>
+        <!-- Place the if-statements inside the following:
                 <template v-if="!$auth.loading">
                 </template>
             -->
-            <!-- show login/register when not authenticated -->
-            <template v-if="!$auth.loading">
+        <!-- show login/register when not authenticated -->
+        <template v-if="!$auth.loading">
 
-                <v-btn text depressed v-if="!$auth.isAuthenticated" @click="login">Log In / Register</v-btn>
+            <v-btn text depressed v-if="!$auth.isAuthenticated" @click="login">Log In / Register</v-btn>
 
-                <!-- show saved/logout when authenticated -->
-                <v-menu v-else offset-y>
-                    <template v-slot:activator=" { on }">
-                        <v-btn text v-on="on">
-                            <span>My Account</span>
-                        </v-btn>
-                    </template>
-                    <v-list class="responsiveMenu">
-                        <!-- show saved/logout when authenticated -->
-                        <v-list-item text v-if="$auth.isAuthenticated" to='/profile'>Profile</v-list-item>
-                        <v-list-item text v-if="$auth.isAuthenticated" to='/saved'>Saved Trends</v-list-item>
-                        <v-list-item text v-if="$auth.isAuthenticated" @click="logout">Log Out</v-list-item>
-                    </v-list>
-                </v-menu>
-            </template>
-
-        </v-toolbar-items>
-
-        <!-- Small screen size -->
-        <div class="d-md-none">
-            <v-menu>
-                <template v-slot:activator="{ on }">
-                    <v-app-bar-nav-icon v-on="on"></v-app-bar-nav-icon>
+            <!-- show saved/logout when authenticated -->
+            <v-menu v-else offset-y>
+                <template v-slot:activator=" { on }">
+                    <v-btn text v-on="on">
+                        <span>My Account</span>
+                    </v-btn>
                 </template>
-                <v-list class="responsiveMenu" size="auto">
-                    <!-- Always shown -->
-                    <v-list-item text v-for="item in menu" :key="item.icon" :to="item.route" depressed>{{ item.title }}
-                    </v-list-item>
-
-                    <template v-if="!$auth.loading">
-                        <!-- show login/register when not authenticated -->
-                        <template v-if="!$auth.isAuthenticated">
-                            <v-list-item text @click="login">Log In</v-list-item>
-                            <v-list-item text @click="login">Register</v-list-item>
-                        </template>
-
-                        <!-- show saved/logout when authenticated -->
-                        <template v-else>
-                            <v-list-item text to='/profile'>Profile</v-list-item>
-                            <v-list-item text to='/saved'>Saved Trends</v-list-item>
-                            <v-list-item text @click="logout">Log Out</v-list-item>
-                        </template>
-                    </template>
-
+                <v-list class="responsiveMenu">
+                    <!-- show saved/logout when authenticated -->
+                    <v-list-item text v-if="$auth.isAuthenticated" to='/profile'>Profile</v-list-item>
+                    <v-list-item text v-if="$auth.isAuthenticated" to='/saved'>Saved Trends</v-list-item>
+                    <v-list-item text v-if="$auth.isAuthenticated" @click="logout">Log Out</v-list-item>
                 </v-list>
             </v-menu>
-        </div>
+        </template>
 
-    </v-toolbar>
-</v-container>
+    </v-toolbar-items>
+
+    <!-- Small screen size -->
+    <div class="d-md-none">
+        <v-menu>
+            <template v-slot:activator="{ on }">
+                <v-app-bar-nav-icon v-on="on"></v-app-bar-nav-icon>
+            </template>
+            <v-list class="responsiveMenu" size="auto">
+                <!-- Always shown -->
+                <v-list-item text v-for="item in menu" :key="item.icon" :to="item.route" depressed>{{ item.title }}
+                </v-list-item>
+
+                <template v-if="!$auth.loading">
+                    <!-- show login/register when not authenticated -->
+                    <template v-if="!$auth.isAuthenticated">
+                        <v-list-item text @click="login">Log In</v-list-item>
+                        <v-list-item text @click="login">Register</v-list-item>
+                    </template>
+
+                    <!-- show saved/logout when authenticated -->
+                    <template v-else>
+                        <v-list-item text to='/profile'>Profile</v-list-item>
+                        <v-list-item text to='/saved'>Saved Trends</v-list-item>
+                        <v-list-item text @click="logout">Log Out</v-list-item>
+                    </template>
+                </template>
+
+            </v-list>
+        </v-menu>
+    </div>
+
+</v-toolbar>
 </template>
 
 <script>
@@ -115,3 +113,9 @@ export default {
     }),
 }
 </script>
+
+<style scoped>
+.v-toolbar.v-toolbar--absolute {
+    width: auto;
+}
+</style>

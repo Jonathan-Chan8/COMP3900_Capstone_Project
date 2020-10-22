@@ -7,7 +7,7 @@
             <template v-if="!$auth.loading">
                 <v-col cols='auto' md='6'>
                     <!-- show login/register when user is not authenticated -->
-                    <v-card v-if="!$auth.isAuthenticated" class="flex-wrap text-justify justify-space-between" rounded height="100%" hover>
+                    <v-card v-if="!$auth.isAuthenticated" class="flex-wrap text-justify justify-space-between" height="100%" hover>
                         <v-card-title class="headline" v-text="unauth.title"></v-card-title>
                         <v-card-text> {{ unauth.text }} </v-card-text>
                         <v-card-actions>
@@ -17,7 +17,7 @@
                     </v-card>
 
                     <!-- show saved/logout when user is authenticated -->
-                    <v-card v-else class="flex-wrap text-justify justify-space-between" rounded height="100%" hover :to='saved.route'>
+                    <v-card v-else class="flex-wrap text-justify justify-space-between" height="100%" hover :to='saved.route'>
                         <v-card-title class="headline" v-text="saved.title"></v-card-title>
                         <v-card-text> {{ saved.text }} </v-card-text>
                     </v-card>
@@ -27,8 +27,7 @@
 
             <!-- Topic of the Day -->
             <v-col cols='auto' md='6'>
-                <!-- <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover @click="open()"> -->
-                <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover @click="open(totd.topic)">
+                <v-card class="flex-wrap text-justify justify-space-between" height="100%" hover @click="open(totd.topic)">
 
                     <v-card-title class="headline" v-text="totd.title"></v-card-title>
                     <v-card-text> {{ totd.text }} </v-card-text>

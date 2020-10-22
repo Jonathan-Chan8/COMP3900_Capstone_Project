@@ -15,9 +15,7 @@
                 <v-card flat tile width='80%'>
                     <v-text-field v-model="search" prepend-icon="mdi-magnify" label="Search for a topic" />
                 </v-card>
-
                 <v-card flat tile width='80%'>
-
                     <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date" transition="scale-transition" offset-y min-width="290px">
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field v-model="dateRange" label="Select time period" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
@@ -30,42 +28,45 @@
                         </v-date-picker>
                     </v-menu>
                 </v-card>
+                <v-card flat tile width='90%'>
+                    <v-list flat rounded dense>
+                        <v-list-group value="true" color="none">
+                            <template v-slot:activator>
+                                <v-list-item-content>
+                                    <v-list-item-title class='font-weight-light list-title'>Selected Topics</v-list-item-title>
+                                </v-list-item-content>
+                            </template>
+                            <v-list-item-group color="none">
+                                <v-list-item class="item" v-for="item in getSelected" :key="item">
+                                    <v-list-item-title @click='open(item)' v-text="item">
+                                    </v-list-item-title>
+                                    <v-btn icon @click='removeSelected(item)'>
+                                        <v-icon color="grey lighten-1">mdi-minus-circle</v-icon>
+                                    </v-btn>
+                                </v-list-item>
+                            </v-list-item-group>
+                        </v-list-group>
+                    </v-list>
+                    <v-list flat rounded dense>
+                        <v-list-group color="none">
+                            <template v-slot:activator>
+                                <v-list-item-content>
+                                    <v-list-item-title class='font-weight-light list-title'>Related Topics</v-list-item-title>
+                                </v-list-item-content>
+                            </template>
+                            <v-list-item-group color="none">
+                                <v-list-item class='item' v-for="item in getRelated" :key="item.topic">
 
-                <v-card flat tile>
-                    <v-card-title>Selected Topics</v-card-title>
-
-                    <v-list width='90%' rounded dense>
-                        <v-list-item-group v-model="item" color="primary">
-                            <v-list-item v-for="item in getSelected" :key="item">
-                                <v-list-item-title @click='open(item)' v-text="item">
-                                </v-list-item-title>
-                                <v-btn icon @click='removeSelected(item)'>
-                                    <v-icon color="grey lighten-1">mdi-minus-circle</v-icon>
-                                </v-btn>
-
-                            </v-list-item>
-                        </v-list-item-group>
+                                    <v-list-item-title @click='open(item.topic)' v-text="item.topic"></v-list-item-title>
+                                    <v-btn icon @click='addSelected(item.topic)'>
+                                        <v-icon color="grey lighten-1">mdi-plus-circle</v-icon>
+                                    </v-btn>
+                                </v-list-item>
+                            </v-list-item-group>
+                        </v-list-group>
                     </v-list>
                 </v-card>
-
-                <v-card flat tile>
-                    <v-card-title>Related Topics</v-card-title>
-                    <v-list width='90%' rounded dense>
-
-                        <v-list-item-group v-model="item" color="primary">
-                            <v-list-item v-for="item in related" :key="item.topic">
-
-                                <v-list-item-title @click='open(item.topic)' v-text="item.topic"></v-list-item-title>
-                                <v-btn icon @click='addSelected(item.topic)'>
-                                    <v-icon color="grey lighten-1">mdi-plus-circle</v-icon>
-                                </v-btn>
-                            </v-list-item>
-                        </v-list-item-group>
-                    </v-list>
-                </v-card>
-
             </v-flex>
-
             <v-spacer />
 
             <v-flex align-center xs12 md6>
@@ -145,7 +146,7 @@ export default {
                 topic: 'ACT',
 
             }
-        ]
+        ],
     }),
 
     methods: {
@@ -179,9 +180,7 @@ export default {
                 this.end_date = this.dates[0]
             }
             this.dates = [this.start_date, this.end_date]
-
             // this.db = queryDB()
-
         }
     },
     computed: {
@@ -194,6 +193,11 @@ export default {
         },
         ...mapState(['popup', 'popups', 'selected', 'current_topic']),
         ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected']),
+
+        getRelated() {
+            // This will actually query the db to get the top 5 related topics to the current selection, however for now this is simply hardcoded
+            return this.related
+        }
     },
 }
 </script>
@@ -201,5 +205,18 @@ export default {
 <style scoped>
 td {
     text-align: center !important;
+}
+
+.list-title {
+    font-size: 16px !important;
+}
+
+.item {
+    margin: 5px;
+    border-radius: 4px;
+}
+
+.item:hover {
+    background: ghostwhite;
 }
 </style>

@@ -35,6 +35,7 @@ Vue.use(Auth0Plugin, {
 
 new Vue({
   el: '#app',
+  
 	store,
 	router,
   vuetify,
