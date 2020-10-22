@@ -19,7 +19,8 @@ export default new Vuex.Store({
 			{
 				title: "World Events",
 				topics: ['Coronavirus', 'U.S. Election', 'Californian Bushfires', 'New Zealand', 'Brexit'],
-			}],
+			}
+		],
 		popups: [],
 		selected: [],
 		related: ['Scott Morrison', 'Iran', 'Brexit', 'Vaccine', 'ACT']
@@ -58,13 +59,14 @@ export default new Vuex.Store({
 		},
 
 		setSelected(state, selection) {
-			state.selected = selection
+			state.selected = selection.map(a => a)
 		},
 		
 		saveTrend(state, name) {
+			var trend = state.selected.map(a => a)			
 			state.saved.push({
 				title: name,
-				topics: state.selected
+				topics: trend
 			})
 		}
 	},
@@ -80,9 +82,7 @@ export default new Vuex.Store({
 		},
 
 		numSelected: state => {
-			let num = 0
-			state.selected.forEach(num += 1)
-			return num
+			return state.selected.length
 		},
 
 		isSelected: state => {

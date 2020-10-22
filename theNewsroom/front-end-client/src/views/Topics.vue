@@ -12,34 +12,49 @@
                 <!-- Really, these filters wont actually filter the datatable, but rather will be used as input to our db query, thus changing the reuslts of the topics list returned by the database -->
 
                 <!-- For now this filters the datatable, really we want it to produce a popup with possible matches on 'enter', and selecting a match will produce the corresponding topic popup. This field ought to be in the same position of the page on both Topics and Trends, to show continuity -->
-                <v-card flat tile width='80%'>
-                    <v-text-field v-model="search" prepend-icon="mdi-magnify" label="Search for a topic" />
+                <v-card flat tile width='100%'>
+                    <v-list flat rounded dense>
+                        <v-list-group value="true" color="none">
+                            <template v-slot:activator>
+                                <v-list-item-content>
+                                    <v-list-item-title class='font-weight-light list-title'>Filters</v-list-item-title>
+                                </v-list-item-content>
+                            </template>
+                            <v-list-item>
+                                <v-text-field dense rounded filled v-model="search" append-icon="mdi-magnify" label="Search for a topic" single-line hide-details />
+
+                            </v-list-item>
+
+                            <v-list-item>
+
+                                <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date" transition="scale-transition" offset-y min-width="290px">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-text-field dense rounded filled v-model="dateRange" label="Select time period" append-icon="mdi-calendar" single-line hide-details readonly v-bind="attrs" v-on="on"></v-text-field>
+                                    </template>
+                                    <v-date-picker v-model="dates" :max='todaysDate' range no-title scrollable>
+                                        <v-spacer></v-spacer>
+                                        <v-btn text color="primary" @click="saveDates">
+                                            OK
+                                        </v-btn>
+                                    </v-date-picker>
+                                </v-menu>
+                            </v-list-item>
+
+                            <v-list-item>
+
+                                <v-text-field dense rounded filled v-model="media" append-icon="mdi-book-open-variant" label="Filter by media outlet" single-line hide-details></v-text-field>
+                            </v-list-item>
+                        </v-list-group>
+                    </v-list>
+
                 </v-card>
 
-                <v-card flat tile width='80%'>
-
-                    <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date" transition="scale-transition" offset-y min-width="290px">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-text-field v-model="dateRange" label="Select time period" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
-                        </template>
-                        <v-date-picker v-model="dates" :max='todaysDate' range no-title scrollable>
-                            <v-spacer></v-spacer>
-                            <v-btn text color="primary" @click="saveDates">
-                                OK
-                            </v-btn>
-                        </v-date-picker>
-                    </v-menu>
-                </v-card>
-
-                <v-card flat tile width='80%'>
-                    <v-text-field v-model="media" prepend-icon="mdi-book-open-variant" label="Filter by media outlet" single-line hide-details></v-text-field>
-                </v-card>
-
+                <v-spacer />
             </v-flex>
-
             <v-spacer />
 
             <v-flex align-center xs12 md6>
+
                 <v-data-table :mobile-breakpoint="0" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :headers="headers" :items="topics" :search="search">
 
                     <template v-slot:item="{ item }">
@@ -53,7 +68,7 @@
                 </v-data-table>
 
             </v-flex>
-            <Popup v-model="popup" />
+            <Popup v-model=" popup" />
             <v-col />
         </v-layout>
     </template>
@@ -196,5 +211,18 @@ export default {
 <style scoped>
 td {
     text-align: center !important;
+}
+
+.list-title {
+    font-size: 16px !important;
+}
+
+.item {
+    margin: 5px;
+    border-radius: 4px;
+}
+
+.item:hover {
+    background: ghostwhite;
 }
 </style>
