@@ -37,9 +37,9 @@
                                 </v-list-item-content>
                             </template>
                             <v-list-item-group color="none">
-                                <v-list-item class="item" v-for="item in getSelected" :key="item">
-                                    <v-list-item-title @click='open(item)' v-text="item">
-                                    </v-list-item-title>
+                                <v-list-item class='item' v-for="item in getSelected" :key="item">
+
+                                    <v-list-item-title @click='open(item)' v-text="item"></v-list-item-title>
                                     <v-btn icon @click='removeSelected(item)'>
                                         <v-icon color="grey lighten-1">mdi-minus-circle</v-icon>
                                     </v-btn>
@@ -56,10 +56,10 @@
                                 </v-list-item-content>
                             </template>
                             <v-list-item-group color="none">
-                                <v-list-item class='item' v-for="item in getRelated" :key="item.topic">
+                                <v-list-item class='item' v-for="item in getRelated" :key="item">
 
-                                    <v-list-item-title @click='open(item.topic)' v-text="item.topic"></v-list-item-title>
-                                    <v-btn icon @click='addSelected(item.topic)'>
+                                    <v-list-item-title @click='open(item)' v-text="item"></v-list-item-title>
+                                    <v-btn icon @click='addSelected(item)'>
                                         <v-icon color="grey lighten-1">mdi-plus-circle</v-icon>
                                     </v-btn>
                                 </v-list-item>
@@ -67,30 +67,52 @@
                         </v-list-group>
                     </v-list>
 
-                    <template v-if="!$auth.loading">
-                        <template v-if="$auth.isAuthenticated">
-                            <v-list flat rounded dense>
-                                <v-list-group color="none">
-                                    <template v-slot:activator>
-                                        <v-list-item-content>
-                                            <v-list-item-title class='font-weight-light list-title'>Saved Trends</v-list-item-title>
-                                        </v-list-item-content>
-                                    </template>
-                                    <v-list-item-group color="none">
-                                        <v-list-item class='item' v-for="config in getSaved" :key="config" @click="viewTrends(config.topics)">
+                    <template v-if="!$auth.loading & $auth.isAuthenticated">
+                        <v-list flat rounded dense>
+                            <v-list-group color="none">
+                                <template v-slot:activator>
+                                    <v-list-item-content>
+                                        <v-list-item-title class='font-weight-light list-title'>Saved Trends</v-list-item-title>
+                                    </v-list-item-content>
+                                </template>
+                                <v-list-item-group color="none">
+                                    <v-list-item class='item' v-for="config in getSaved" :key="config" @click="setSelected(config.topics)">
 
-                                            <v-list-item-title v-text=" config.title">
-                                            </v-list-item-title>
+                                        <v-list-item-title v-text=" config.title">
+                                        </v-list-item-title>
 
-                                        </v-list-item>
-                                    </v-list-item-group>
-                                </v-list-group>
-                            </v-list>
+                                    </v-list-item>
+                                </v-list-item-group>
+                            </v-list-group>
 
-                            <v-btn width=95% rounded depressed @click='saveTrend'>Save Trend Selection</v-btn>
-                        </template>
+                            <template>
+                                <v-row justify="center">
+                                    <v-dialog v-model="dialog" max-width="600px" max-height="100px">
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-btn width=90% rounded depressed v-bind="attrs" v-on="on">Save Trend Selection</v-btn>
+                                        </template>
+                                        <v-card>
+                                            <v-card-title>
+                                                <span class="headline">Save Trend Selection</span>
+                                            </v-card-title>
+                                            <v-card-text>
+                                                <v-text-field v-model='name' label="Enter a name for your selection" required></v-text-field>
+                                            </v-card-text>
+                                            <v-card-actions>
+                                                <v-spacer></v-spacer>
+                                                <v-btn depressed rounded @click="dialog = false">
+                                                    Close
+                                                </v-btn>
+                                                <v-btn depressed rounded @click="saveTrendSelection(name)">
+                                                    Save
+                                                </v-btn>
+                                            </v-card-actions>
+                                        </v-card>
+                                    </v-dialog>
+                                </v-row>
+                            </template>
+                        </v-list>
                     </template>
-
                 </v-card>
             </v-flex>
             <v-spacer />
@@ -122,7 +144,8 @@ export default {
     },
 
     data: () => ({
-        select: false,
+
+        dialog: false,
         popup: false,
         start_date: '',
         end_date: '',
@@ -130,105 +153,7 @@ export default {
 
         menu: false,
         search: '',
-
-        selected: [{
-                articles: '908',
-                topic: 'Coronavirus',
-            },
-            {
-                articles: '1462',
-                topic: 'U.S. Election',
-            },
-            {
-                articles: '826',
-                topic: 'Californian Bushfires',
-            },
-            {
-                articles: '142',
-                topic: 'New Zealand',
-            },
-            {
-                articles: '637',
-                topic: 'Melbourne',
-            },
-        ],
-        related: [{
-                articles: '341',
-                topic: 'Scott Morrison',
-            },
-            {
-                articles: '1004',
-                topic: 'Iran',
-            },
-            {
-                articles: '837',
-                topic: 'Brexit',
-            },
-            {
-                articles: '463',
-                topic: 'Vaccine',
-            },
-            {
-                articles: '1349',
-                topic: 'ACT',
-
-            }
-        ],
-        saved: [{
-                title: "U.S. Politics",
-                topics: [{
-                        title: 'Joe Biden',
-                    },
-                    {
-                        title: 'U.S. Election',
-                    },
-                    {
-                        title: 'Donald Trume',
-                    },
-                    {
-                        title: 'Supreme Court',
-                    }
-                ],
-            },
-            {
-                title: "Coronavirus",
-                topics: [{
-                        title: 'Coronavirus',
-                    },
-                    {
-                        title: 'Vaccine',
-                    },
-                    {
-                        title: 'Australia',
-                    },
-                    {
-                        title: 'New Zealand',
-                    },
-                    {
-                        title: 'Melbourne',
-                    },
-                ],
-            },
-            {
-                title: "World Events",
-                topics: [{
-                        title: 'Coronavirus',
-                    },
-                    {
-                        title: 'U.S. Election',
-                    },
-                    {
-                        title: 'Californian Bushfires',
-                    },
-                    {
-                        title: 'New Zealand',
-                    },
-                    {
-                        title: 'Brexit',
-                    },
-                ],
-            }
-        ],
+        name: '',
     }),
 
     methods: {
@@ -248,7 +173,8 @@ export default {
             'previousTopic',
             'closeTopic',
             'emptySelected',
-            'setSelected'
+            'setSelected',
+            'saveTrend'
         ]),
         open(topic) {
             this.popup = true
@@ -266,13 +192,10 @@ export default {
             this.dates = [this.start_date, this.end_date]
             // this.db = queryDB()
         },
-        viewTrends(topics) {
+        saveTrendSelection(name) {
+            this.dialog = false
+            this.saveTrend(name)
 
-            this.emptySelected()
-            var i
-            for (i = 0; i < topics.length; i++) {
-                this.addSelected(topics[i].title)
-            }
         }
     },
     computed: {
@@ -283,17 +206,8 @@ export default {
         dateRange() {
             return this.dates.join(' to ')
         },
-        ...mapState(['popup', 'popups', 'selected', 'current_topic']),
-        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected']),
-
-        getRelated() {
-            // This will actually query the db to get the top 5 related topics to the current selection, however for now this is simply hardcoded
-            return this.related
-        },
-        getSaved() {
-            // This will actually query the db to get the top 5 related topics to the current selection, however for now this is simply hardcoded
-            return this.saved
-        }
+        ...mapState(['saved', 'popups', 'selected', 'current_topic']),
+        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved', 'getRelated']),
     },
 }
 </script>

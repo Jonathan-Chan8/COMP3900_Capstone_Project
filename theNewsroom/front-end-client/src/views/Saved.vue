@@ -10,16 +10,17 @@
                         <v-card-actions>
                             <v-row dense>
                                 <!-- we would need ot make sure we limit the number of characters shown -->
-                                <v-col v-for="topic in config.topics" :key="topic.title">
-                                    <v-btn rounded width=100% depressed @click.stop="open(topic.title)">{{ topic.title }}</v-btn>
+                                <v-col v-for="topic in config.topics" :key="topic">
+                                    <v-btn rounded width=100% depressed @click.stop="open(topic)">{{ topic }}</v-btn>
                                 </v-col>
-                                <Popup v-model="popup" />
                             </v-row>
                         </v-card-actions>
                     </v-col>
                 </v-list-item>
             </v-list>
         </v-row>
+        <Popup v-model="popup" />
+
     </v-container>
 </div>
 </template>
@@ -41,61 +42,6 @@ export default {
 
     data: () => ({
         popup: false,
-        saved: [{
-                title: "U.S. Politics",
-                topics: [{
-                        title: 'Joe Biden',
-                    },
-                    {
-                        title: 'U.S. Election',
-                    },
-                    {
-                        title: 'Donald Trume',
-                    },
-                    {
-                        title: 'Supreme Court',
-                    }
-                ],
-            },
-            {
-                title: "Coronavirus",
-                topics: [{
-                        title: 'Coronavirus',
-                    },
-                    {
-                        title: 'Vaccine',
-                    },
-                    {
-                        title: 'Australia',
-                    },
-                    {
-                        title: 'New Zealand',
-                    },
-                    {
-                        title: 'Melbourne',
-                    },
-                ],
-            },
-            {
-                title: "World Events",
-                topics: [{
-                        title: 'Coronavirus',
-                    },
-                    {
-                        title: 'U.S. Election',
-                    },
-                    {
-                        title: 'Californian Bushfires',
-                    },
-                    {
-                        title: 'New Zealand',
-                    },
-                    {
-                        title: 'Brexit',
-                    },
-                ],
-            }
-        ],
 
     }),
 
@@ -108,19 +54,15 @@ export default {
             'previousTopic',
             'closeTopic',
             'emptySelected',
-            'setSelected'
+            'setSelected',
+            'saveTrend'
         ]),
         open(title) {
             this.popup = true
             this.openTopic(title)
         },
-        viewTrends(topics) {
-
-            this.emptySelected()
-            var i
-            for (i = 0; i < topics.length; i++) {
-                this.addSelected(topics[i].title)
-            }
+        viewTrends(selection) {
+            this.setSelected(selection)
             this.$router.push({
                 name: 'trends'
             })
@@ -128,11 +70,7 @@ export default {
     },
     computed: {
         ...mapState(['popup', 'popups', 'selected', 'current_topic']),
-        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected']),
-        getSaved() {
-            // This will actually query the db to get the top 5 related topics to the current selection, however for now this is simply hardcoded
-            return this.saved
-        }
+        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved', 'getRelated']),
     },
 }
 </script>

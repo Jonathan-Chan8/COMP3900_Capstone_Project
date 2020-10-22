@@ -8,8 +8,23 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 	state: {
 		current_topic: '',
+		saved: [{
+				title: "U.S. Politics",
+				topics: ['Joe Biden', 'U.S. Election', 'Donald Trump', 'Supreme Court'],
+			},
+			{
+				title: "Coronavirus",
+				topics: ['Coronavirus', 'Vaccine', 'Australia', 'New Zealand', 'Melbourne'],
+			},
+			{
+				title: "World Events",
+				topics: ['Coronavirus', 'U.S. Election', 'Californian Bushfires', 'New Zealand', 'Brexit'],
+			}],
 		popups: [],
-		selected: []
+		selected: [],
+		related: ['Scott Morrison', 'Iran', 'Brexit', 'Vaccine', 'ACT']
+
+		
 	},
 
 	mutations: {
@@ -41,12 +56,16 @@ export default new Vuex.Store({
 		emptySelected(state) {
 			state.selected = []
 		},
-		setSelected(state, topics) {
-			state.emptySelected()
-			var i
-			for (i = 0; i < topics.length; i++) {
-				state.addSelected(topics[i])
-			}
+
+		setSelected(state, selection) {
+			state.selected = selection
+		},
+		
+		saveTrend(state, name) {
+			state.saved.push({
+				title: name,
+				topics: state.selected
+			})
 		}
 	},
 
@@ -77,8 +96,17 @@ export default new Vuex.Store({
 			return state.selected
 		},
 
+		getRelated: state => {
+			// This will return the related topics based on the current topic (for popups) or selected topics (for trends)
+			return state.related
+		},
+
 		getPopups: state => {
 			return state.popups
+		},
+
+		getSaved: state => {
+			return state.saved
 		}
 
 	}

@@ -1,5 +1,5 @@
 <template>
-<v-dialog d-flex hide-overlay v-model="show" max-width="1000px" max-height="500px">
+<v-dialog d-flex elevation="0" v-model="show" max-width="1000px" max-height="500px">
 
     <v-card class="flex-wrap text-justify justify-space-between">
         <v-card-title class="headline"> {{ current_topic }} </v-card-title>
