@@ -4,7 +4,7 @@
     <v-container fluid>
         <v-row>
             <v-list two-line width=100% rounded>
-                <v-list-item flat class="flex-wrap text-justify justify-space-between" v-for="config in saved" :key="config" depressed hover @click.stop="viewTrends(config.topics)">
+                <v-list-item flat class="flex-wrap text-justify justify-space-between" v-for="config in getSaved" :key="config" depressed hover @click.stop="viewTrends(config.topics)">
                     <v-col>
                         <v-list-item-title class="headline" v-text="config.title"> </v-list-item-title>
                         <v-card-actions>
@@ -129,6 +129,10 @@ export default {
     computed: {
         ...mapState(['popup', 'popups', 'selected', 'current_topic']),
         ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected']),
+        getSaved() {
+            // This will actually query the db to get the top 5 related topics to the current selection, however for now this is simply hardcoded
+            return this.saved
+        }
     },
 }
 </script>

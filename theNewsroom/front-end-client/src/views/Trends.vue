@@ -47,6 +47,7 @@
                             </v-list-item-group>
                         </v-list-group>
                     </v-list>
+
                     <v-list flat rounded dense>
                         <v-list-group color="none">
                             <template v-slot:activator>
@@ -65,13 +66,30 @@
                             </v-list-item-group>
                         </v-list-group>
                     </v-list>
-                    <v-card-actions>
 
-                        <v-btn rounded depressed width=49% @click='saveTrend'>Save Trend</v-btn>
-                        <v-btn rounded depressed width=49% @click='selectTrend'>Select Trend</v-btn>
+                    <template v-if="!$auth.loading">
+                        <template v-if="$auth.isAuthenticated">
+                            <v-list flat rounded dense>
+                                <v-list-group color="none">
+                                    <template v-slot:activator>
+                                        <v-list-item-content>
+                                            <v-list-item-title class='font-weight-light list-title'>Saved Trends</v-list-item-title>
+                                        </v-list-item-content>
+                                    </template>
+                                    <v-list-item-group color="none">
+                                        <v-list-item class='item' v-for="config in getSaved" :key="config" @click="viewTrends(config.topics)">
 
-                    </v-card-actions>
-                    <Saved v-model="saved" />
+                                            <v-list-item-title v-text=" config.title">
+                                            </v-list-item-title>
+
+                                        </v-list-item>
+                                    </v-list-item-group>
+                                </v-list-group>
+                            </v-list>
+
+                            <v-btn width=95% rounded depressed @click='saveTrend'>Save Trend Selection</v-btn>
+                        </template>
+                    </template>
 
                 </v-card>
             </v-flex>
@@ -81,7 +99,7 @@
                 <!-- This is where the trends graph will go -->
 
             </v-flex>
-            <Popup v-model="popup" />
+            <Popup v-model=" popup" />
             <v-col />
         </v-layout>
     </template>
@@ -98,13 +116,13 @@ import {
 } from 'vuex';
 
 export default {
-    name: "Topics",
+    name: "Trends",
     components: {
-        Popup
+        Popup,
     },
 
     data: () => ({
-        saved: false,
+        select: false,
         popup: false,
         start_date: '',
         end_date: '',
@@ -156,6 +174,61 @@ export default {
 
             }
         ],
+        saved: [{
+                title: "U.S. Politics",
+                topics: [{
+                        title: 'Joe Biden',
+                    },
+                    {
+                        title: 'U.S. Election',
+                    },
+                    {
+                        title: 'Donald Trume',
+                    },
+                    {
+                        title: 'Supreme Court',
+                    }
+                ],
+            },
+            {
+                title: "Coronavirus",
+                topics: [{
+                        title: 'Coronavirus',
+                    },
+                    {
+                        title: 'Vaccine',
+                    },
+                    {
+                        title: 'Australia',
+                    },
+                    {
+                        title: 'New Zealand',
+                    },
+                    {
+                        title: 'Melbourne',
+                    },
+                ],
+            },
+            {
+                title: "World Events",
+                topics: [{
+                        title: 'Coronavirus',
+                    },
+                    {
+                        title: 'U.S. Election',
+                    },
+                    {
+                        title: 'Californian Bushfires',
+                    },
+                    {
+                        title: 'New Zealand',
+                    },
+                    {
+                        title: 'Brexit',
+                    },
+                ],
+            }
+        ],
     }),
 
     methods: {
@@ -173,13 +246,11 @@ export default {
             'openTopic',
             'nextTopic',
             'previousTopic',
-            'closeTopic'
+            'closeTopic',
+            'emptySelected',
+            'setSelected'
         ]),
         open(topic) {
-            this.popup = true
-            this.openTopic(topic)
-        },
-        selectTrend(topic) {
             this.popup = true
             this.openTopic(topic)
         },
@@ -194,6 +265,14 @@ export default {
             }
             this.dates = [this.start_date, this.end_date]
             // this.db = queryDB()
+        },
+        viewTrends(topics) {
+
+            this.emptySelected()
+            var i
+            for (i = 0; i < topics.length; i++) {
+                this.addSelected(topics[i].title)
+            }
         }
     },
     computed: {
@@ -210,6 +289,10 @@ export default {
         getRelated() {
             // This will actually query the db to get the top 5 related topics to the current selection, however for now this is simply hardcoded
             return this.related
+        },
+        getSaved() {
+            // This will actually query the db to get the top 5 related topics to the current selection, however for now this is simply hardcoded
+            return this.saved
         }
     },
 }
