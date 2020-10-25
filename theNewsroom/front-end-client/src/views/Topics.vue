@@ -37,8 +37,9 @@
                 </v-card>
 
                 <v-card flat tile width='80%'>
-                    <HelpTopics />
+                    <HelpTopics/>
                 </v-card>
+
                 
 
             </v-flex>
@@ -88,6 +89,7 @@ export default {
         start_date: '',
         end_date: '',
         dates: [],
+        help: false,
 
         menu: false,
         search: '',

@@ -1,9 +1,9 @@
-
 <template>
   <v-row class="flex-wrap text-justify justify-space-between">
     <v-btn
         icon
       @click="overlay = !overlay"
+      class="ml-1 mt-3"
     >
       <v-icon>mdi-help-circle-outline</v-icon> <!--<mdiHelpCircle/>-->
     </v-btn>
@@ -12,7 +12,7 @@
       :opacity="0.3"
       :value="overlay"
     >
-        <v-card light>
+        <v-card light class="flex-wrap text-justify justify-space-between" v-model="menu" :close-on-content-click="false">
             <v-card-title>Need Help?</v-card-title>
             <v-card-text>{{ helpMessage }}</v-card-text>
             <v-card-actions>
