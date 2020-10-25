@@ -18,7 +18,7 @@
                                 </v-row>
                             </v-col>
 
-                            <v-col md=3 sm=3 xs=3>
+                            <v-col md=2 sm=3 xs=3>
 
                                 <v-btn text rounded width=100% depressed @click.stop="editTrend(config)">Edit</v-btn>
                                 <v-btn text rounded width=100% depressed @click.stop="deleteTrend(config)">Delete</v-btn>
