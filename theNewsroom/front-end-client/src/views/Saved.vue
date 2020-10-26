@@ -14,53 +14,33 @@
                                     <v-btn rounded width=100% depressed @click.stop="open(topic)" v-text='topic' />
                                 </v-col>
                             </v-row>
-
                             <v-row class="edit" dense>
+                                <v-spacer />
+
                                 <v-col>
-                                    <template>
-                                        <v-dialog v-model="dialog" max-width="600px" max-height="100px">
-                                            <template v-slot:activator="{ on, attrs }">
-                                                <v-btn text rounded width=100% depressed v-bind="attrs" v-on="on">
-                                                    Edit
-                                                </v-btn>
-                                            </template>
-                                            <v-card>
-                                                <v-card-title class="headline">
-                                                    Edit Trend
-                                                </v-card-title>
-                                                <v-card-text>
-                                                    <v-text-field v-model='name' :rules="rules" placeholder="config.title" counter="20" required />
-                                                </v-card-text>
-                                                <v-card-actions>
-                                                    <v-spacer />
-                                                    <v-btn depressed rounded @click="dialog = false">
-                                                        Close
-                                                    </v-btn>
-                                                    <v-btn depressed rounded @click="editTrend()">
-                                                        Save
-                                                    </v-btn>
-                                                </v-card-actions>
-                                            </v-card>
-                                        </v-dialog>
-                                    </template>
+                                    <v-btn text rounded width=100% depressed @click.stop="edit=true">
+                                        Edit
+                                    </v-btn>
                                     <v-btn text rounded width=100% depressed @click.stop="deleteTrend()">
                                         Delete
                                     </v-btn>
                                 </v-col>
                             </v-row>
-
                         </v-card-actions>
                     </v-col>
                 </v-list-item>
             </v-list>
         </v-row>
         <Popup v-model="popup" />
+        <EditTrend v-model="edit" />
+
     </v-container>
 </div>
 </template>
 
 <script>
 import Popup from "../components/common/Popup";
+import EditTrend from "../components/common/EditTrend";
 
 import {
     mapGetters,
@@ -71,12 +51,14 @@ import {
 export default {
     name: "Topics",
     components: {
-        Popup
+        Popup,
+        EditTrend
     },
 
     data: () => ({
         dialog: false,
         popup: false,
+        edit: false,
     }),
 
     methods: {
@@ -94,6 +76,10 @@ export default {
         open(title) {
             this.popup = true
             this.openTopic(title)
+        },
+        edit() {
+            this.edit = true
+            // this.openTopic(title)
         },
         viewTrends(selection) {
             this.setSelected(selection)

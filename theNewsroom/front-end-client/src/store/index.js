@@ -69,7 +69,8 @@ export default new Vuex.Store({
 				title: name,
 				topics: trend
 			})
-		}
+		},
+		
 	},
 
 	actions: {

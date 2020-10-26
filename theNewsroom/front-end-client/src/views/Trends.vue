@@ -84,36 +84,15 @@
                                     </v-list-item>
                                 </v-list-item-group>
                             </v-list-group>
-                            <v-spacer />
-                            <template>
-                                <v-row dense justify="center">
-                                    <v-dialog v-model="dialog" max-width="600px" max-height="100px">
-                                        <template v-slot:activator="{ on, attrs }">
-                                            <v-btn small rounded width=46% depressed v-bind="attrs" v-on="on">Save</v-btn>
-                                        </template>
-                                        <v-card>
-                                            <v-card-title>
-                                                <span class="headline">Save Trend Selection</span>
-                                            </v-card-title>
-                                            <v-card-text>
-                                                <v-text-field v-model='name' :rules="rules" placeholder="Enter a name for your selection" counter="20" required />
-                                            </v-card-text>
-                                            <v-card-actions>
-                                                <v-spacer />
-                                                <v-btn depressed rounded @click="dialog = false">
-                                                    Close
-                                                </v-btn>
-                                                <v-btn depressed rounded @click="saveTrendSelection(name)">
-                                                    Save
-                                                </v-btn>
-                                            </v-card-actions>
-                                        </v-card>
-                                    </v-dialog>
-                                    <v-btn small rounded width=46% depressed @click="emptySelected()">
-                                        Clear
-                                    </v-btn>
-                                </v-row>
-                            </template>
+
+                            <v-row dense justify="center">
+                                <v-btn small rounded width=49% depressed @click="save=true">
+                                    Save
+                                </v-btn>
+                                <v-btn small rounded width=49% depressed @click="emptySelected()">
+                                    Clear
+                                </v-btn>
+                            </v-row>
                         </template>
                     </v-list>
                 </v-card>
@@ -132,7 +111,9 @@
             </v-flex>
 
             <!-- Same as on Home and Topics, this is only shown when popup = true and is closed when popup = false -->
-            <Popup v-model=" popup" />
+            <Popup v-model="popup" />
+            <SaveTrend v-model="save" />
+
             <v-col />
         </v-layout>
     </template>
@@ -141,6 +122,7 @@
 
 <script>
 import Popup from "../components/common/Popup";
+import SaveTrend from "../components/common/SaveTrend";
 
 import {
     mapGetters,
@@ -152,11 +134,12 @@ export default {
     name: "Trends",
     components: {
         Popup,
+        SaveTrend
     },
 
     data: () => ({
 
-        dialog: false,
+        save: false,
         popup: false,
         start_date: '',
         end_date: '',
@@ -164,13 +147,7 @@ export default {
 
         menu: false,
         search: '',
-        name: '',
-        rules: [
-            () => !!name || 'This field is required',
-            () => !!name && name.length > 3 || 'Name must have more than 3 characters',
-            () => !!name && name.length <= 25 || 'Name must be less than 20 characters',
-            () => !!name && this.selected.length > 0 || 'Please select a topic first',
-        ]
+
     }),
 
     methods: {
