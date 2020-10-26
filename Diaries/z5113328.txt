@@ -31,6 +31,12 @@ Week 4:
     -   This week involved mainly planning for how to approach the first progressive demo.
     -   I have undertaken the task of building a sample front end using Vue.js and Vuetify, so that when the backend components and the sample database are ready we can visualise ti immediately. So far, I have had success in building a homepage and a navigaiton bar. Learning to work with vue alone took a lot of time, and ensuring that all the packages and components and compatible was an arduous task. 
 
+Week 5:
+    -   This week, during our second sprint, we began working on improving the front and backend. Jono and Lance worked on building our database and the graphQL API, whilst James, Ronan and I focused on  improving the front end implementation. 
+
+Week 6:
+    -   This week, I focused on ensuring that we have a state system present in the application to retain important information, such as a user's selected topics. I also tried to structure the application so that, when the back end is ready, we can simply replace hardcoded data with query functions to retrive the appropriate information. The front end now has almost all functionality complete, excluding that which is reliant on the database (eg. we have filters for searching through topics, but at the moment these filters simply store themselves in variables to be used in queries).
+
 
 
 
