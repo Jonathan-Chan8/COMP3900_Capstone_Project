@@ -7,6 +7,7 @@ import Register from '../views/Register';
 import Saved from '../views/Saved';
 import Profile from '../views/Profile';
 import Credits from '../views/Credits';
+import Articles from '../views/Articles';
 
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -81,6 +82,11 @@ export default new Router({
           component: Profile,
           beforeEnter: authGuard
   
+        },
+        {
+          path: "/articles",
+          name: "articles",
+          component: Articles
         }
     ]
   })

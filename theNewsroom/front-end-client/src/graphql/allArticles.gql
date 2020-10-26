@@ -1,0 +1,16 @@
+# Probs want to include some pagination
+
+query {
+	allArticleinfos {
+    nodes {
+      articleId
+      webTitle
+      publicationDate
+      apiGivenCategory
+      articleType
+      articlecontentByContentId {
+        content
+      }
+    }
+  }
+}
