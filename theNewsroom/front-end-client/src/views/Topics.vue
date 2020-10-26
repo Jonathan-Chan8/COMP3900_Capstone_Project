@@ -153,6 +153,18 @@ export default {
     }),
 
     methods: {
+        ...mapMutations([
+            'addSelected',
+            'removeSelected',
+            'openTopic',
+            'nextTopic',
+            'previousTopic',
+            'closeTopic',
+            'emptySelected',
+            'setSelected',
+            'saveTrend',
+            'deleteTrend',
+        ]),
         formatDate(date) {
             let month = `${date.getMonth() + 1}`;
             let day = `${date.getDate()}`;
@@ -161,14 +173,6 @@ export default {
             if (day.length < 2) day = `0${day}`;
             return [year, month, day].join('-');
         },
-        ...mapMutations([
-            'addSelected',
-            'removeSelected',
-            'openTopic',
-            'nextTopic',
-            'previousTopic',
-            'closeTopic'
-        ]),
         rowClicked(row) {
             this.open(row.topic)
             console.log(row);
@@ -190,6 +194,9 @@ export default {
         }
     },
     computed: {
+        ...mapState(['current_topic', 'saved', 'popups', 'selected', 'related']),
+        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved', 'getRelated', 'getPopups']),
+
         todaysDate() {
             const today = new Date();
             return this.formatDate(today);
@@ -197,8 +204,6 @@ export default {
         dateRange() {
             return this.dates.join(' to ')
         },
-        ...mapState(['popup', 'popups', 'selected', 'current_topic']),
-        ...mapGetters(['isRoot', 'numSelected', 'isSelected']),
     },
 }
 </script>

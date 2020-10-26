@@ -9,10 +9,11 @@
             Related Topics
         </v-card-title>
         <v-card-actions>
+
             <v-row dense>
-                <!-- We need to make sure we limit the number of characters shown -->
-                <v-col v-for="topic in topics" :key="topic.id">
-                    <v-btn width=100% depressed @click="nextTopic(topic.title)" v-text='topic.title' />'
+                <!-- We would need ot make sure we limit the number of characters shown -->
+                <v-col v-for="topic in topics" :key="topic" md=6>
+                    <v-btn width=100% depressed @click.stop="nextTopic(topic)" v-text='topic' />
                 </v-col>
             </v-row>
         </v-card-actions>
@@ -23,8 +24,8 @@
         <v-card-actions>
             <v-row dense>
                 <!-- We need to make sure we limit the number of characters shown -->
-                <v-col v-for="article in articles" :key="article.id" md=6>
-                    <v-btn small width=100% depressed v-text='article.title' />
+                <v-col v-for="article in articles" :key="article" md=6>
+                    <v-btn small width=100% depressed v-text='article' />
                 </v-col>
             </v-row>
         </v-card-actions>
@@ -97,57 +98,12 @@ export default {
     },
 
     data: () => ({
-        topics: [{
-                id: '1',
-                title: 'Coronavirus',
-            },
-            {
-                id: '2',
-                title: 'U.S. Election',
-            },
-            {
-                id: '3',
-                title: 'Californian Bushfires',
-            },
-            {
-                id: '4',
-                title: 'New Zealand',
-            },
-            {
-                id: '5',
-                title: 'Melbourne',
-            }, {
-                id: '6',
-                title: 'Scott Morrison',
-            },
+        topics: ['Coronavirus', 'U.S. Election', 'Californian Bushfires', 'New Zealand', 'Melbourne', 'Scott Morrison',
+
         ],
 
-        articles: [{
-                id: '1',
-                title: 'Victoria records 2 new cases'
+        articles: ['Victoria records 2 new cases', 'Oxford Vaccine passes clinical trial', 'Joe Biden leading polls', 'Victoria records 2 new cases', 'Oxford Vaccine passes clinical trial', 'Joe Biden leading polls'
 
-            },
-            {
-                id: '2',
-                title: 'Oxford Vaccine passes clinical trial'
-            },
-            {
-                id: '3',
-                title: 'Joe Biden leading polls'
-            },
-            {
-                id: '1',
-                title: 'Victoria records 2 new cases'
-
-            },
-            {
-                id: '2',
-                title: 'Oxford Vaccine passes clinical trial'
-            },
-            {
-                id: '3',
-                title: 'Joe Biden leading polls'
-            }
         ]
 
     }),

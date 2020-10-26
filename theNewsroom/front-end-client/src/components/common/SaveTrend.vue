@@ -5,11 +5,11 @@
             <span class="headline">Save Trend Selection</span>
         </v-card-title>
         <v-card-text>
-            <v-text-field v-model='name' :rules="[
-                () => !!name || 'This field is required',
-                () => !!name && this.selected.length > 0 || 'Please select a topic first', 
-                () => !!name && name.length > 3 || 'Name must have more than 3 characters',
-                () => !!name && name.length <= 25 || 'Name must be less than 20 characters', 
+            <v-text-field v-model='title' :rules="[
+                () => !!title || 'This field is required',
+                () => !!title && this.selected.length > 0 || 'Please select a topic first', 
+                () => !!title && title.length > 3 || 'Name must have more than 3 characters',
+                () => !!title && title.length <= 25 || 'Name must be less than 20 characters', 
                 ]" placeholder="Enter a name for your selection" counter="20" />
         </v-card-text>
         <v-card-actions>
@@ -17,7 +17,7 @@
             <v-btn depressed rounded @click.stop="close">
                 Close
             </v-btn>
-            <v-btn depressed rounded @click="saveTrendSelection(name)">
+            <v-btn depressed rounded @click="saveTrendSelection(title)">
                 Save
             </v-btn>
         </v-card-actions>
@@ -65,20 +65,16 @@ export default {
         close() {
             this.show = false
         },
-        saveTrendSelection(name) {
-            if (this.name.length > 3 && this.name.length <= 20 && this.selected.length > 0) {
-                this.dialog = false
-                this.saveTrend(name)
+        saveTrendSelection(title) {
+            if (this.title.length > 3 && this.title.length <= 20 && this.selected.length > 0) {
+                this.saveTrend(title)
+                this.close()
             }
-            this.close()
 
         }
     },
 
-    data: () => ({
-        name: '',
-
-    }),
+    data: () => ({}),
 
 }
 </script>

@@ -13,7 +13,7 @@
 
                 <!-- For now this filters the datatable, really we want it to produce a popup with possible matches on 'enter', and selecting a match will produce the corresponding topic popup. This field ought to be in the same position of the page on both Topics and Trends, to show continuity -->
                 <v-card flat tile width='100%'>
-                    <v-list ripple=false expand flat rounded dense>
+                    <v-list ripple=false expand flat rounded>
                         <!-- Search and calendar are subgroups in a the group Filters, allowing us to easily modify this entire list as a single element (same as on Topics) -->
                         <v-list-group value="true" color="none">
                             <template v-slot:activator>

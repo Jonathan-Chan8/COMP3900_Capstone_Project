@@ -16,12 +16,8 @@
                             </v-row>
                             <v-row class="edit" dense>
                                 <v-spacer />
-
                                 <v-col>
-                                    <v-btn text rounded width=100% depressed @click.stop="edit=true">
-                                        Edit
-                                    </v-btn>
-                                    <v-btn text rounded width=100% depressed @click.stop="deleteTrend()">
+                                    <v-btn outlined text rounded width=100% depressed @click.stop="deleteTrend(config)">
                                         Delete
                                     </v-btn>
                                 </v-col>
@@ -32,15 +28,30 @@
             </v-list>
         </v-row>
         <Popup v-model="popup" />
-        <EditTrend v-model="edit" />
 
     </v-container>
+
+    <v-text> Current Topic: {{ current_topic}} </v-text>
+    <v-spacer />
+    <v-text> Popup Stack: {{ getPopups}} </v-text>
+    <v-spacer />
+    <v-text> Selected Topics: {{ getSelected}} </v-text>
+    <v-spacer />
+    <v-text> Saved: {{ getSaved}} </v-text>
+    <v-spacer />
+    <v-text> Current Saved: {{ current_saved}} </v-text>
+    <v-spacer />
+
+    <v-text> Edit: {{editted}} </v-text>
+    <v-spacer />
+
+    <v-text> old: {{old}} </v-text>
+
 </div>
 </template>
 
 <script>
 import Popup from "../components/common/Popup";
-import EditTrend from "../components/common/EditTrend";
 
 import {
     mapGetters,
@@ -52,15 +63,20 @@ export default {
     name: "Topics",
     components: {
         Popup,
-        EditTrend
     },
 
     data: () => ({
+        trend: {
+            title: '',
+            topics: []
+        },
         dialog: false,
         popup: false,
-        edit: false,
     }),
-
+    computed: {
+        ...mapState(['current_topic', 'saved', 'popups', 'selected', 'related']),
+        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved', 'getRelated', 'getPopups']),
+    },
     methods: {
         ...mapMutations([
             'addSelected',
@@ -71,27 +87,21 @@ export default {
             'closeTopic',
             'emptySelected',
             'setSelected',
-            'saveTrend'
+            'saveTrend',
+            'deleteTrend',
         ]),
         open(title) {
             this.popup = true
             this.openTopic(title)
-        },
-        edit() {
-            this.edit = true
-            // this.openTopic(title)
         },
         viewTrends(selection) {
             this.setSelected(selection)
             this.$router.push({
                 name: 'trends'
             })
-        }
+        },
     },
-    computed: {
-        ...mapState(['popup', 'popups', 'selected', 'current_topic']),
-        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved', 'getRelated']),
-    },
+
 }
 </script>
 
