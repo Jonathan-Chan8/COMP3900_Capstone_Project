@@ -16,6 +16,7 @@ Vue.config.productionTip = false
 // Import the Auth0 configuration
 import { domain, clientId, audience } from "../auth_config.json"
 import { Auth0Plugin } from "./auth/"
+import { createProvider } from './plugins/vue-apollo'
 
 // Install the authentication plugin here
 Vue.use(Auth0Plugin, {
@@ -35,10 +36,9 @@ Vue.use(Auth0Plugin, {
 
 new Vue({
   el: '#app',
-  
-	store,
-	router,
+  store,
+  router,
   vuetify,
-  render: h => h(App),
-
+  apolloProvider: createProvider(),
+  render: h => h(App)
 })

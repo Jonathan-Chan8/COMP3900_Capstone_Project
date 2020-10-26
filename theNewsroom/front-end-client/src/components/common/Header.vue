@@ -112,6 +112,10 @@ export default {
                 icon: 'trends',
                 title: 'Trends',
                 route: '/trends'
+            },
+            {
+                title: 'Articles',
+                route: '/articles'
             }
         ]
 
