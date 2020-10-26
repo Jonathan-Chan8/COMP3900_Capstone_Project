@@ -8,22 +8,47 @@
                     <v-col d-flex>
                         <v-list-item-title class="headline" v-text="config.title" />
                         <v-card-actions>
-                            <v-col md=10 sm=10 xs=10>
-                                <v-row dense>
-                                    <!-- We would need ot make sure we limit the number of characters shown -->
-                                    <v-col v-for="topic in config.topics" :key="topic">
-                                        <v-btn rounded width=100% depressed @click.stop="open(topic)" v-text='topic' />
-                                    </v-col>
-                                </v-row>
-                            </v-col>
-                            <v-col md=2 sm=3 xs=3>
-                                <v-btn text rounded width=100% depressed @click.stop="editTrend(config)">
-                                    Edit
-                                </v-btn>
-                                <v-btn text rounded width=100% depressed @click.stop="deleteTrend(config)">
-                                    Delete
-                                </v-btn>
-                            </v-col>
+                            <v-row dense>
+                                <!-- We would need ot make sure we limit the number of characters shown -->
+                                <v-col v-for="topic in config.topics" :key="topic">
+                                    <v-btn rounded width=100% depressed @click.stop="open(topic)" v-text='topic' />
+                                </v-col>
+                            </v-row>
+
+                            <v-row class="edit" dense>
+                                <v-col>
+                                    <template>
+                                        <v-dialog v-model="dialog" max-width="600px" max-height="100px">
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <v-btn text rounded width=100% depressed v-bind="attrs" v-on="on">
+                                                    Edit
+                                                </v-btn>
+                                            </template>
+                                            <v-card>
+                                                <v-card-title class="headline">
+                                                    Edit Trend
+                                                </v-card-title>
+                                                <v-card-text>
+                                                    <v-text-field v-model='name' :rules="rules" placeholder="config.title" counter="20" required />
+                                                </v-card-text>
+                                                <v-card-actions>
+                                                    <v-spacer />
+                                                    <v-btn depressed rounded @click="dialog = false">
+                                                        Close
+                                                    </v-btn>
+                                                    <v-btn depressed rounded @click="editTrend()">
+                                                        Save
+                                                    </v-btn>
+                                                </v-card-actions>
+                                            </v-card>
+                                        </v-dialog>
+                                    </template>
+                                    <v-btn text rounded width=100% depressed @click.stop="deleteTrend()">
+                                        Delete
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+
                         </v-card-actions>
                     </v-col>
                 </v-list-item>
@@ -50,6 +75,7 @@ export default {
     },
 
     data: () => ({
+        dialog: false,
         popup: false,
     }),
 
@@ -89,6 +115,10 @@ td {
 }
 
 .saved {
-    padding-top: 20px;
+    padding-top: 20px
+}
+
+.edit {
+    max-width: 150px;
 }
 </style>
