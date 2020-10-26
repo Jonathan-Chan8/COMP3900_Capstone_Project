@@ -38,9 +38,10 @@ export default new Vuex.Store({
 		},
 		openTopic(state, topic) {
 			state.current_topic = topic
-
 		},
-
+		// openArticle(state, article) {
+		// 	state.current_article = article
+		// },
 		nextTopic(state, topic) {
 			state.popups.push(state.current_topic)
 			state.current_topic = topic

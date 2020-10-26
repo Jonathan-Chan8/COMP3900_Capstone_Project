@@ -1,73 +1,67 @@
 <template>
 <div class="topics">
     <h1 class="body grey--text text-center"></h1>
-
     <template>
         <v-spacer />
-
         <v-layout wrap>
             <v-spacer />
-
             <v-flex xs10 md3>
                 <!-- Really, these filters wont actually filter the datatable, but rather will be used as input to our db query, thus changing the reuslts of the topics list returned by the database -->
 
                 <!-- For now this filters the datatable, really we want it to produce a popup with possible matches on 'enter', and selecting a match will produce the corresponding topic popup. This field ought to be in the same position of the page on both Topics and Trends, to show continuity -->
+
                 <v-card flat tile width='100%'>
                     <v-list flat rounded dense>
+                        <!-- Search, calendar and media are subgroups in a the group Filters, allowing us to easily modify this entire list as a single element -->
                         <v-list-group value="true" color="none">
                             <template v-slot:activator>
                                 <v-list-item-content>
                                     <v-list-item-title class='font-weight-light list-title'>Filters</v-list-item-title>
                                 </v-list-item-content>
                             </template>
+                            <!-- Search -->
                             <v-list-item>
                                 <v-text-field dense rounded filled v-model="search" append-icon="mdi-magnify" label="Search for a topic" single-line hide-details />
-
                             </v-list-item>
-
+                            <!-- Calendar (a menu that opens a calendar, the user selects a date range and the date that occurs first is automatically saved as the starting date (to be used in our queries)-->
                             <v-list-item>
-
                                 <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date" transition="scale-transition" offset-y min-width="290px">
                                     <template v-slot:activator="{ on, attrs }">
-                                        <v-text-field dense rounded filled v-model="dateRange" label="Select time period" append-icon="mdi-calendar" single-line hide-details readonly v-bind="attrs" v-on="on"></v-text-field>
+                                        <v-text-field dense rounded filled v-model="dateRange" label="Select time period" append-icon="mdi-calendar" single-line hide-details readonly v-bind="attrs" v-on="on" />
                                     </template>
                                     <v-date-picker v-model="dates" :max='todaysDate' range no-title scrollable>
-                                        <v-spacer></v-spacer>
+                                        <v-spacer />
                                         <v-btn text color="primary" @click="saveDates">
                                             OK
                                         </v-btn>
                                     </v-date-picker>
                                 </v-menu>
                             </v-list-item>
-
+                            <!-- Media selection -->
                             <v-list-item>
-
-                                <v-text-field dense rounded filled v-model="media" append-icon="mdi-book-open-variant" label="Filter by media outlet" single-line hide-details></v-text-field>
+                                <v-text-field dense rounded filled v-model="media" append-icon="mdi-book-open-variant" label="Filter by media outlet" single-line hide-details />
                             </v-list-item>
+
                         </v-list-group>
                     </v-list>
-
                 </v-card>
-
                 <v-spacer />
             </v-flex>
             <v-spacer />
 
             <v-flex align-center xs12 md6>
-
+                <!-- At the moment, topics are shown in a data table with rows that contain a topic's name and number of articles. Datatables allow us with a lot of options for sorting and presenting data, and are more scalable for different screen resolutions than other data presentation methods -->
                 <v-data-table :mobile-breakpoint="0" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :headers="headers" :items="topics" :search="search">
-
                     <template v-slot:item="{ item }">
-
                         <tr @click="rowClicked(item)">
                             <td>{{item.articles}}</td>
                             <td>{{item.topic}}</td>
                         </tr>
                     </template>
-
                 </v-data-table>
-
             </v-flex>
+
+            <!-- This is only ever opened when popup=true. Selecting a row will open the Popup component, and when the component is closed (by pressing close, or clicking off of the popup), that component emits a signal that sets popup=false, thus closing the popup -->
             <Popup v-model=" popup" />
             <v-col />
         </v-layout>
@@ -98,9 +92,10 @@ export default {
 
         menu: false,
         search: '',
-        medias: ['ABC', 'The Guardian', 'The New York Times'],
+        media: '',
         sortBy: 'articles',
         sortDesc: true,
+
         headers: [{
                 text: '# Articles',
                 value: 'articles',

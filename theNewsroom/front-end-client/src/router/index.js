@@ -2,8 +2,6 @@ import Home from '../views/Home';
 import NotFound from '../views/NotFound';
 import Topics from '../views/Topics';
 import Trends from '../views/Trends';
-import Login from '../views/Login';
-import Register from '../views/Register';
 import Saved from '../views/Saved';
 import Profile from '../views/Profile';
 import Credits from '../views/Credits';
@@ -35,18 +33,6 @@ export default new Router({
             path: '/',
             name: 'home',
             component: Home
-        },
-        {
-            path: '/login',
-            name: 'login',
-            component: Login,
-  
-        },
-        {
-            path: '/register',
-            name: 'register',
-            component: Register,
-  
         },
         {
             path: '/topics',

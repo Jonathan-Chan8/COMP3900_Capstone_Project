@@ -2,40 +2,48 @@
 <v-dialog d-flex elevation="0" v-model="show" max-width="1000px" max-height="500px">
 
     <v-card class="flex-wrap text-justify justify-space-between">
-        <v-card-title class="headline"> {{ current_topic }} </v-card-title>
+        <v-card-title class="headline" v-text='current_topic' />
         <v-divider />
 
-        <v-card-title class="subheading"> Related Topics </v-card-title>
+        <v-card-title class="subheading">
+            Related Topics
+        </v-card-title>
         <v-card-actions>
             <v-row dense>
-                <!-- we would need ot make sure we limit the number of characters shown -->
+                <!-- We need to make sure we limit the number of characters shown -->
                 <v-col v-for="topic in topics" :key="topic.id">
-                    <v-btn width=100% depressed @click="nextTopic(topic.title)">{{ topic.title }}</v-btn>
+                    <v-btn width=100% depressed @click="nextTopic(topic.title)" v-text='topic.title' />'
                 </v-col>
             </v-row>
         </v-card-actions>
-
         <v-divider />
-
-        <v-card-title class="subheading"> Top Articles </v-card-title>
+        <v-card-title class="subheading">
+            Top Articles
+        </v-card-title>
         <v-card-actions>
             <v-row dense>
-                <!-- we would need ot make sure we limit the number of characters shown -->
+                <!-- We need to make sure we limit the number of characters shown -->
                 <v-col v-for="article in articles" :key="article.id" md=6>
-                    <v-btn small width=100% depressed>{{ article.title }}</v-btn>
+                    <v-btn small width=100% depressed v-text='article.title' />
                 </v-col>
             </v-row>
         </v-card-actions>
 
         <v-divider />
         <v-card-actions>
-            <v-btn v-if='isSelected' depressed @click='removeSelected(current_topic)'>Remove from Trends</v-btn>
-            <v-btn v-else depressed @click='addSelected(current_topic)'>Add to Trends</v-btn>
-
-            <v-spacer></v-spacer>
-
-            <v-btn v-if='!isRoot' depressed @click="previousTopic">Previous Topic</v-btn>
-            <v-btn depressed @click.stop="close">Close</v-btn>
+            <v-btn v-if='isSelected' depressed @click='removeSelected(current_topic)'>
+                Remove from Trends
+            </v-btn>
+            <v-btn v-else depressed @click='addSelected(current_topic)'>
+                Add to Trends
+            </v-btn>
+            <v-spacer />
+            <v-btn v-if='!isRoot' depressed @click="previousTopic">
+                Previous Topic
+            </v-btn>
+            <v-btn depressed @click.stop="close">
+                Close
+            </v-btn>
         </v-card-actions>
 
         <v-text> Current Topic: {{ current_topic}} </v-text>

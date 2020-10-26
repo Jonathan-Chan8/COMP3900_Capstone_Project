@@ -4,53 +4,46 @@
     <v-container fluid>
         <v-row>
             <!-- Login/Register/Saved -->
-            <template v-if="!$auth.loading">
-                <v-col cols='auto' md='6'>
-                    <!-- show login/register when user is not authenticated -->
-                    <v-card v-if="!$auth.isAuthenticated" class="flex-wrap text-justify justify-space-between" height="100%" hover>
-                        <v-card-title class="headline" v-text="unauth.title"></v-card-title>
-                        <v-card-text> {{ unauth.text }} </v-card-text>
-                        <v-card-actions>
-                            <v-btn depressed width=100% large @click="login">Log In / Register</v-btn>
-                        </v-card-actions>
+            <v-col cols='auto' md='6'>
+                <!-- Show login/register when user is not authenticated -->
+                <v-card v-if="!$auth.loading && !$auth.isAuthenticated" class="flex-wrap text-justify justify-space-between" height="100%" hover>
+                    <v-card-title class="headline" v-text="unauth.title" />
+                    <v-card-text v-text='unauth.text' />
+                    <v-card-actions>
+                        <v-btn depressed width=100% large @click="login">
+                            Log In / Register
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
 
-                    </v-card>
-
-                    <!-- show saved/logout when user is authenticated -->
-                    <v-card v-else class="flex-wrap text-justify justify-space-between" height="100%" hover :to='saved.route'>
-                        <v-card-title class="headline" v-text="saved.title"></v-card-title>
-                        <v-card-text> {{ saved.text }} </v-card-text>
-                    </v-card>
-
-                </v-col>
-            </template>
+                <!-- show saved/logout when user is authenticated -->
+                <v-card v-else class="flex-wrap text-justify justify-space-between" height="100%" hover :to='saved.route'>
+                    <v-card-title class="headline" v-text="saved.title" />
+                    <v-card-text v-text='saved.text' />
+                </v-card>
+            </v-col>
 
             <!-- Topic of the Day -->
             <v-col cols='auto' md='6'>
                 <v-card class="flex-wrap text-justify justify-space-between" height="100%" hover @click="open(totd.topic)">
-
-                    <v-card-title class="headline" v-text="totd.title"></v-card-title>
-                    <v-card-text> {{ totd.text }} </v-card-text>
+                    <v-card-title class="headline" v-text="totd.title" />
+                    <v-card-text v-text='totd.text' />
                 </v-card>
                 <Popup v-model="popup" />
-
             </v-col>
 
             <!-- Topics/Trends -->
             <v-col v-for="card in cards" :key="card.id" cols='auto' md='6'>
                 <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover :to='card.route'>
-                    <v-card-title class="headline" v-text="card.title"></v-card-title>
-                    <v-card-text> {{ card.text }} </v-card-text>
+                    <v-card-title class="headline" v-text="card.title" />
+                    <v-card-text v-text='card.text' />
                 </v-card>
             </v-col>
-
         </v-row>
     </v-container>
 
 </div>
 </template>
-
-<!-- Need to figure out a way to only show the correct cards for if a user is signed in or not -->
 
 <script>
 import Popup from "../components/common/Popup";
@@ -131,18 +124,11 @@ export default {
                 returnTo: window.location.origin
             });
         },
-        // ...mapMutations([
-        //     'openTopic',
-        // ]),
         open(topic) {
             this.popup = true
             this.openTopic(topic)
         }
-        // No idea why the above wont work!
-        // open(topic) {
-        //     this.popup = true
-        //     this.$store.state.current_topic = topic
-        // }
+
     },
     computed: {
         ...mapState(['popup', 'popups', 'selected', 'current_topic']),
