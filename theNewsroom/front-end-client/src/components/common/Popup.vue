@@ -32,19 +32,34 @@
 
         <v-divider />
         <v-card-actions>
-            <v-btn v-if='isSelected' rounded depressed @click='removeSelected(current_topic)'>
-                Remove from Trends
-            </v-btn>
-            <v-btn v-else rounded depressed @click='addSelected(current_topic)'>
-                Add to Trends
-            </v-btn>
-            <v-spacer />
-            <v-btn v-if='!isRoot' rounded depressed @click="previousTopic">
-                Previous Topic
-            </v-btn>
-            <v-btn rounded depressed @click.stop="close">
-                Close
-            </v-btn>
+            <v-row dense>
+                <v-col>
+                    <v-btn width=100% v-if='isSelected' rounded depressed @click='removeSelected(current_topic)'>
+                        Remove from Trend
+                    </v-btn>
+
+                    <v-btn width=100% v-else rounded depressed @click='addSelected(current_topic)'>
+                        Add to Trend
+                    </v-btn>
+                </v-col>
+
+                <v-col>
+
+                    <v-btn width=100% v-if='!isRoot' rounded depressed @click="previousTopic">
+                        Previous
+                    </v-btn>
+                </v-col>
+
+                <v-col>
+
+                    <v-btn width=100% rounded depressed @click.stop="close">
+                        Close
+                    </v-btn>
+
+                </v-col>
+
+            </v-row>
+
         </v-card-actions>
 
         <v-text> Current Topic: {{ current_topic}} </v-text>

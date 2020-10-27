@@ -67,7 +67,7 @@ export default {
         },
         saveTrendSelection(title) {
             if (this.title.length > 3 && this.title.length <= 20 && this.selected.length > 0) {
-                this.saveTrend(title)
+                this.saveTrend(title.charAt(0).toUpperCase() + title.slice(1))
                 this.close()
             }
 
