@@ -5,9 +5,13 @@ Vue.use(Vuex)
 
 // const URI = whatever we use for db
 
+
+
 export default new Vuex.Store({
+	
 	state: {
 		current_topic: '',
+
 		saved: [{
 				title: "U.S. Politics",
 				topics: ['Joe Biden', 'U.S. Election', 'Donald Trump', 'Supreme Court'],
@@ -70,7 +74,12 @@ export default new Vuex.Store({
 				topics: trend
 			})
 		},
-		
+
+		deleteTrend(state, trend) {
+			let index = state.saved.findIndex(item => item == trend)
+			state.saved.splice(index, 1)
+		},
+	
 	},
 
 	actions: {
@@ -109,7 +118,11 @@ export default new Vuex.Store({
 
 		getSaved: state => {
 			return state.saved
-		}
+		},
 
-	}
+	},
+	
 })
+
+
+
