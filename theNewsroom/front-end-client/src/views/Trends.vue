@@ -96,6 +96,10 @@
                         </template>
                     </v-list>
                 </v-card>
+
+                <v-card flat tile width='100%'>
+                    <HelpTrends/>
+                </v-card>
             </v-flex>
             <v-spacer />
 
@@ -123,6 +127,7 @@
 <script>
 import Popup from "../components/common/Popup";
 import SaveTrend from "../components/common/SaveTrend";
+import HelpTrends from "../components/common/HelpTrends";
 
 import {
     mapGetters,
@@ -134,7 +139,8 @@ export default {
     name: "Trends",
     components: {
         Popup,
-        SaveTrend
+        SaveTrend,
+        HelpTrends
     },
 
     data: () => ({

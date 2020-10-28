@@ -44,7 +44,12 @@
 
                         </v-list-group>
                     </v-list>
+                    
                 </v-card>
+                <v-card flat tile width='100%'>
+                    <HelpTopics/>
+                </v-card>
+                
                 <v-spacer />
             </v-flex>
             <v-spacer />
@@ -71,6 +76,7 @@
 
 <script>
 import Popup from "../components/common/Popup";
+import HelpTopics from "../components/common/HelpTopics";
 
 import {
     mapGetters,
@@ -81,7 +87,8 @@ import {
 export default {
     name: "Topics",
     components: {
-        Popup
+        Popup,
+        HelpTopics
     },
 
     data: () => ({
