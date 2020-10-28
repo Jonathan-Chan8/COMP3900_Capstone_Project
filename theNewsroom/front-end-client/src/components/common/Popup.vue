@@ -32,7 +32,6 @@
 
         <v-divider />
         <v-card-actions>
-
             <v-row dense>
                 <v-btn v-if='isSelected' rounded depressed @click='removeSelected(current_topic)'>
                     Remove
@@ -42,7 +41,6 @@
                     Add
                 </v-btn>
                 <v-spacer />
-
                 <v-btn v-if='!isRoot' rounded depressed @click="previousTopic">
                     Previous
                 </v-btn>

@@ -11,10 +11,11 @@
                 Need Help?
             </v-card-title>
             <v-card-text class="flex-wrap text-justify justify-space-between">
-                <p>The <b>navigation bar</b> at the top of the page can be used to access any part of the website.</p>
+                <p>The <b>Navigation Bar</b> at the top of the page can be used to access any part of the website.</p>
                 <p><b>Filters</b> is a drop down menu that can be used to search for specific topics, or change the time period of your <i>Trends</i> graph.</p>
                 <p><b>Selected Topics</b> provides a list of the topics being displayed on the graph. You can remove topics from the list with the remove button.</p>
                 <p><b>Related Topics</b> provides a range of topics most related to your current selection. You can add topics to the list with the add button.</p>
+                <p>You can view a <b>Topic</b> by selecting it from the any part of the page.</p>
                 <p><b>Saved Trends</b> will allow you to revisist saved selections, whilst selecting the <b>Save</b> button will save your current selection for later. This is only avaoiable for registered users, so remember to log in!</p>
                 <p>You can also <b>Clear</b> your selection at any time.
                 </p>
