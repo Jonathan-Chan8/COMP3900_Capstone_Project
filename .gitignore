@@ -12,6 +12,8 @@ auth_config.json
 # local env files
 .env.local
 .env.*.local
+.newsroom_env.local
+.newsroom_env.*.local
 
 # Log files
 npm-debug.log*

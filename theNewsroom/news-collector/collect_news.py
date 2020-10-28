@@ -29,7 +29,7 @@ class Guardian():
         
         self.name = "Guardian"
         self.id = 1
-        self.page_limit = 10
+        self.page_limit = 200
         self.url = 'https://content.guardianapis.com/search?'
         self.api_key_liam = '08efafef-c5c0-43c6-a00e-b67880b448b2'
         self.api_key_jono = '450f355e-ac29-4a67-88d0-b72275c1c8c8'
@@ -39,7 +39,8 @@ class Guardian():
                             ('publication_date'  , 'webPublicationDate'),
                             ('title'         , 'webTitle'),
                             ('web_content_url'   , 'webUrl'),
-                            ('media_outlet_id'   , 1      )
+                            ('media_outlet_id'   , 1      ),
+                            ('content_id'        ,  0      ) # 0 is a placeholder
                             ])
             
 #------------------------- Retrieve API Data -------------------------#
@@ -57,8 +58,8 @@ for API in APIs:
     
     params = {
         #'q'                 : 'trump',
-        'from-date'         :    "2018-10-01",
-        'to-date'           :    "2018-10-01",
+        'from-date'         :    "2019-10-01",
+        'to-date'           :    "2019-10-01",
         'api-key'           :API.api_key_liam,
         'page-size'         :  API.page_limit,     # 200 = max page size for Guardian
         'show-editors-picks':          'true',
@@ -74,41 +75,44 @@ for API in APIs:
     
     # Extract the article content (text) 
     article_content = []
+    article_topic = []
     for article in all_results:
         article_content.append(article['fields']['bodyText'])
+        article_topic.append(article['sectionName'])
+    
     
     # Convert webPublicationDate from unicode to datetime type
     if API.name == 'Guardian':
         for article in all_results:
             article['webPublicationDate'] = datetime.strptime(article['webPublicationDate'],'%Y-%m-%dT%H:%M:%SZ')
-            
-            
+
+
     # Remove unwanted attributes from all_results 
     for article in all_results:
         for info in list(article):
             if info not in API.HashMap.values():
                 del article[info]
-    
+
     # Enumerate the article_type attribute (required for thenewsroom_database)
     article_enum = {'type': 'Opinion'}  # PLACEHOLDER. NEEDS FIXING
     
     for article in all_results:
         article.update(article_enum)
-
+    
 #--------------  Convert API results into an SQL query ---------------#
-
+    
     # create a nested list of the articles
     articles = [list(x.values()) for x in all_results] 
+    
+    # Append the API id to each article 
     for article in articles:
         article.append(API.id)    
+           
+
+    # Create queries to be INSERT'ed into the postgres database
     
-        
-#%%------------------ Connect to thenewsroom_database ------------------#
-
-
-# postgreSQL INSERT strings  
-# NewsCollectorInfo.ArticleInfo Table
-    info_string = "INSERT INTO NewsCollectorInfo.Articles (%s)\nVALUES " % (
+    # Articles Table
+    info_string = "INSERT INTO NewsCollectorInfo.Articles (%s) VALUES " % (
          ', '.join(API.HashMap.keys()))   
     info_string += "("
     for x in range(len(API.HashMap)):
@@ -116,8 +120,13 @@ for API in APIs:
     info_string = info_string[:-1]
     info_string += ")"
     
-# NewsCollectorInfo.ArticleContent Table
+    # ArticleContent Table
     content_string = """INSERT INTO NewsCollectorInfo.ArticleContent (content) VALUES (%s)"""
+    
+    # Topics Table
+    topic_string = """INSERT INTO NewsCollectorInfo.Topics (name) VALUES (%s)"""
+
+#------------------ Connect to thenewsroom_database ------------------#
 
     
     print ('Connecting to thenewsroom_database')
@@ -147,14 +156,33 @@ for API in APIs:
     
         try:
             
-            # Execute ArticleContent insert
-            for content in article_content:
-                content_string = f"INSERT INTO NewsCollectorInfo.ArticleContent (content) VALUES ('{content}')"
-                cur.execute(content_string) 
-            
-            # Execute Articles insert
-            cur.executemany(info_string, articles)
-            
+            if len(articles) == len(article_content):
+                zip_tables = zip(articles, article_content, article_topic)
+               
+            # Insert each article into the appropiate tables
+            for article, content, topic in zip_tables:
+                
+                # insert article contents
+                cur.execute(content_string, (content,)) # Formatting: Needs to be a tuple (or list)
+                         
+                # retrieve content_id and append to article as a foreign key
+                cur.execute("SELECT MAX(id) FROM NewsCollectorInfo.ArticleContent")
+                content_id = cur.fetchone()
+                article.append(content_id)
+                
+                # insert article
+                cur.execute(info_string, article)
+                
+                # insert article topic 
+                cur.execute(topic_string, (topic,))
+                
+                # retrieve topic and article id (foreign keys) 
+                # and insert into topicofarticle table
+                cur.execute("SELECT MAX(T.id), MAX(a.id) FROM NewsCollectorInfo.Topics as T, NewsCollectorInfo.articles as a;")
+                foreign_keys = cur.fetchone()
+                topicofarticle_string = """INSERT INTO NewsCollectorInfo.topicofarticle (topic_id, article_id) VALUES (%s, %s)"""
+                cur.execute(topicofarticle_string, foreign_keys)
+                
             conn.commit()
     
             print ('INSERT SUCCESS' )
