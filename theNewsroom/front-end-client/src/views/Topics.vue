@@ -41,15 +41,17 @@
                             <v-list-item>
                                 <v-text-field dense rounded filled v-model="media" append-icon="mdi-book-open-variant" label="Filter by media outlet" single-line hide-details />
                             </v-list-item>
+                            <v-list-item>
+                                <v-spacer />
 
+                                <HelpTopics />
+                            </v-list-item>
                         </v-list-group>
+
                     </v-list>
-                    
+
                 </v-card>
-                <v-card flat tile width='100%'>
-                    <HelpTopics/>
-                </v-card>
-                
+
                 <v-spacer />
             </v-flex>
             <v-spacer />

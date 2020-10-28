@@ -84,21 +84,18 @@
                                     </v-list-item>
                                 </v-list-item-group>
                             </v-list-group>
-
-                            <v-row dense justify="center">
-                                <v-btn small rounded width=49% depressed @click="save=true">
-                                    Save
-                                </v-btn>
-                                <v-btn small rounded width=49% depressed @click="emptySelected()">
+                            <v-list-item>
+                                <v-spacer />
+                                <SaveTrend />
+                                <v-btn rounded depressed class="mt-3" @click="emptySelected()">
                                     Clear
                                 </v-btn>
-                            </v-row>
+                                <HelpTrends />
+
+                            </v-list-item>
+
                         </template>
                     </v-list>
-                </v-card>
-
-                <v-card flat tile width='100%'>
-                    <HelpTrends/>
                 </v-card>
             </v-flex>
             <v-spacer />
