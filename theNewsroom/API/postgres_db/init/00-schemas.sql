@@ -43,7 +43,7 @@ CREATE TABLE NewsCollectorInfo.Topics (
 CREATE TABLE NewsCollectorInfo.Articles (
 	id 					INT 			GENERATED ALWAYS AS IDENTITY,
 	created_at			TIMESTAMPTZ 	NOT NULL DEFAULT NOW(),
-	title 				VARCHAR(100)	NOT NULL, 
+	title 				VARCHAR(250)	NOT NULL, 
 	web_content_url		URL,
 	api_content_url		URL,
 	article_type 		TYPEOFARTICLE 	NOT NULL,
