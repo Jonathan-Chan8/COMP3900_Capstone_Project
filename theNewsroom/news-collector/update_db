@@ -5,4 +5,4 @@
 # This script uses pg_dump to update thenewsroom_database file at ../postgres_db/init/03-Guardian_Data.sql
 # This file (03-Guardian_Data.sql) is loaded into thenewsroom_database when 'docker-compose up' is run.
 
-pg_dump -h 127.0.0.1 -p 5432 -U postgres -a -t NewsCollectorInfo.ArticleInfo thenewsroom_database > ../API/postgres_db/init/03-Guardian_Data.sql
+pg_dump -h 127.0.0.1 -p 5432 -U postgres -a -t NewsCollectorInfo.Articles thenewsroom_database > ../API/postgres_db/init/03-Guardian_Data.sql

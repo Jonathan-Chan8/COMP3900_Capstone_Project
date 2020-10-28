@@ -30,3 +30,5 @@ yarn-error.log*
 
 #OSX 
 .DS_Store
+theNewsroom/front-end-client/package-lock.json
+theNewsroom/front-end-client/package-lock.json

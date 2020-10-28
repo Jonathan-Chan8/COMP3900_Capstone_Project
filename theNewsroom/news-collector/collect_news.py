@@ -28,16 +28,16 @@ class Guardian():
     def __init__(self):
         
         self.name = "Guardian"
-        self.id = 3
+        self.id = 1
         self.page_limit = 10
         self.url = 'https://content.guardianapis.com/search?'
         self.api_key_liam = '08efafef-c5c0-43c6-a00e-b67880b448b2'
         self.api_key_jono = '450f355e-ac29-4a67-88d0-b72275c1c8c8'
         self.HashMap = collections.OrderedDict([ 
                             ('article_type'      , 'type' ),   
-                            ('api_given_category', 'sectionName'),
+                            #('api_given_category', 'sectionName'),
                             ('publication_date'  , 'webPublicationDate'),
-                            ('web_title'         , 'webTitle'),
+                            ('title'         , 'webTitle'),
                             ('web_content_url'   , 'webUrl'),
                             ('media_outlet_id'   , 1      )
                             ])
@@ -108,7 +108,7 @@ for API in APIs:
 
 # postgreSQL INSERT strings  
 # NewsCollectorInfo.ArticleInfo Table
-    info_string = "INSERT INTO NewsCollectorInfo.ArticleInfo (%s)\nVALUES " % (
+    info_string = "INSERT INTO NewsCollectorInfo.Articles (%s)\nVALUES " % (
          ', '.join(API.HashMap.keys()))   
     info_string += "("
     for x in range(len(API.HashMap)):
@@ -152,7 +152,7 @@ for API in APIs:
                 content_string = f"INSERT INTO NewsCollectorInfo.ArticleContent (content) VALUES ('{content}')"
                 cur.execute(content_string) 
             
-            # Execute ArticleInfo insert
+            # Execute Articles insert
             cur.executemany(info_string, articles)
             
             conn.commit()
