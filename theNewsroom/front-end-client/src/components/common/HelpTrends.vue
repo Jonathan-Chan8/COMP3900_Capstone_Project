@@ -6,17 +6,19 @@
                 <v-icon>mdi-help-circle-outline</v-icon>
             </v-btn>
         </template>
-
         <v-card>
             <v-card-title class="headline">
                 Need Help?
             </v-card-title>
-
             <v-card-text class="flex-wrap text-justify justify-space-between">
-                <p><b>The Nav Bar</b> at the top of the page can be used to access the home page, topics page and account functionality.</p>
-                <p><b>The Filters</b> drop down can be used to search for specific topics to add to your Selected Topics, while the time period dropdown can be used to set the parameter of what period you want to view the trends over.</p>
-                <p><b>Selected Topics</b> provides a list of the topics being displayed on the graph, you can remove topics from the list via its corresponding remove button.</p>
-                <p><b>Related Topics</b> provides a range of suggested topics you may like to add to your Selected Topics, the suggestions are based on their association to your currently selected topics.</p>
+                <p>The <b>navigation bar</b> at the top of the page can be used to access any part of the website.</p>
+                <p><b>Filters</b> is a drop down menu that can be used to search for specific topics, or change the time period of your <i>Trends</i> graph.</p>
+                <p><b>Selected Topics</b> provides a list of the topics being displayed on the graph. You can remove topics from the list with the remove button.</p>
+                <p><b>Related Topics</b> provides a range of topics most related to your current selection. You can add topics to the list with the add button.</p>
+                <p><b>Saved Trends</b> will allow you to revisist saved selections, whilst selecting the <b>Save</b> button will save your current selection for later. This is only avaoiable for registered users, so remember to log in!</p>
+                <p>You can also <b>Clear</b> your selection at any time.
+                </p>
+
             </v-card-text>
 
             <v-card-actions>
@@ -41,7 +43,10 @@
 
 <script>
 export default {
-    data: () => ({}),
+    data: () => ({
+        show: false
+    }),
+
     props: {
         value: Boolean
     },

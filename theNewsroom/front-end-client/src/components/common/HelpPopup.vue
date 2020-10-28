@@ -36,15 +36,6 @@
                 </v-row>
 
             </v-card-actions>
-
-            <!--
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn depressed @click="dialog = false">Close</v-btn>
-        </v-card-actions>
-        -->
         </v-card>
     </v-dialog>
 </div>
@@ -52,7 +43,10 @@
 
 <script>
 export default {
-    data: () => ({}),
+    data: () => ({
+        show: false
+    }),
+
     props: {
         value: Boolean
     },
