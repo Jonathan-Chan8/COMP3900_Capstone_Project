@@ -255,3 +255,4 @@ SELECT pg_catalog.setval('newscollectorinfo.articles_id_seq', 220, true);
 -- PostgreSQL database dump complete
 --
 
+

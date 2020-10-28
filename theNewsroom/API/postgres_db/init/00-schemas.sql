@@ -65,7 +65,6 @@ CREATE TABLE NewsCollectorInfo.TopicOfArticle (
 	CONSTRAINT foreign_key_article		FOREIGN KEY(article_id)				REFERENCES NewsCollectorInfo.Articles(id)
 );
 
-
 -- Smart Comments relied on by the Postgraphile GraphQL API engine
 --COMMENT ON COLUMN NewsCollectorInfo.ArticleInfo.topic IS E'@forwardExtension';
 --COMMENT ON COlUMN NewsCollectorInfo.ArticleInfo.media_outlet IS E'@forwardExtension';
