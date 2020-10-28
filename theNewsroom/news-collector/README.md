@@ -4,7 +4,7 @@ and inserting this data into the postgreSQL database: thenewsroom_database
 # SET UP VIRTUAL ENV #
 
 1. navigate to the capstone-project-comp3900-w17a-212-monolith/theNewsroom/news-collector/ directory
-2. Create virtual environment called 'env': $ virtualenv --python=/usr/bin/python2.7 env
+2. Create virtual environment called 'env': $ virtualenv --python=/usr/bin/python3.7 env
 3. Activate the python virtual environment from this directory: $ source env/bin/activate
 	- To deactivate the virtual environment, do: $ deactivate
 4. Install dependencies:$ pip install -r requirements.txt
