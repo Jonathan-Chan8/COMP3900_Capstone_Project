@@ -1,16 +1,25 @@
 # Probs want to include some pagination
 
 query {
-	allArticleinfos {
-    nodes {
-      articleId
-      webTitle
+	allArticles {
+		nodes {
+      id
+      title
       publicationDate
-      apiGivenCategory
       articleType
-      articlecontentByContentId {
-        content
+      topicofarticlesByArticleId {
+        totalCount 
+        nodes {
+          topicByTopicId {
+            id
+            name
+          }
+        }
       }
+      mediaoutletByMediaOutletId {
+        id
+        name
+      }    
     }
   }
 }
