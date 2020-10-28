@@ -2,8 +2,14 @@
 <div class="home">
     <h1 class="subheading grey--text text-center">Saved Trends</h1>
     <v-container fluid>
-        <v-row>
+
+        <h2 class="subheading grey--text text-center" v-if="getSaved.length == 0">Looks like you haven't saved any Trends yet! You can save a selection of topics on the Trends page.</h2>
+        <v-row v-else>
             <v-list two-line width=100% rounded>
+                <v-list-item>
+                    <HelpSaved />
+                </v-list-item>
+
                 <v-list-item flat class="flex-wrap text-justify justify-space-between" v-for="config in getSaved" :key="config" depressed hover @click.stop="viewTrends(config.topics)">
                     <v-col d-flex>
                         <v-list-item-title class="headline" v-text="config.title" />
@@ -52,6 +58,7 @@
 
 <script>
 import Popup from "../components/common/Popup";
+import HelpSaved from "../components/common/HelpSaved";
 
 import {
     mapGetters,
@@ -63,6 +70,7 @@ export default {
     name: "Topics",
     components: {
         Popup,
+        HelpSaved
     },
 
     data: () => ({

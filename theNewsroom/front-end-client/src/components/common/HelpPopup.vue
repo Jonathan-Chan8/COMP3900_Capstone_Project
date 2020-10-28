@@ -13,12 +13,12 @@
             </v-card-title>
 
             <v-card-text class="flex-wrap text-justify justify-space-between">
-                <p>The <b>Navigation Bar</b> at the top of the page can be used to access any part of the website.</p>
-                <p><b>Filters</b> is a drop down menu that will allow you to adjust the shown topics.</p>
-                <p><b>Search</b> will allow you to search for a specific topic, regardless of whether it appears in the table.</p>
-                <p>Adjusting the <b>Time Period</b> will allow you adjust the timeframe for the topics on the page.</p>
-                <p>The <b>Media Outlet</b> search bar can be used to filter by articles included in your topic analysis by the publishing media outlet.</p>
-                <p><b>The Topics Table</b> displays the topics matching your filters; or by default the most popular topics. You can use the sort buttons at the top of each column to change the order of the rows according to number of articles and topic title. You can also set the number of rows you want displayed at once, using the filter below the table, and view the next or previous set of rows with the arrows at the bottom.</p>
+                <p><b>Related Topics</b> allow you to view information for those topics most related to this one.</p>
+                <p><b>Top Articles</b> alllow you to view news articles most related to this topic.</p>
+                <p><b>Add to Trends</b> will select the current topic and add it to your selected topics, so that you can view more information on the <i>Trends</i> page.</p>
+                <p><b>Remove from Trends</b> will remove the current topic and from your selected topics.</p>
+                <p><b>Previous</b> will display the last topic you were viewing. Selecting topics from <i>Related Topics</i> will keep a log of which topics you have visited, so you can always return.</p>
+                <p><b>Close</b> will close this popup. Clicking anywhere other than this popup will also close it.</p>
 
             </v-card-text>
 
@@ -36,7 +36,6 @@
                 </v-row>
 
             </v-card-actions>
-
         </v-card>
     </v-dialog>
 </div>
