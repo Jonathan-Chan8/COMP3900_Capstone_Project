@@ -13,11 +13,12 @@
             </v-card-title>
 
             <v-card-text class="flex-wrap text-justify justify-space-between">
-                <p><b>The Nav Bar</b> at the top of the page can be used to access the home page, trends page and account functionality.</p>
-                <p><b>The Search Bar</b> on the left of the page can be used to look up a specific topic so that you can view its information.</p>
-                <p><b>The Time Period</b> drop down on the left of the page can be used to filter by dates which articles you would like to be included in your topics.</p>
-                <p><b>The Media Outlet</b> search bar on the left of the page can be used to filter by articles included in your topic analysis by the publishing media outlet.</p>
-                <p><b>The Topics Table</b> displays the topics as filtered by your search, time period and media outlet parameters; or by default the most popular articles. You can use the sort buttons at the top of each column to change the order of the rows according to number of articles and topic title. You can also set the number of rows you want displayed at once, using the filter below the table, and view the next or previous set of rows with the arrows at the bottom.</p>
+                <p><b>Related Topics</b> allow you to view information for those topics most related to this one.</p>
+                <p><b>Top Articles</b> alllow you to view news articles most related to this topic.</p>
+                <p><b>Add to Trends</b> will select the current topic and add it to your selected topics, so that you can view more information on the <i>Trends</i> page.</p>
+                <p><b>Remove from Trends</b> will remove the current topic and from your selected topics.</p>
+                <p><b>Previous</b> will display the last topic you were viewing. Selecting topics from <i>Related Topics</i> will keep a log of which topics you have visited, so you can always return.</p>
+                <p><b>Close</b> will close this popup. Clicking anywhere other than this popup will also close it.</p>
 
             </v-card-text>
 
@@ -36,6 +37,14 @@
 
             </v-card-actions>
 
+            <!--
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn depressed @click="dialog = false">Close</v-btn>
+        </v-card-actions>
+        -->
         </v-card>
     </v-dialog>
 </div>

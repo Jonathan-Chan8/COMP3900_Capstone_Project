@@ -87,7 +87,7 @@
                             <v-list-item>
                                 <v-spacer />
                                 <SaveTrend />
-                                <v-btn rounded depressed class="mt-3" @click="emptySelected()">
+                                <v-btn rounded depressed @click="emptySelected()">
                                     Clear
                                 </v-btn>
                                 <HelpTrends />
@@ -113,7 +113,6 @@
 
             <!-- Same as on Home and Topics, this is only shown when popup = true and is closed when popup = false -->
             <Popup v-model="popup" />
-            <SaveTrend v-model="save" />
 
             <v-col />
         </v-layout>

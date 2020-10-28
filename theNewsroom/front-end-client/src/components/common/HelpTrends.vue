@@ -1,8 +1,8 @@
 <template>
 <div class="text-center">
-    <v-dialog v-model="dialog" width="500">
+    <v-dialog v-model="show" width="500">
         <template v-slot:activator="{ on, attrs }">
-            <v-btn icon v-bind="attrs" v-on="on" class="mt-3">
+            <v-btn icon v-bind="attrs" v-on="on">
                 <v-icon>mdi-help-circle-outline</v-icon>
             </v-btn>
         </template>
@@ -19,14 +19,21 @@
                 <p><b>Related Topics</b> provides a range of suggested topics you may like to add to your Selected Topics, the suggestions are based on their association to your currently selected topics.</p>
             </v-card-text>
 
-            <!--
-        <v-divider></v-divider>
+            <v-card-actions>
+                <v-row dense>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn depressed @click="dialog = false">Close</v-btn>
-        </v-card-actions>
-        -->
+                    <v-col>
+
+                        <v-btn width=100% rounded depressed @click.stop="close">
+                            Close
+                        </v-btn>
+
+                    </v-col>
+
+                </v-row>
+
+            </v-card-actions>
+
         </v-card>
     </v-dialog>
 </div>
@@ -35,6 +42,20 @@
 <script>
 export default {
     data: () => ({}),
+    props: {
+        value: Boolean
+    },
+
+    compute: {
+        show: {
+            get() {
+                return this.value
+            },
+            set(value) {
+                this.$emit('input', value)
+            }
+        }
+    },
 
     methods: {
         close() {
