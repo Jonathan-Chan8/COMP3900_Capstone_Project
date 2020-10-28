@@ -84,15 +84,16 @@
                                     </v-list-item>
                                 </v-list-item-group>
                             </v-list-group>
-
-                            <v-row dense justify="center">
-                                <v-btn small rounded width=49% depressed @click="save=true">
-                                    Save
-                                </v-btn>
-                                <v-btn small rounded width=49% depressed @click="emptySelected()">
+                            <v-list-item>
+                                <v-spacer />
+                                <SaveTrend />
+                                <v-btn rounded depressed @click="emptySelected()">
                                     Clear
                                 </v-btn>
-                            </v-row>
+                                <HelpTrends />
+
+                            </v-list-item>
+
                         </template>
                     </v-list>
                 </v-card>
@@ -112,7 +113,6 @@
 
             <!-- Same as on Home and Topics, this is only shown when popup = true and is closed when popup = false -->
             <Popup v-model="popup" />
-            <SaveTrend v-model="save" />
 
             <v-col />
         </v-layout>
@@ -123,6 +123,7 @@
 <script>
 import Popup from "../components/common/Popup";
 import SaveTrend from "../components/common/SaveTrend";
+import HelpTrends from "../components/common/HelpTrends";
 
 import {
     mapGetters,
@@ -134,7 +135,8 @@ export default {
     name: "Trends",
     components: {
         Popup,
-        SaveTrend
+        SaveTrend,
+        HelpTrends
     },
 
     data: () => ({

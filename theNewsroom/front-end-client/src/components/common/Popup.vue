@@ -33,30 +33,22 @@
         <v-divider />
         <v-card-actions>
             <v-row dense>
-                <v-col>
-                    <v-btn width=100% v-if='isSelected' rounded depressed @click='removeSelected(current_topic)'>
-                        Remove from Trend
-                    </v-btn>
+                <v-btn v-if='isSelected' rounded depressed @click='removeSelected(current_topic)'>
+                    Remove
+                </v-btn>
 
-                    <v-btn width=100% v-else rounded depressed @click='addSelected(current_topic)'>
-                        Add to Trend
-                    </v-btn>
-                </v-col>
+                <v-btn v-else rounded depressed @click='addSelected(current_topic)'>
+                    Add
+                </v-btn>
+                <v-spacer />
+                <v-btn v-if='!isRoot' rounded depressed @click="previousTopic">
+                    Previous
+                </v-btn>
 
-                <v-col>
-
-                    <v-btn width=100% v-if='!isRoot' rounded depressed @click="previousTopic">
-                        Previous
-                    </v-btn>
-                </v-col>
-
-                <v-col>
-
-                    <v-btn width=100% rounded depressed @click.stop="close">
-                        Close
-                    </v-btn>
-
-                </v-col>
+                <v-btn rounded depressed @click.stop="close">
+                    Close
+                </v-btn>
+                <HelpPopup />
 
             </v-row>
 
@@ -79,9 +71,15 @@ import {
     mapMutations
 } from 'vuex';
 
+import HelpPopup from "./HelpPopup";
+
 export default {
     props: {
         value: Boolean
+    },
+
+    components: {
+        HelpPopup
     },
 
     computed: {

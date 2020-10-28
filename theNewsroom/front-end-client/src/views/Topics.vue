@@ -11,13 +11,17 @@
                 <!-- For now this filters the datatable, really we want it to produce a popup with possible matches on 'enter', and selecting a match will produce the corresponding topic popup. This field ought to be in the same position of the page on both Topics and Trends, to show continuity -->
 
                 <v-card flat tile width='100%'>
+
                     <v-list flat rounded dense>
                         <!-- Search, calendar and media are subgroups in a the group Filters, allowing us to easily modify this entire list as a single element -->
                         <v-list-group value="true" color="none">
+
                             <template v-slot:activator>
+
                                 <v-list-item-content>
-                                    <v-list-item-title class='font-weight-light list-title'>Filters</v-list-item-title>
+                                    <v-list-item-title class='font-weight-light list-title'>Filters </v-list-item-title>
                                 </v-list-item-content>
+
                             </template>
                             <!-- Search -->
                             <v-list-item>
@@ -43,8 +47,15 @@
                             </v-list-item>
 
                         </v-list-group>
+                        <v-list-item>
+                            <v-spacer />
+                            <HelpTopics />
+                        </v-list-item>
+
                     </v-list>
+
                 </v-card>
+
                 <v-spacer />
             </v-flex>
             <v-spacer />
@@ -71,6 +82,7 @@
 
 <script>
 import Popup from "../components/common/Popup";
+import HelpTopics from "../components/common/HelpTopics";
 
 import {
     mapGetters,
@@ -81,7 +93,8 @@ import {
 export default {
     name: "Topics",
     components: {
-        Popup
+        Popup,
+        HelpTopics
     },
 
     data: () => ({

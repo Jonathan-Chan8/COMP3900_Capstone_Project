@@ -1,5 +1,11 @@
 <template>
-<v-dialog d-flex elevation="0" v-model="show" max-width="600px" max-height="100px">
+<v-dialog v-model="dialog" max-width="600px" max-height="100px">
+    <template v-slot:activator="{ on, attrs }">
+        <v-btn depressed rounded v-bind="attrs" v-on="on">
+            Save
+        </v-btn>
+    </template>
+
     <v-card class="flex-wrap text-justify justify-space-between">
         <v-card-title>
             <span class="headline">Save Trend Selection</span>
