@@ -4,7 +4,7 @@
 
         <div class="articles">
             <div 
-                v-for="article of allArticleinfos"
+                v-for="article of allArticles"
                 :key="article.articleid"
                 class="article-item"
             >
@@ -21,11 +21,11 @@ export default {
     data () {
         return {
             // declare a variable in the Vue world that is prepared to hold the data
-            allArticleinfos: []
+            allArticles: []
         }
     },
     apollo: {
-        allArticleinfos: ALL_ARTICLES
+        allArticles: ALL_ARTICLES
     }
 }
 </script>

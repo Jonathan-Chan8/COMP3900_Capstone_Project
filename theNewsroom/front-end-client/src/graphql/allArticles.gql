@@ -1,5 +1,3 @@
-# Probs want to include some pagination
-
 query {
 	allArticles {
 		nodes {
