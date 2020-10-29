@@ -9,7 +9,7 @@
 # Note: we can search media outlets by string too
 
 
-query TopicsAndArticleCount($from: Datetime, $to: Datetime, $mediaOutletIds: [Int!]) {
+query TopicsAndArticleCount($from: Datetime, $to: Datetime) {
   allTopics {
     nodes {
       name
@@ -22,14 +22,7 @@ query TopicsAndArticleCount($from: Datetime, $to: Datetime, $mediaOutletIds: [In
                 lessThanOrEqualTo: $to,
                 isNull: false
               }
-            },
-            {
-              mediaoutletByMediaOutletId: {
-                id: {
-                  in: $mediaOutletIds
-                }
-              }
-            } 
+            }
           ]
         }
       }) {

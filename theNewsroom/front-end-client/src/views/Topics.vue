@@ -65,7 +65,8 @@
                 <v-data-table :mobile-breakpoint="0" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :headers="headers" :items="topics" :search="search">
                     <template v-slot:item="{ item }">
                         <tr @click="rowClicked(item)">
-                            <td>{{item.name}}</td>
+                            <td>{{item.id}}</td>
+
                             <td>{{item.name}}</td>
                         </tr>
                     </template>
@@ -81,10 +82,13 @@
 </template>
 
 <script>
-import Popup from "../components/common/Popup";
-import HelpTopics from "../components/common/HelpTopics";
+// Components
+import Popup from "../components/common/Popup"
+import HelpTopics from "../components/common/HelpTopics"
 
+// GQL Queries
 import ALL_TOPICS from '../graphql/topics.gql'
+import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
 
 import {
     mapGetters,
@@ -125,17 +129,24 @@ export default {
 
             }
         ],
-        topics: []
-    }),
+        topics: [],
+        topics_with_filter: []
 
+    }),
     apollo: {
         topics: {
             query: ALL_TOPICS,
-            update: data => data.allTopics.nodes
+            update(data) {
+                return data.allTopics.nodes;
+            }
+        },
+        topics_with_filter: {
+            query: ALL_TOPICS_WITH_FILTER,
+            update(data) {
+                return data.allTopics.nodes;
+            }
         }
-
     },
-
     methods: {
         ...mapMutations([
             'addSelected',
@@ -189,6 +200,7 @@ export default {
             return this.dates.join(' to ')
         },
     },
+
 }
 </script>
 
