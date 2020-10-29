@@ -65,8 +65,8 @@
                 <v-data-table :mobile-breakpoint="0" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :headers="headers" :items="topics" :search="search">
                     <template v-slot:item="{ item }">
                         <tr @click="rowClicked(item)">
-                            <td>{{item.articles}}</td>
-                            <td>{{item.topic}}</td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.name}}</td>
                         </tr>
                     </template>
                 </v-data-table>
@@ -83,6 +83,8 @@
 <script>
 import Popup from "../components/common/Popup";
 import HelpTopics from "../components/common/HelpTopics";
+
+import ALL_TOPICS from '../graphql/topics.gql'
 
 import {
     mapGetters,
@@ -123,47 +125,16 @@ export default {
 
             }
         ],
-        topics: [{
-                articles: '908',
-                topic: 'Coronavirus',
-            },
-            {
-                articles: '1462',
-                topic: 'U.S. Election',
-            },
-            {
-                articles: '826',
-                topic: 'Californian Bushfires',
-            },
-            {
-                articles: '142',
-                topic: 'New Zealand',
-            },
-            {
-                articles: '637',
-                topic: 'Melbourne',
-            }, {
-                articles: '341',
-                topic: 'Scott Morrison',
-            },
-            {
-                articles: '1004',
-                topic: 'Iran',
-            },
-            {
-                articles: '837',
-                topic: 'Brexit',
-            },
-            {
-                articles: '463',
-                topic: 'Vaccine',
-            },
-            {
-                articles: '1349',
-                topic: 'ACT',
-            },
-        ]
+        topics: []
     }),
+
+    apollo: {
+        topics: {
+            query: ALL_TOPICS,
+            update: data => data.allTopics.nodes
+        }
+
+    },
 
     methods: {
         ...mapMutations([
