@@ -60,13 +60,15 @@
             </v-flex>
             <v-spacer />
 
+            <v-text> {{ topics }} </v-text>
+
             <v-flex align-center xs12 md6>
                 <!-- At the moment, topics are shown in a data table with rows that contain a topic's name and number of articles. Datatables allow us with a lot of options for sorting and presenting data, and are more scalable for different screen resolutions than other data presentation methods -->
                 <v-data-table :mobile-breakpoint="0" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :headers="headers" :items="topics" :search="search">
                     <template v-slot:item="{ item }">
                         <tr @click="rowClicked(item)">
-                            <td>{{item.articles}}</td>
-                            <td>{{item.topic}}</td>
+                            <td>{{item.topicofarticlesByTopicId.totalCount}}</td>
+                            <td>{{item.name}}</td>
                         </tr>
                     </template>
                 </v-data-table>
@@ -83,6 +85,8 @@
 <script>
 import Popup from "../components/common/Popup";
 import HelpTopics from "../components/common/HelpTopics";
+
+import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
 
 import {
     mapGetters,
@@ -178,6 +182,14 @@ export default {
             return this.dates.join(' to ')
         },
     },
+    apollo: {
+        topics: {
+            query: ALL_TOPICS_WITH_FILTER,
+            update(data) {
+                return data.allTopics.nodes;
+            }
+        }
+    }
 }
 </script>
 
