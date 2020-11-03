@@ -33,15 +33,17 @@ class Guardian():
         self.url = 'https://content.guardianapis.com/search?'
         self.api_key_liam = '08efafef-c5c0-43c6-a00e-b67880b448b2'
         self.api_key_jono = '450f355e-ac29-4a67-88d0-b72275c1c8c8'
+
+        # Hashmap maps (ourSQLSchemaColumnName, GuardianAPIField)
         self.HashMap = collections.OrderedDict([ 
                             ('article_type'      , 'type' ),   
-                            #('api_given_category', 'sectionName'),
                             ('publication_date'  , 'webPublicationDate'),
-                            ('title'         , 'webTitle'),
+                            #('api_given_topic'   , 'sectionName'),
+                            ('title'             , 'webTitle'),
                             ('web_content_url'   , 'webUrl'),
-                            ('media_outlet_id'   , 1      ),
-                            ('content_id'        ,  0      ) # 0 is a placeholder
-                            ])
+                            ('media_outlet_id'   , self.id      ),
+                            ('content_id'        , 0      ) # 0 is a placeholder
+                            ])     
             
 #------------------------- Retrieve API Data -------------------------#
 
@@ -73,13 +75,12 @@ for API in APIs:
     all_results = []
     all_results.extend(data['response']['results'])
     
-    # Extract the article content (text) 
+    # Extract the article content (text) and given Topic
     article_content = []
-    article_topic = []
+    article_topics = []
     for article in all_results:
         article_content.append(article['fields']['bodyText'])
-        article_topic.append(article['sectionName'])
-    
+        article_topics.append(article['sectionName'])
     
     # Convert webPublicationDate from unicode to datetime type
     if API.name == 'Guardian':
@@ -110,21 +111,31 @@ for API in APIs:
            
 
     # Create queries to be INSERT'ed into the postgres database
+
     
+    # https://stackoverflow.com/questions/5247685/python-postgres-psycopg2-getting-id-of-row-just-inserted
     # Articles Table
-    info_string = "INSERT INTO NewsCollectorInfo.Articles (%s) VALUES " % (
-         ', '.join(API.HashMap.keys()))   
-    info_string += "("
-    for x in range(len(API.HashMap)):
-        info_string += """%s,"""
-    info_string = info_string[:-1]
-    info_string += ")"
+    column_names = ", ".join(API.HashMap.keys())
+    value_format_string = ("%s," * len(API.HashMap))[:-1]
+    articles_row_format_string = """INSERT INTO NewsCollectorInfo.Articles 
+                                        ({}) 
+                                    VALUES 
+                                        ({}) 
+                                    RETURNING id;""".format(column_names, value_format_string)
     
     # ArticleContent Table
-    content_string = """INSERT INTO NewsCollectorInfo.ArticleContent (content) VALUES (%s)"""
+    content_row_format_string = """INSERT INTO NewsCollectorInfo.ArticleContent 
+                                        (content) 
+                                    VALUES 
+                                        (%s)
+                                    RETURNING id;"""
     
     # Topics Table
-    topic_string = """INSERT INTO NewsCollectorInfo.Topics (name) VALUES (%s)"""
+    topic_row_format_string = """INSERT INTO NewsCollectorInfo.Topics 
+                                        (name) 
+                                    VALUES 
+                                        (%s)
+                                    RETURNING id;"""
 
 #------------------ Connect to thenewsroom_database ------------------#
 
@@ -157,31 +168,39 @@ for API in APIs:
         try:
             
             if len(articles) == len(article_content):
-                zip_tables = zip(articles, article_content, article_topic)
+                zip_tables = zip(articles, article_content, article_topics)
                
             # Insert each article into the appropiate tables
             for article, content, topic in zip_tables:
                 
                 # insert article contents
-                cur.execute(content_string, (content,)) # Formatting: Needs to be a tuple (or list)
+                cur.execute(content_row_format_string, (content,)) # Formatting: Needs to be a tuple (or list)
+                # added RETURNING to statements
+                content_id = cur.fetchone()[0]
                          
-                # retrieve content_id and append to article as a foreign key
-                cur.execute("SELECT MAX(id) FROM NewsCollectorInfo.ArticleContent")
-                content_id = cur.fetchone()
                 article.append(content_id)
                 
                 # insert article
-                cur.execute(info_string, article)
+                cur.execute(articles_row_format_string, article)
+                article_id = cur.fetchone()[0]
                 
                 # insert article topic 
-                cur.execute(topic_string, (topic,))
-                
-                # retrieve topic and article id (foreign keys) 
-                # and insert into topicofarticle table
-                cur.execute("SELECT MAX(T.id), MAX(a.id) FROM NewsCollectorInfo.Topics as T, NewsCollectorInfo.articles as a;")
-                foreign_keys = cur.fetchone()
-                topicofarticle_string = """INSERT INTO NewsCollectorInfo.topicofarticle (topic_id, article_id) VALUES (%s, %s)"""
-                cur.execute(topicofarticle_string, foreign_keys)
+                # need to check if it already exists
+                cur.execute(""" SELECT * 
+                                    FROM NewsCollectorInfo.Topics 
+                                    WHERE (name LIKE %s);               
+                            """, (topic,))
+
+                topic_id = cur.fetchone()
+                if not topic_id:
+                    cur.execute(topic_row_format_string, (topic,))
+                    topic_id = cur.fetchone()[0]
+                else:
+                    topic_id = topic_id[0]
+                    
+                # insert ids as foreign keys into topicofarticle table
+                topicofarticle_format_string = """INSERT INTO NewsCollectorInfo.TopicOfArticle (topic_id, article_id) VALUES (%s, %s)"""
+                cur.execute(topicofarticle_format_string, (topic_id, article_id))
                 
             conn.commit()
     

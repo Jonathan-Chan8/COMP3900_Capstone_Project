@@ -10,11 +10,16 @@ and inserting this data into the postgreSQL database: thenewsroom_database
 
 3. Activate the python virtual environment from this directory: (deactivating it is just $ deactivate) 
 	
-	$ source env/bin/activate 
+	$ source newscollector_env/bin/activate 
 
 4. Install dependencies for the virtual environment:
 	
 	$ pip install -r requirements.txt
+
+	# NOTE if you are on mac and it can't download psycopg2, do this
+	```
+	pip install psycopg2-binary
+	```
 
 5. Add git ignore, so the virtual environment dependencies aren't tracked by git:
 
@@ -23,7 +28,7 @@ and inserting this data into the postgreSQL database: thenewsroom_database
 # COLLECT DATA #
 
 1. Activate virtual env (as above): 
-
+ 
 	$ source newscollector_env/bin/activate
 
 2. Run the python script: 
