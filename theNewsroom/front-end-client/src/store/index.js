@@ -1,17 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+
 Vue.use(Vuex)
 
-// const URI = whatever we use for db
+
+
+
 
 
 
 export default new Vuex.Store({
+
 	
 	state: {
-		current_topic: '',
+		user: '',
 
+		current_topic: '',
 		saved: [{
 				title: "U.S. Politics",
 				topics: ['Joe Biden', 'U.S. Election', 'Donald Trump', 'Supreme Court'],
@@ -79,6 +84,11 @@ export default new Vuex.Store({
 			let index = state.saved.findIndex(item => item == trend)
 			state.saved.splice(index, 1)
 		},
+
+		setUser(state, user) {
+			state.user = user
+		}
+
 	
 	},
 
@@ -118,6 +128,10 @@ export default new Vuex.Store({
 
 		getSaved: state => {
 			return state.saved
+		},
+
+		getUser: state => {
+			return state.user
 		},
 
 	},

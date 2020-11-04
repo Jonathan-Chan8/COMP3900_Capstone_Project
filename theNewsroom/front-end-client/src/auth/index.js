@@ -32,7 +32,10 @@ export const useAuth0 = ({
         error: null
       };
     },
+
+    
     methods: {
+        
       /** Authenticates the user using a popup window */
       async loginWithPopup(o) {
         this.popupOpen = true;
@@ -55,6 +58,7 @@ export const useAuth0 = ({
         try {
           await this.auth0Client.handleRedirectCallback();
           this.user = await this.auth0Client.getUser();
+
           this.isAuthenticated = true;
         } catch (e) {
           this.error = e;
@@ -62,6 +66,7 @@ export const useAuth0 = ({
           this.loading = false;
         }
       },
+
     
       /** Authenticates the user using the redirect method */
       loginWithRedirect(o) {
@@ -132,4 +137,3 @@ export const Auth0Plugin = {
     Vue.prototype.$auth = useAuth0(options);
   }
 };
-

@@ -23,6 +23,8 @@
                 </v-card>
             </v-col>
 
+            <v-text v-text='this.user' />
+
             <!-- Topic of the Day -->
             <v-col cols='auto' md='6'>
                 <v-card class="flex-wrap text-justify justify-space-between" height="100%" hover @click="open(totd.topic)">
@@ -51,7 +53,8 @@ import Popup from "../components/common/Popup";
 import {
     mapGetters,
     mapState,
-    mapMutations
+    mapMutations,
+    mapActions
 } from 'vuex';
 
 export default {
@@ -64,6 +67,7 @@ export default {
         return {
             popup: false,
             auth: true,
+            user: this.$auth.user,
 
             absolute: true,
             opacity: 10,
@@ -107,15 +111,18 @@ export default {
     },
 
     methods: {
+        ...mapActions(['login']),
         ...mapMutations([
             'addSelected',
             'removeSelected',
             'openTopic',
             'nextTopic',
             'previousTopic',
-            'closeTopic'
+            'closeTopic',
+            // 'setUser'
         ]),
         login() {
+            this.setUser(this.user)
             this.$auth.loginWithPopup();
         },
         // Log the user out
@@ -132,7 +139,7 @@ export default {
     },
     computed: {
         ...mapState(['popup', 'popups', 'selected', 'current_topic']),
-        ...mapGetters(['isRoot', 'numSelected', 'isSelected']),
+        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getUser']),
 
         show: {
             get() {
