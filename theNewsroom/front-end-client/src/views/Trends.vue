@@ -84,17 +84,18 @@
                                     </v-list-item>
                                 </v-list-item-group>
                             </v-list-group>
-                            <v-list-item>
-                                <v-spacer />
-                                <SaveTrend />
-                                <v-btn rounded depressed @click="emptySelected()">
-                                    Clear
-                                </v-btn>
-                                <HelpTrends />
-
-                            </v-list-item>
 
                         </template>
+
+                        <v-list-item>
+                            <v-spacer />
+                            <SaveTrend v-if="!$auth.loading & $auth.isAuthenticated" />
+                            <v-btn rounded depressed @click="emptySelected()">
+                                Clear
+                            </v-btn>
+                            <HelpTrends />
+
+                        </v-list-item>
                     </v-list>
                 </v-card>
             </v-flex>
@@ -102,6 +103,7 @@
 
             <v-flex align-center xs12 md6>
                 <!-- This is where the trends graph will go -->
+                <!--
                 <v-text> Current Topic: {{ current_topic}} </v-text>
                 <v-spacer />
                 <v-text> Popup Stack: {{ getPopups}} </v-text>
@@ -109,6 +111,7 @@
                 <v-text> Selected Topics: {{ getSelected}} </v-text>
                 <v-spacer />
                 <v-text> Saved: {{ getSaved}} </v-text>
+                -->
             </v-flex>
 
             <!-- Same as on Home and Topics, this is only shown when popup = true and is closed when popup = false -->
