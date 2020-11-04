@@ -63,9 +63,9 @@
                                 </v-list-item-content>
                             </template>
                             <v-list-item-group color="none">
-                                <v-list-item class='item' v-for="item in getRelated" :key="item">
-                                    <v-list-item-title @click='open(item)' v-text="item" />
-                                    <v-btn icon @click='addSelected(item)'>
+                                <v-list-item class='item' v-for="item in getRelatedTopics" :key="item">
+                                    <v-list-item-title @click='open(item.name)' v-text="item.name" />
+                                    <v-btn icon @click='addSelected(item.name)'>
                                         <v-icon color="grey lighten-1">mdi-plus-circle</v-icon>
                                     </v-btn>
                                 </v-list-item>
@@ -125,6 +125,9 @@ import Popup from "../components/common/Popup";
 import SaveTrend from "../components/common/SaveTrend";
 import HelpTrends from "../components/common/HelpTrends";
 
+// GQL Queries
+import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
+
 import {
     mapGetters,
     mapState,
@@ -150,7 +153,17 @@ export default {
         menu: false,
         search: '',
 
+        getRelatedTopics: []
     }),
+
+    apollo: {
+        getRelatedTopics: {
+            query: ALL_TOPICS_WITH_FILTER,
+            update(data) {
+                return data.allTopics.nodes;
+            }
+        }
+    },
 
     methods: {
         formatDate(date) {
