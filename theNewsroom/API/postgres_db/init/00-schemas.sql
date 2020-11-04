@@ -72,3 +72,29 @@ CREATE TABLE NewsCollectorInfo.TopicOfArticle (
 
 
 -- CONSIDER ADDING INDEXES TO IMPROVE PERFORMANCE
+
+
+-- USER TABLES - this should be in a different schema, but just put it here for the meantime
+CREATE TABLE NewsCollectorInfo.User (
+	id 					INT 			NOT NULL, 
+	PRIMARY KEY(id)
+);
+
+CREATE TABLE NewsCollectorInfo.UserConfiguration (
+	id 					INT 			GENERATED ALWAYS AS IDENTITY,
+	config_name 		VARCHAR(100)	NOT NULL,
+	usr_id				INT				NOT NULL, 
+	PRIMARY KEY(id),
+	CONSTRAINT foreign_key_user			FOREIGN KEY(usr_id)			REFERENCES NewsCollectorInfo.User(id)
+);	
+
+-- By enforcing the primary key as such, you make sure that can't select the same 
+-- config option for a given saved user config
+CREATE TABLE NewsCollectorInfo.TopicConfiguration (
+	id 					INT 			GENERATED ALWAYS AS IDENTITY,
+	usr_config_id		INT 			NOT NULL, 
+	topic_id 			INT 			NOT NULL,
+	PRIMARY KEY(id),
+	CONSTRAINT foreign_key_usr_config 	FOREIGN KEY(usr_config_id) 	REFERENCES NewsCollectorInfo.UserConfiguration(id),
+	CONSTRAINT foreign_key_topic		FOREIGN KEY(topic_id)		REFERENCES NewsCollectorInfo.Topics(id)
+);
