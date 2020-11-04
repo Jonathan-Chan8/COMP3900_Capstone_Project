@@ -36,7 +36,7 @@
         <Popup v-model="popup" />
 
     </v-container>
-
+    <!--
     <v-text> Current Topic: {{ current_topic}} </v-text>
     <v-spacer />
     <v-text> Popup Stack: {{ getPopups}} </v-text>
@@ -52,7 +52,7 @@
     <v-spacer />
 
     <v-text> old: {{old}} </v-text>
-
+-->
 </div>
 </template>
 

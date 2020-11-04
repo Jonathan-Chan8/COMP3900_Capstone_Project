@@ -113,10 +113,7 @@ export default {
                 title: 'Trends',
                 route: '/trends'
             },
-            {
-                title: 'Articles',
-                route: '/articles'
-            }
+
         ]
 
     }),
