@@ -123,7 +123,6 @@ export default {
                 value: 'name',
                 width: "100%",
                 align: 'center',
-
             }
         ],
         topics: [],
