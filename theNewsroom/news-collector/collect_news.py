@@ -166,12 +166,10 @@ for API in APIs:
     if cur != None:
     
         try:
-            
-            if len(articles) == len(article_content):
-                zip_tables = zip(articles, article_content, article_topics)
-               
+           
+            # for article, content, topic in zip_tables:
             # Insert each article into the appropiate tables
-            for article, content, topic in zip_tables:
+            for article, content, topic in zip(articles, article_content, article_topic):
                 
                 # insert article contents
                 cur.execute(content_row_format_string, (content,)) # Formatting: Needs to be a tuple (or list)
