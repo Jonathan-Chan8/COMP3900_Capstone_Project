@@ -103,8 +103,8 @@ export default {
 
     data: () => ({
         popup: false,
-        start_date: '',
-        end_date: '',
+        start_date: null,
+        end_date: null,
         dates: [],
 
         menu: false,
@@ -131,6 +131,15 @@ export default {
     apollo: {
         topics: {
             query: ALL_TOPICS_WITH_FILTER,
+            variables() {
+                // Use vue reactive properties here
+                if (this.start_date != null) {
+                    return {
+                        from: this.end_date,
+                        to: this.start_date,
+                    }
+                }
+            },
             update(data) {
                 return data.allTopics.nodes;
             }

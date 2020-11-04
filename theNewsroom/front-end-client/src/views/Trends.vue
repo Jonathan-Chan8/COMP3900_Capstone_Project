@@ -162,6 +162,12 @@ export default {
     apollo: {
         getRelatedTopics: {
             query: ALL_TOPICS_WITH_FILTER,
+            variables() {
+                // Use vue reactive properties here
+                return {
+                    related: null,
+                }
+            },
             update(data) {
                 return data.allTopics.nodes;
             }
