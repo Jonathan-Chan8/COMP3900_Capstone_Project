@@ -62,11 +62,10 @@
 
             <v-flex align-center xs12 md6>
                 <!-- At the moment, topics are shown in a data table with rows that contain a topic's name and number of articles. Datatables allow us with a lot of options for sorting and presenting data, and are more scalable for different screen resolutions than other data presentation methods -->
-                <v-data-table :mobile-breakpoint="0" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :headers="headers" :items="topics" :search="search">
+                <v-data-table :mobile-breakpoint="0" :headers="headers" :items="topics" :sort-by="['topicofarticlesByTopicId.totalCount']" :sort-desc="[true]" :search="search">
                     <template v-slot:item="{ item }">
                         <tr @click="rowClicked(item)">
-                            <td>{{item.id}}</td>
-
+                            <td> {{item.topicofarticlesByTopicId.totalCount}} </td>
                             <td>{{item.name}}</td>
                         </tr>
                     </template>
@@ -87,7 +86,6 @@ import Popup from "../components/common/Popup"
 import HelpTopics from "../components/common/HelpTopics"
 
 // GQL Queries
-import ALL_TOPICS from '../graphql/topics.gql'
 import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
 
 import {
@@ -112,35 +110,27 @@ export default {
         menu: false,
         search: '',
         media: '',
-        sortBy: 'articles',
         sortDesc: true,
 
         headers: [{
                 text: '# Articles',
-                value: 'articles',
+                value: 'topicofarticlesByTopicId.totalCount',
                 width: "30%",
                 align: 'center',
             },
             {
                 text: 'Topic',
-                value: 'topic',
+                value: 'name',
                 width: "100%",
                 align: 'center',
 
             }
         ],
         topics: [],
-        topics_with_filter: []
 
     }),
     apollo: {
         topics: {
-            query: ALL_TOPICS,
-            update(data) {
-                return data.allTopics.nodes;
-            }
-        },
-        topics_with_filter: {
             query: ALL_TOPICS_WITH_FILTER,
             update(data) {
                 return data.allTopics.nodes;
