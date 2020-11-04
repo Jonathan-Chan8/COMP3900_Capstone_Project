@@ -1,5 +1,5 @@
 <template>
-<v-dialog v-model="dialog" max-width="600px" max-height="100px">
+<v-dialog v-model="show" max-width="600px" max-height="100px">
     <template v-slot:activator="{ on, attrs }">
         <v-btn depressed rounded v-bind="attrs" v-on="on">
             Save
@@ -37,16 +37,13 @@ import {
     mapState,
     mapMutations
 } from 'vuex';
-
 export default {
     props: {
         value: Boolean
     },
-
     computed: {
         ...mapState(['saved', 'popups', 'selected', 'current_topic']),
         ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved', 'getRelated']),
-
         show: {
             get() {
                 return this.value
@@ -76,11 +73,10 @@ export default {
                 this.saveTrend(title.charAt(0).toUpperCase() + title.slice(1))
                 this.close()
             }
-
         }
     },
-
-    data: () => ({}),
-
+    data: () => ({
+        show: false
+    }),
 }
 </script>
