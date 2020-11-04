@@ -125,8 +125,6 @@ import Popup from "../components/common/Popup";
 import SaveTrend from "../components/common/SaveTrend";
 import HelpTrends from "../components/common/HelpTrends";
 
-// GQL Queries
-import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
 
 import {
     mapGetters,
@@ -156,14 +154,7 @@ export default {
         getRelatedTopics: []
     }),
 
-    apollo: {
-        getRelatedTopics: {
-            query: ALL_TOPICS_WITH_FILTER,
-            update(data) {
-                return data.allTopics.nodes;
-            }
-        }
-    },
+
 
     methods: {
         formatDate(date) {
