@@ -2,7 +2,7 @@
 <v-dialog d-flex elevation="0" v-model="show" max-width="1000px" max-height="500px">
 
     <v-card class="flex-wrap text-justify justify-space-between">
-        <v-card-title class="headline" v-text='current_topic' />
+        <v-card-title class="headline" v-text='current_topic.name' />
         <v-divider />
 
         <v-card-title class="subheading">
@@ -12,8 +12,8 @@
 
             <v-row dense>
                 <!-- We would need ot make sure we limit the number of characters shown -->
-                <v-col v-for="topic in topics" :key="topic" md=6>
-                    <v-btn width=100% depressed @click.stop="nextTopic(topic)" v-text='topic' />
+                <v-col v-for="topic in topics" :key="topic.id" md=6>
+                    <v-btn width=100% depressed @click.stop="nextTopic(topic)" v-text='topic.name' />
                 </v-col>
             </v-row>
         </v-card-actions>
@@ -21,14 +21,12 @@
         <v-card-title class="subheading">
             Top Articles
         </v-card-title>
-        <v-card-actions>
-            <v-row dense>
-                <!-- We need to make sure we limit the number of characters shown -->
-                <v-col v-for="article in articles" :key="article" md=6>
-                    <v-btn small width=100% depressed v-text='article' />
-                </v-col>
-            </v-row>
-        </v-card-actions>
+        <!-- We need to make sure we limit the number of characters shown -->
+        <v-list>
+            <v-list-item v-for="article in articles" :key="article" md=6>
+                <v-btn width=100% depressed v-text='article.articleByArticleId.title' />
+            </v-list-item>
+        </v-list>
 
         <v-divider />
         <v-card-actions>
@@ -61,8 +59,10 @@
         <v-spacer />
         <v-text> Selected Topics: {{ getSelected}} </v-text>
         -->
+        <v-text v-text='articles' />
 
     </v-card>
+
 </v-dialog>
 </template>
 
@@ -74,6 +74,8 @@ import {
 } from 'vuex';
 
 import HelpPopup from "./HelpPopup";
+import ALL_TOPICS_WITH_FILTER from '../../graphql/TopicsAndArticleCount.gql'
+import TOP_ARTICLES_FROM_TOPIC from '../../graphql/TopArticlesFromTopic.gql'
 
 export default {
     props: {
@@ -113,15 +115,35 @@ export default {
     },
 
     data: () => ({
-        topics: ['Coronavirus', 'U.S. Election', 'Californian Bushfires', 'New Zealand', 'Melbourne', 'Scott Morrison',
-
-        ],
-
-        articles: ['Victoria records 2 new cases', 'Oxford Vaccine passes clinical trial', 'Joe Biden leading polls', 'Victoria records 2 new cases', 'Oxford Vaccine passes clinical trial', 'Joe Biden leading polls'
-
-        ]
-
+        topics: [],
+        articles: [],
     }),
+
+    apollo: {
+        topics: {
+            query: ALL_TOPICS_WITH_FILTER,
+            variables() {
+                return {
+                    limit: 6
+                }
+            },
+            update(data) {
+                return data.allTopics.nodes;
+            }
+        },
+        articles: {
+            query: TOP_ARTICLES_FROM_TOPIC,
+            variables() {
+                return {
+                    topicId: this.current_topic.id
+                }
+            },
+            update(data) {
+                return data.topicById.topicofarticlesByTopicId.nodes;
+            }
+        }
+
+    },
 
 }
 </script>

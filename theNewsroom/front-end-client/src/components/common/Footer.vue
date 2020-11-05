@@ -1,10 +1,10 @@
 <template>
-<v-container>
-    <v-footer padless>
+<v-footer flat class="footer">
+    <v-col class="text-center" cols="12">
         <v-card flat class="text-center">
             <v-divider />
 
-            <v-card-text class="pt-0">Here at the Newsroom, we want to show you more than just the news. We want to look beyond, to see the shifts and patterns in how the news is told, and how the world is kept informed. </v-card-text>
+            <v-card-text class="pt-0">Here at the Newsroom, we want to show you more than just the news. We want to look beyond, to see how the news is told, and how the world is kept informed. </v-card-text>
 
             <v-card-text class="pt-0">The team here are:</v-card-text>
             <v-card-text class="pt-0 grey--text">
@@ -23,8 +23,8 @@
                 <strong>The Newsroom</strong>
             </v-card-text>
         </v-card>
-    </v-footer>
-</v-container>
+    </v-col>
+</v-footer>
 </template>
 
 <script>
@@ -33,3 +33,12 @@ export default {
     data: () => ({})
 };
 </script>
+
+<style scoped>
+footer {
+    position: relative;
+    align-self: center;
+    width: auto;
+    height: auto;
+}
+</style>

@@ -1,10 +1,10 @@
 <template>
-<v-toolbar flat class="toolbar">
+<v-toolbar fixed flat max-height="65" class="toolbar" dark>
     <v-btn text>
         <v-toolbar-title class="text-uppercase">
             <router-link to="/">
-                <span class="font-weight-light black--text">The</span>
-                <span class="black--text">Newsroom</span>
+                <span class="font-weight-light white--text">The</span>
+                <span class="white--text">Newsroom</span>
             </router-link>
         </v-toolbar-title>
     </v-btn>
@@ -123,5 +123,6 @@ export default {
 <style scoped>
 .v-toolbar.v-toolbar--absolute {
     width: auto;
+    height: auto;
 }
 </style>

@@ -1,6 +1,5 @@
 <template>
 <div class="topics">
-    <h1 class="body grey--text text-center"></h1>
     <template>
         <v-spacer />
         <v-layout wrap>
@@ -49,6 +48,8 @@
                         </v-list-group>
                         <v-list-item>
                             <v-spacer />
+                            <span> Need Help?</span>
+
                             <HelpTopics />
                         </v-list-item>
 
@@ -73,9 +74,12 @@
             </v-flex>
 
             <!-- This is only ever opened when popup=true. Selecting a row will open the Popup component, and when the component is closed (by pressing close, or clicking off of the popup), that component emits a signal that sets popup=false, thus closing the popup -->
-            <Popup v-model=" popup" />
+            <Popup v-model="popup" />
             <v-col />
         </v-layout>
+
+        <v-text v-text='current_topic' />
+
     </template>
 </div>
 </template>
@@ -166,9 +170,9 @@ export default {
             if (day.length < 2) day = `0${day}`;
             return [year, month, day].join('-');
         },
-        rowClicked(row) {
-            this.open(row.topic)
-            console.log(row);
+        rowClicked(topic) {
+            this.open(topic)
+            console.log(topic);
         },
         open(topic) {
             this.popup = true

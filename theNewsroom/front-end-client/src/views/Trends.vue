@@ -1,21 +1,19 @@
 <template>
-<div class="topics">
-    <h1 class="body grey--text text-center"></h1>
-
+<div class="trends">
     <template>
         <v-spacer />
-
         <v-layout wrap>
             <v-spacer />
-
-            <v-flex dense xs10 md3>
+            <v-flex xs10 md3>
                 <!-- Really, these filters wont actually filter the datatable, but rather will be used as input to our db query, thus changing the reuslts of the topics list returned by the database -->
 
                 <!-- For now this filters the datatable, really we want it to produce a popup with possible matches on 'enter', and selecting a match will produce the corresponding topic popup. This field ought to be in the same position of the page on both Topics and Trends, to show continuity -->
                 <v-card flat tile width='100%'>
-                    <v-list ripple=false expand flat rounded>
-                        <!-- Search and calendar are subgroups in a the group Filters, allowing us to easily modify this entire list as a single element (same as on Topics) -->
+                    <v-list ripple=false expand flat rounded dense>
+
+                        <!-- Search, calendar and media are subgroups in a the group Filters, allowing us to easily modify this entire list as a single element -->
                         <v-list-group value="true" color="none">
+
                             <template v-slot:activator>
                                 <v-list-item-content>
                                     <v-list-item-title class='font-weight-light list-title'>Filters</v-list-item-title>
@@ -47,9 +45,9 @@
                                     <v-list-item-title class='font-weight-light list-title'>Selected Topics</v-list-item-title>
                                 </v-list-item-content>
                             </template>
-                            <v-list-item-group color="none">
+                            <v-list-item-group value="true" color="none">
                                 <v-list-item class='item' v-for="item in getSelected" :key="item">
-                                    <v-list-item-title @click='open(item)' v-text="item" />
+                                    <v-list-item-title @click='open(item)' v-text="item.name" />
                                     <v-btn icon @click='removeSelected(item)'>
                                         <v-icon color="grey lighten-1">mdi-minus-circle</v-icon>
                                     </v-btn>
@@ -64,8 +62,8 @@
                             </template>
                             <v-list-item-group color="none">
                                 <v-list-item class='item' v-for="item in getRelatedTopics" :key="item">
-                                    <v-list-item-title @click='open(item.name)' v-text="item.name" />
-                                    <v-btn icon @click='addSelected(item.name)'>
+                                    <v-list-item-title @click='open(item)' v-text="item.name" />
+                                    <v-btn icon @click='addSelected(item)'>
                                         <v-icon color="grey lighten-1">mdi-plus-circle</v-icon>
                                     </v-btn>
                                 </v-list-item>
@@ -162,9 +160,8 @@ export default {
         getRelatedTopics: {
             query: ALL_TOPICS_WITH_FILTER,
             variables() {
-                // Use vue reactive properties here
                 return {
-                    related: null,
+                    limit: 5
                 }
             },
             update(data) {
@@ -226,7 +223,7 @@ export default {
             return this.dates.join(' to ')
         },
         ...mapState(['saved', 'popups', 'selected', 'current_topic']),
-        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved', 'getRelated']),
+        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved']),
     },
 }
 </script>

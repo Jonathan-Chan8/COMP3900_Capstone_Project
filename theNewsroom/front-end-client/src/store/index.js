@@ -12,22 +12,10 @@ export default new Vuex.Store({
 	state: {
 		current_topic: '',
 
-		saved: [{
-				title: "U.S. Politics",
-				topics: ['Joe Biden', 'U.S. Election', 'Donald Trump', 'Supreme Court'],
-			},
-			{
-				title: "Coronavirus",
-				topics: ['Coronavirus', 'Vaccine', 'Australia', 'New Zealand', 'Melbourne'],
-			},
-			{
-				title: "World Events",
-				topics: ['Coronavirus', 'U.S. Election', 'Californian Bushfires', 'New Zealand', 'Brexit'],
-			}
-		],
+		saved: [],
 		popups: [],
 		selected: [],
-		related: ['Scott Morrison', 'Iran', 'Brexit', 'Vaccine', 'ACT']
+		related: []
 
 		
 	},
@@ -55,7 +43,7 @@ export default new Vuex.Store({
 		},
 		
 		closeTopic(state) {
-			state.current_topic = null
+			state.current_topic = ''
 			state.popups = []
 		},
 
