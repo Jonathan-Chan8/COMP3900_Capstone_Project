@@ -50,6 +50,7 @@ CREATE TABLE NewsCollectorInfo.Articles (
 	article_type 		TYPEOFARTICLE 	NOT NULL,
 	publication_date 	TIMESTAMP 		NOT NULL, 
 	author				VARCHAR(50),
+	text_summary		VARCHAR(500),
 	media_outlet_id	 	INT    			NOT NULL,
 	content_id			INT,
 	PRIMARY KEY(id),
