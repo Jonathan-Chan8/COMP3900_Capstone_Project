@@ -1,6 +1,5 @@
 <template>
 <div class="topics">
-    <h1 class="body grey--text text-center"></h1>
     <template>
         <v-spacer />
         <v-layout wrap>
@@ -49,6 +48,8 @@
                         </v-list-group>
                         <v-list-item>
                             <v-spacer />
+                            <span> Need Help?</span>
+
                             <HelpTopics />
                         </v-list-item>
 
@@ -73,10 +74,11 @@
             </v-flex>
 
             <!-- This is only ever opened when popup=true. Selecting a row will open the Popup component, and when the component is closed (by pressing close, or clicking off of the popup), that component emits a signal that sets popup=false, thus closing the popup -->
-            <Popup v-model=" popup" />
+            <Popup v-model="popup" />
             <v-col />
         </v-layout>
     </template>
+    {{current_article}}
 </div>
 </template>
 
@@ -103,8 +105,8 @@ export default {
 
     data: () => ({
         popup: false,
-        start_date: '',
-        end_date: '',
+        start_date: null,
+        end_date: null,
         dates: [],
 
         menu: false,
@@ -123,7 +125,6 @@ export default {
                 value: 'name',
                 width: "100%",
                 align: 'center',
-
             }
         ],
         topics: [],
@@ -132,6 +133,15 @@ export default {
     apollo: {
         topics: {
             query: ALL_TOPICS_WITH_FILTER,
+            variables() {
+                // Use vue reactive properties here
+                if (this.start_date != null) {
+                    return {
+                        from: this.end_date,
+                        to: this.start_date,
+                    }
+                }
+            },
             update(data) {
                 return data.allTopics.nodes;
             }
@@ -158,9 +168,9 @@ export default {
             if (day.length < 2) day = `0${day}`;
             return [year, month, day].join('-');
         },
-        rowClicked(row) {
-            this.open(row.topic)
-            console.log(row);
+        rowClicked(topic) {
+            this.open(topic)
+            console.log(topic);
         },
         open(topic) {
             this.popup = true
@@ -179,7 +189,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['current_topic', 'saved', 'popups', 'selected', 'related']),
+        ...mapState(['current_topic', 'current_article', 'saved', 'popups', 'selected', 'related']),
         ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved', 'getRelated', 'getPopups']),
 
         todaysDate() {

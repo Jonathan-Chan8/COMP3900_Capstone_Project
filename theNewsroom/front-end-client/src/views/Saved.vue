@@ -1,6 +1,5 @@
 <template>
 <div class="home">
-    <h1 class="subheading grey--text text-center">Saved Trends</h1>
     <v-container fluid>
 
         <h2 class="subheading grey--text text-center" v-if="getSaved.length == 0">Looks like you haven't saved any Trends yet! You can save a selection of topics on the Trends page.</h2>
@@ -8,16 +7,18 @@
             <v-list two-line width=100% rounded>
                 <v-list-item>
                     <HelpSaved />
-                </v-list-item>
+                    <span> Need Help?</span>
 
+                </v-list-item>
                 <v-list-item flat class="flex-wrap text-justify justify-space-between" v-for="config in getSaved" :key="config" depressed hover @click.stop="viewTrends(config.topics)">
+
                     <v-col d-flex>
                         <v-list-item-title class="headline" v-text="config.title" />
                         <v-card-actions>
                             <v-row dense>
                                 <!-- We would need ot make sure we limit the number of characters shown -->
                                 <v-col v-for="topic in config.topics" :key="topic">
-                                    <v-btn rounded width=100% depressed @click.stop="open(topic)" v-text='topic' />
+                                    <v-btn rounded width=100% depressed @click.stop="open(topic)" v-text='topic.name' />
                                 </v-col>
                             </v-row>
                             <v-row class="edit" dense>
@@ -36,7 +37,7 @@
         <Popup v-model="popup" />
 
     </v-container>
-
+    <!--
     <v-text> Current Topic: {{ current_topic}} </v-text>
     <v-spacer />
     <v-text> Popup Stack: {{ getPopups}} </v-text>
@@ -52,7 +53,7 @@
     <v-spacer />
 
     <v-text> old: {{old}} </v-text>
-
+-->
 </div>
 </template>
 

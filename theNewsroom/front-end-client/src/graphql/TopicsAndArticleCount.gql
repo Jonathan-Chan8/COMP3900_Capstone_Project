@@ -9,9 +9,10 @@
 # Note: we can search media outlets by string too
 
 
-query TopicsAndArticleCount($from: Datetime, $to: Datetime) {
-  allTopics {
+query TopicsAndArticleCount($limit: Int, $from: Datetime, $to: Datetime) {
+  allTopics(first:$limit) {
     nodes {
+      id
       name
       topicofarticlesByTopicId(filter: { 
   	    articleByArticleId: {

@@ -1,15 +1,13 @@
 <template>
-<v-app background-color="white">
-    <v-app-bar dense fixed flat max-height="65">
+<div id="app">
+    <span class="bg"></span>
+
+    <v-app id="inspire">
         <Header />
-    </v-app-bar>
-
-    <router-view></router-view>
-
-    <v-footer>
+        <router-view></router-view>
         <Footer />
-    </v-footer>
-</v-app>
+    </v-app>
+</div>
 </template>
 
 <script>

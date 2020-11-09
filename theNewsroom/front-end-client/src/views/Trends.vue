@@ -1,21 +1,19 @@
 <template>
-<div class="topics">
-    <h1 class="body grey--text text-center"></h1>
-
+<div class="trends">
     <template>
         <v-spacer />
-
         <v-layout wrap>
             <v-spacer />
-
-            <v-flex dense xs10 md3>
+            <v-flex xs10 md3>
                 <!-- Really, these filters wont actually filter the datatable, but rather will be used as input to our db query, thus changing the reuslts of the topics list returned by the database -->
 
                 <!-- For now this filters the datatable, really we want it to produce a popup with possible matches on 'enter', and selecting a match will produce the corresponding topic popup. This field ought to be in the same position of the page on both Topics and Trends, to show continuity -->
                 <v-card flat tile width='100%'>
-                    <v-list ripple=false expand flat rounded>
-                        <!-- Search and calendar are subgroups in a the group Filters, allowing us to easily modify this entire list as a single element (same as on Topics) -->
+                    <v-list ripple=false expand flat rounded dense>
+
+                        <!-- Search, calendar and media are subgroups in a the group Filters, allowing us to easily modify this entire list as a single element -->
                         <v-list-group value="true" color="none">
+
                             <template v-slot:activator>
                                 <v-list-item-content>
                                     <v-list-item-title class='font-weight-light list-title'>Filters</v-list-item-title>
@@ -47,9 +45,9 @@
                                     <v-list-item-title class='font-weight-light list-title'>Selected Topics</v-list-item-title>
                                 </v-list-item-content>
                             </template>
-                            <v-list-item-group color="none">
+                            <v-list-item-group value="true" color="none">
                                 <v-list-item class='item' v-for="item in getSelected" :key="item">
-                                    <v-list-item-title @click='open(item)' v-text="item" />
+                                    <v-list-item-title @click='open(item)' v-text="item.name" />
                                     <v-btn icon @click='removeSelected(item)'>
                                         <v-icon color="grey lighten-1">mdi-minus-circle</v-icon>
                                     </v-btn>
@@ -63,8 +61,8 @@
                                 </v-list-item-content>
                             </template>
                             <v-list-item-group color="none">
-                                <v-list-item class='item' v-for="item in getRelated" :key="item">
-                                    <v-list-item-title @click='open(item)' v-text="item" />
+                                <v-list-item class='item' v-for="item in getRelatedTopics" :key="item">
+                                    <v-list-item-title @click='open(item)' v-text="item.name" />
                                     <v-btn icon @click='addSelected(item)'>
                                         <v-icon color="grey lighten-1">mdi-plus-circle</v-icon>
                                     </v-btn>
@@ -84,17 +82,18 @@
                                     </v-list-item>
                                 </v-list-item-group>
                             </v-list-group>
-                            <v-list-item>
-                                <v-spacer />
-                                <SaveTrend />
-                                <v-btn rounded depressed @click="emptySelected()">
-                                    Clear
-                                </v-btn>
-                                <HelpTrends />
-
-                            </v-list-item>
 
                         </template>
+
+                        <v-list-item>
+                            <v-spacer />
+                            <SaveTrend v-if="!$auth.loading & $auth.isAuthenticated" />
+                            <v-btn rounded depressed @click="emptySelected()">
+                                Clear
+                            </v-btn>
+                            <HelpTrends />
+
+                        </v-list-item>
                     </v-list>
                 </v-card>
             </v-flex>
@@ -102,6 +101,7 @@
 
             <v-flex align-center xs12 md6>
                 <!-- This is where the trends graph will go -->
+                <!--
                 <v-text> Current Topic: {{ current_topic}} </v-text>
                 <v-spacer />
                 <v-text> Popup Stack: {{ getPopups}} </v-text>
@@ -109,6 +109,7 @@
                 <v-text> Selected Topics: {{ getSelected}} </v-text>
                 <v-spacer />
                 <v-text> Saved: {{ getSaved}} </v-text>
+                -->
             </v-flex>
 
             <!-- Same as on Home and Topics, this is only shown when popup = true and is closed when popup = false -->
@@ -131,6 +132,8 @@ import {
     mapMutations
 } from 'vuex';
 
+import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
+
 export default {
     name: "Trends",
     components: {
@@ -150,7 +153,22 @@ export default {
         menu: false,
         search: '',
 
+        getRelatedTopics: []
     }),
+
+    apollo: {
+        getRelatedTopics: {
+            query: ALL_TOPICS_WITH_FILTER,
+            variables() {
+                return {
+                    limit: 5
+                }
+            },
+            update(data) {
+                return data.allTopics.nodes;
+            }
+        }
+    },
 
     methods: {
         formatDate(date) {
@@ -205,7 +223,7 @@ export default {
             return this.dates.join(' to ')
         },
         ...mapState(['saved', 'popups', 'selected', 'current_topic']),
-        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved', 'getRelated']),
+        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved']),
     },
 }
 </script>
