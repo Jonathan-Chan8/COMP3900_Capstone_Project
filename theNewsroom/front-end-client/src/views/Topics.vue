@@ -65,7 +65,7 @@
 
             <v-flex align-center xs12 md6>
                 <!-- At the moment, topics are shown in a data table with rows that contain a topic's name and number of articles. Datatables allow us with a lot of options for sorting and presenting data, and are more scalable for different screen resolutions than other data presentation methods -->
-                <v-data-table :mobile-breakpoint="0" :headers="headers" :items="topics" :sort-by="['topicofarticlesByTopicId.totalCount']" :sort-desc="[true]" :search="search">
+                <v-data-table :mobile-breakpoint="0" :headers="headers" :items="topics" :sort-by="['topicofarticlesByTopicId.totalCount']" :sort-desc="[true]">
                     <template v-slot:item="{ item }">
                         <tr @click="rowClicked(item)">
                             <td> {{item.topicofarticlesByTopicId.totalCount}} </td>
@@ -82,6 +82,8 @@
     </template>
 </div>
 </template>
+
+{{topics}}
 
 <script>
 // Components
@@ -138,23 +140,14 @@ export default {
             query: ALL_TOPICS_WITH_FILTER,
             variables() {
                 if (this.start_date != null) {
-                    if (this.media != null) {
-                        return {
-                            media: this.media,
-                            from: this.end_date,
-                            to: this.start_date,
-                        }
-                    } else {
-                        return {
-                            from: this.end_date,
-                            to: this.start_date,
-                        }
+                    return {
+                        media: this.media,
+                        from: this.start_date,
+                        to: this.end_date,
                     }
                 } else {
-                    if (this.media != null) {
-                        return {
-                            media: this.media,
-                        }
+                    return {
+                        media: this.media,
                     }
                 }
             },

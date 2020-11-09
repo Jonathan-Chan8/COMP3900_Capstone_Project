@@ -1,10 +1,10 @@
 <template>
 <v-dialog d-flex elevation="0" v-model="show" width="1000px" height="500px">
     <v-card class="flex-wrap text-justify justify-space-between">
-        <v-card-title class="headline"> Search: {{this.keyword}}</v-card-title>
+        <v-card-title class="headline"> <strong>Search</strong>: {{this.keyword}}</v-card-title>
         <v-divider />
         <h2 class="subheading grey--text text-center" v-if="results.length == 0">Sorry, your search returned no results!</h2>
-        <v-card-actions>
+        <v-card-actions v-else>
 
             <v-flex align-center xs12>
                 <!-- At the moment, topics are shown in a data table with rows that contain a topic's name and number of articles. Datatables allow us with a lot of options for sorting and presenting data, and are more scalable for different screen resolutions than other data presentation methods -->

@@ -1,61 +1,15 @@
-# This query fetches all the topics and the number of articles that are in said topic according to the constraints below
-# Constrainted by:
-#   - Before/After Time period
-#     - $from => 
-#     - $to   =>
-#   - Set of Media Outlet Ids
-#     - $mediaOutletIds => An array of ids of the MediaOutlets
-#           - NOTE IMPORTANT: To grab all the mediaoutlets, you have to provide all the ids (not ideal - work in progress)
-# Note: we can search media outlets by string too
 
-
-# query TopicsAndArticleCount($limit: Int, $from: Datetime, $to: Datetime) {
-#   allTopics(first:$limit) {
-#     nodes {
-#       name
-#       topicofarticlesByTopicId(filter: { 
-#   	    articleByArticleId: {
-# 					and: [
-#             { 
-#               publicationDate: {
-#                 greaterThanOrEqualTo: $from,
-#                 lessThanOrEqualTo: $to,
-#                 isNull: false
-#               }
-#             },
-            
-#           ]
-#         }
-#       }) {
-#         totalCount 
-#       }
-#     }
-#   }
-# }
-
-# This query fetches all the topics and the number of articles that are in said topic according to the constraints below
-# Constrainted by:
-#   - Before/After Time period
-#     - $from => 
-#     - $to   =>
-#   - Set of Media Outlet Ids
-#     - $mediaOutletIds => An array of ids of the MediaOutlets
-#           - NOTE IMPORTANT: To grab all the mediaoutlets, you have to provide all the ids (not ideal - work in progress)
-# Note: we can search media outlets by string too
-
-
-query TopicsAndArticleCount($media: String, $limit: Int, $from: Datetime, $to: Datetime) {
+query TopicsAndArticleCount($media: String = "", $limit: Int, $from: Datetime, $to: Datetime) {
   allTopics(first:$limit) {
     nodes {
       name
       topicofarticlesByTopicId(filter: { 
   	    articleByArticleId: {
-          
 					and: [
             { 
               mediaoutletByMediaOutletId:{
                 name: {
-                  includesInsensitive: $media
+                  includesInsensitive: $media,
                 }
               }
               publicationDate: {
