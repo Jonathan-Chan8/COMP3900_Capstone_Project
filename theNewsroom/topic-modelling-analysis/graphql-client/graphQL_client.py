@@ -23,3 +23,14 @@ class GraphQLClient:
         print(F"Unable to execute query: |||{query}||| - Exception: {e}")
       
 graphQLClient = GraphQLClient()
+
+print(graphQLClient.executeQuery("""
+      query {
+        allTopics {
+          totalCount
+          nodes {
+            name
+          }
+        }
+      }
+"""))
