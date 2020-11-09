@@ -21,6 +21,8 @@
 <script>
 import Popup from "./Popup"
 
+import SEARCH_FOR_TOPIC from '../../graphql/SearchForTopic.gql'
+
 import {
     mapGetters,
     mapState,
@@ -70,32 +72,22 @@ export default {
 
     data: () => ({
         popup: false,
-        results: [{
-                name: 'Football'
-            }, {
-                name: 'Football'
-            }, {
-                name: 'Football'
-            }, {
-                name: 'Football'
-            }, {
-                name: 'Football'
-            }, {
-                name: 'Football'
-            }, {
-                name: 'Football'
-            }, {
-                name: 'Football'
-            }, {
-                name: 'Football'
-            }, {
-                name: 'Football'
-            }
-
-        ]
+        results: []
     }),
 
     apollo: {
+
+        results: {
+            query: SEARCH_FOR_TOPIC,
+            variables() {
+                return {
+                    keyword: this.keyword
+                }
+            },
+            update(data) {
+                return data.allTopics.nodes;
+            }
+        }
 
     },
 
