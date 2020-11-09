@@ -2,6 +2,7 @@
 <div class="home">
     <h1 class="body subheading grey--text text-center">Welcome to the Newsroom</h1>
     <v-container fluid>
+
         <v-row>
             <!-- Login/Register/Saved -->
             <v-col cols='auto' md='6'>

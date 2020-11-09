@@ -7,6 +7,11 @@ import store from './store/'
 import vuetify from './plugins/vuetify'
 import './scss/main.scss'
 
+import VueApexCharts from 'vue-apexcharts'
+Vue.use(VueApexCharts)
+
+Vue.component('apexchart', VueApexCharts)
+
 import MultiFiltersPlugin from './plugins/MultiFilters'
 Vue.use(MultiFiltersPlugin)
 

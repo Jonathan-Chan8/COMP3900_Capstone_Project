@@ -1,7 +1,7 @@
 <template>
 <div class="trends">
     <template>
-        <v-spacer />
+
         <v-layout wrap>
             <v-spacer />
             <v-flex xs10 md3>
@@ -101,16 +101,11 @@
             <v-spacer />
 
             <v-flex align-center xs12 md6>
-                <!-- This is where the trends graph will go -->
-                <!--
-                <v-text> Current Topic: {{ current_topic}} </v-text>
-                <v-spacer />
-                <v-text> Popup Stack: {{ getPopups}} </v-text>
-                <v-spacer />
-                <v-text> Selected Topics: {{ getSelected}} </v-text>
-                <v-spacer />
-                <v-text> Saved: {{ getSaved}} </v-text>
-                -->
+                <template>
+                    <div>
+                        <apexchart type="line" :options="options" :series="series"></apexchart>
+                    </div>
+                </template>
             </v-flex>
 
             <!-- Same as on Home and Topics, this is only shown when popup = true and is closed when popup = false -->
@@ -147,6 +142,69 @@ export default {
     },
 
     data: () => ({
+        options: {
+            stroke: {
+                curve: 'smooth',
+            },
+            markers: {
+                size: 0,
+            },
+            colors: ['#E91E63', '#2E93fA', '#66DA26', '#FF9800'],
+            xaxis: {
+                type: 'datetime'
+            },
+            title: {
+                text: 'Topic Trends',
+                align: 'left'
+            },
+
+        },
+        series: [{
+                name: "Topic 1",
+                data: [{
+                        x: new Date('2018-02-12').getTime(),
+                        y: 76
+                    }, {
+                        x: new Date('2019-02-13').getTime(),
+                        y: 50
+                    },
+                    {
+                        x: new Date('2020-02-18').getTime(),
+                        y: 100
+                    }
+                ]
+            }, {
+                name: "Topic 2",
+                data: [{
+                        x: new Date('2018-02-12').getTime(),
+                        y: 123
+                    }, {
+                        x: new Date('2019-02-13').getTime(),
+                        y: 48
+                    },
+                    {
+                        x: new Date('2020-02-18').getTime(),
+                        y: 13
+                    }
+                ]
+            }, {
+                name: "Topic 3",
+                data: [{
+                        x: new Date('2018-02-12').getTime(),
+                        y: 12
+                    }, {
+                        x: new Date('2019-02-13').getTime(),
+                        y: 84
+                    },
+                    {
+                        x: new Date('2020-02-18').getTime(),
+                        y: 300
+                    }
+                ]
+            },
+
+        ],
+
         search: false,
         save: false,
         popup: false,
