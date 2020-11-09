@@ -8,10 +8,11 @@
 
             <v-flex align-center xs12>
                 <!-- At the moment, topics are shown in a data table with rows that contain a topic's name and number of articles. Datatables allow us with a lot of options for sorting and presenting data, and are more scalable for different screen resolutions than other data presentation methods -->
-                <v-data-table :mobile-breakpoint="0" :items="results" :sort-by="['topicofarticlesByTopicId.totalCount']" :sort-desc="[true]">
+                <v-data-table :mobile-breakpoint="0" :headers="headers" :items="results" :sort-by="['topicofarticlesByTopicId.totalCount']" :sort-desc="[true]">
                     <template v-slot:item="{ item }">
                         <tr @click="rowClicked(item)">
-                            <h2 class="subheading text-center">{{item.name}}</h2>
+                            <td class="subheading text-center" v-text="item.topicofarticlesByTopicId.totalCount" />
+                            <td class="subheading text-center" v-text="item.name" />
                         </tr>
                     </template>
                 </v-data-table>
@@ -96,7 +97,20 @@ export default {
 
     data: () => ({
         popup: false,
-        results: []
+        results: [],
+        headers: [{
+                text: '# Articles',
+                value: 'topicofarticlesByTopicId.totalCount',
+                width: "30%",
+                align: 'center',
+            },
+            {
+                text: 'Topic',
+                value: 'name',
+                width: "100%",
+                align: 'center',
+            }
+        ],
     }),
 
     apollo: {

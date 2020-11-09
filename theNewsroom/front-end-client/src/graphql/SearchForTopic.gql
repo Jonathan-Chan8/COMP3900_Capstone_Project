@@ -1,6 +1,5 @@
 query SearchForTopic ($keyword: String) {
   allTopics(
-    # condition: { name : $keyword }){
     filter:{
       name : {
         includesInsensitive: $keyword
