@@ -24,7 +24,7 @@
                             </template>
                             <!-- Search -->
                             <v-list-item>
-                                <v-text-field dense rounded filled v-model="search" append-icon="mdi-magnify" label="Search for a topic" single-line hide-details />
+                                <Search />
                             </v-list-item>
                             <!-- Calendar (a menu that opens a calendar, the user selects a date range and the date that occurs first is automatically saved as the starting date (to be used in our queries)-->
                             <v-list-item>
@@ -86,6 +86,7 @@
 // Components
 import Popup from "../components/common/Popup"
 import HelpTopics from "../components/common/HelpTopics"
+import Search from "../components/common/Search"
 
 // GQL Queries
 import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
@@ -100,7 +101,8 @@ export default {
     name: "Topics",
     components: {
         Popup,
-        HelpTopics
+        HelpTopics,
+        Search
     },
 
     data: () => ({
