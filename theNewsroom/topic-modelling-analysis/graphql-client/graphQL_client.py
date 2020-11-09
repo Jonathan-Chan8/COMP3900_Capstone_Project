@@ -22,16 +22,4 @@ class GraphQLClient:
       except Exception as e:
         print(F"Unable to execute query: |||{query}||| - Exception: {e}")
       
-graphQLclient = GraphQLClient()
-
-exampleQuery = """
-              query {
-                allTopics {
-                  totalCount
-                  nodes {
-                    name
-                  }
-                }
-              }"""
-
-print(graphQLclient.executeQuery(exampleQuery))
+graphQLClient = GraphQLClient()
