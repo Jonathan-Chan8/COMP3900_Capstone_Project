@@ -229,7 +229,7 @@ COPY newscollectorinfo.articlecontent (id, content) FROM stdin;
 --
 
 COPY newscollectorinfo.mediaoutlets (id, name) FROM stdin;
-1	Australian
+1	Guardian
 2	The Sydney Morning Herald
 \.
 
