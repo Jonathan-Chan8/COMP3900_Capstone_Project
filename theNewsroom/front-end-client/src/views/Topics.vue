@@ -77,10 +77,8 @@
             <Popup v-model="popup" />
             <v-col />
         </v-layout>
-
-        <v-text v-text='current_topic' />
-
     </template>
+    {{current_article}}
 </div>
 </template>
 
@@ -191,7 +189,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['current_topic', 'saved', 'popups', 'selected', 'related']),
+        ...mapState(['current_topic', 'current_article', 'saved', 'popups', 'selected', 'related']),
         ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved', 'getRelated', 'getPopups']),
 
         todaysDate() {

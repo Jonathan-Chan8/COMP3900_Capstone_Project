@@ -21,7 +21,7 @@
                 <p><b>Close</b> will close this popup. Clicking anywhere other than this popup will also close it.</p>
 
             </v-card-text>
-
+            {{getArticle}}
             <v-card-actions>
                 <v-row dense>
 
@@ -42,6 +42,11 @@
 </template>
 
 <script>
+import {
+    mapState,
+    mapGetters,
+} from 'vuex';
+
 export default {
     data: () => ({
         show: false
@@ -52,6 +57,9 @@ export default {
     },
 
     compute: {
+        ...mapState(['current_article']),
+        ...mapGetters(['getArticle']),
+
         show: {
             get() {
                 return this.value

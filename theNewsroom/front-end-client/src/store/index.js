@@ -11,7 +11,7 @@ export default new Vuex.Store({
 	
 	state: {
 		current_topic: '',
-
+		current_article: '',
 		saved: [],
 		popups: [],
 		selected: [],
@@ -68,6 +68,9 @@ export default new Vuex.Store({
 			state.saved.splice(index, 1)
 		},
 	
+		openArticle(state, article) {
+			state.current_article = article
+		},
 	},
 
 	actions: {
@@ -107,6 +110,11 @@ export default new Vuex.Store({
 		getSaved: state => {
 			return state.saved
 		},
+
+		getArticle: state => {
+			return state.current_article
+		},
+
 
 	},
 	
