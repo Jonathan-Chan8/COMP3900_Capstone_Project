@@ -21,7 +21,8 @@
                             </template>
                             <!-- Search -->
                             <v-list-item>
-                                <v-text-field dense rounded filled v-model="search" append-icon="mdi-magnify" label="Search for a topic" single-line hide-details />
+                                <v-text-field @keyup.enter.native="searchTopic" dense rounded filled v-model="keyword" append-icon="mdi-magnify" label="Search for a topic" single-line hide-details />
+                                <Search v-model="search" />
                             </v-list-item>
                             <!-- Calendar -->
                             <v-list-item>
@@ -125,6 +126,7 @@
 import Popup from "../components/common/Popup";
 import SaveTrend from "../components/common/SaveTrend";
 import HelpTrends from "../components/common/HelpTrends";
+import Search from "../components/common/Search"
 
 import {
     mapGetters,
@@ -139,20 +141,21 @@ export default {
     components: {
         Popup,
         SaveTrend,
-        HelpTrends
+        HelpTrends,
+        Search
+
     },
 
     data: () => ({
-
+        search: false,
         save: false,
         popup: false,
         start_date: '',
         end_date: '',
         dates: [],
+        keyword: '',
 
         menu: false,
-        search: '',
-
         getRelatedTopics: []
     }),
 
@@ -188,7 +191,9 @@ export default {
             'closeTopic',
             'emptySelected',
             'setSelected',
-            'saveTrend'
+            'saveTrend',
+            'searchTopicKeyword'
+
         ]),
         open(topic) {
             this.popup = true
@@ -211,7 +216,10 @@ export default {
                 this.dialog = false
                 this.saveTrend(name)
             }
-
+        },
+        searchTopic() {
+            this.search = true
+            this.searchTopicKeyword(this.keyword)
         }
     },
     computed: {

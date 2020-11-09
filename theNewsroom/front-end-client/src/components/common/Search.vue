@@ -30,7 +30,7 @@
         </v-card-actions>
 
     </v-card>
-    
+
     <Popup v-model="popup" />
 
 </v-dialog>
