@@ -147,15 +147,51 @@ export default {
             stroke: {
                 curve: 'smooth',
             },
-            markers: {
-                size: 0,
-            },
             colors: ['#E91E63', '#2E93fA', '#66DA26', '#FF9800'],
             xaxis: {
                 type: 'datetime'
             },
+            markers: {
+                size: 0,
+                hover: {
+                    sizeOffset: 6
+                }
+            },
+            grid: {
+                borderColor: '#f1f1f1',
+            },
 
+            chart: {
+                toolbar: {
+                    show: true,
+                    offsetX: 0,
+                    offsetY: 0,
+                    tools: {
+                        download: true,
+                        selection: false,
+                        zoom: false,
+                        zoomin: true,
+                        zoomout: true,
+                        pan: false,
+                        reset: false,
+                        customIcons: []
+                    },
+                    export: {
+                        csv: {
+                            filename: undefined,
+                            columnDelimiter: ',',
+                            headerCategory: 'category',
+                            headerValue: 'value',
+                            dateFormatter(timestamp) {
+                                return new Date(timestamp).toDateString()
+                            }
+                        }
+                    },
+                    autoSelected: 'zoom'
+                },
+            },
         },
+
         series: [{
                 name: "Topic 1",
                 data: [{
