@@ -24,7 +24,8 @@
                             </template>
                             <!-- Search -->
                             <v-list-item>
-                                <Search />
+                                <v-text-field @keyup.enter.native="searchTopic" dense rounded filled v-model="keyword" append-icon="mdi-magnify" label="Search for a topic" single-line hide-details />
+                                <Search v-model="search" />
                             </v-list-item>
                             <!-- Calendar (a menu that opens a calendar, the user selects a date range and the date that occurs first is automatically saved as the starting date (to be used in our queries)-->
                             <v-list-item>
@@ -106,13 +107,13 @@ export default {
     },
 
     data: () => ({
+        search: false,
         popup: false,
         start_date: null,
         end_date: null,
         dates: [],
-
+        keyword: '',
         menu: false,
-        search: '',
         media: '',
         sortDesc: true,
 
@@ -188,6 +189,10 @@ export default {
                 this.end_date = this.dates[0]
             }
             this.dates = [this.start_date, this.end_date]
+        },
+        searchTopic() {
+            this.search = true
+            // this.searchTopics(keywords)
         }
     },
     computed: {
