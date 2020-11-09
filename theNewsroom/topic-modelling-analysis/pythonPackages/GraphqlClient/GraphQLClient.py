@@ -21,16 +21,4 @@ class GraphQLClient:
         return self._client.execute(gql(query))
       except Exception as e:
         print(F"Unable to execute query: |||{query}||| - Exception: {e}")
-      
-graphQLClient = GraphQLClient()
-
-print(graphQLClient.executeQuery("""
-      query {
-        allTopics {
-          totalCount
-          nodes {
-            name
-          }
-        }
-      }
-"""))
+  
