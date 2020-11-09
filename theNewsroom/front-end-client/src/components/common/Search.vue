@@ -18,7 +18,19 @@
             </v-flex>
         </v-card-actions>
 
+        <v-divider />
+        <v-card-actions>
+            <v-row dense>
+                <v-spacer />
+                <v-btn rounded depressed @click.stop="close">
+                    Close
+                </v-btn>
+                <HelpSearch />
+            </v-row>
+        </v-card-actions>
+
     </v-card>
+    
     <Popup v-model="popup" />
 
 </v-dialog>
@@ -26,6 +38,7 @@
 
 <script>
 import Popup from "./Popup"
+import HelpSearch from "./HelpSearch"
 
 import SEARCH_FOR_TOPIC from '../../graphql/SearchForTopic.gql'
 
@@ -41,7 +54,8 @@ export default {
     },
 
     components: {
-        Popup
+        Popup,
+        HelpSearch
     },
 
     computed: {
