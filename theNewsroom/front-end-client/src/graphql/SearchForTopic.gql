@@ -1,8 +1,12 @@
 query SearchForTopic ($keyword: String) {
-  allTopics(condition: { name: $keyword }){
+  allTopics(
+    condition: { name : $keyword }){
     nodes {
       id
       name
+      topicofarticlesByTopicId{
+        totalCount 
+      }
     }
   }
 }

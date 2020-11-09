@@ -3,13 +3,19 @@
     <v-card class="flex-wrap text-justify justify-space-between">
         <v-card-title class="headline"> Search: {{this.keyword}}</v-card-title>
         <v-divider />
+        <h2 class="subheading grey--text text-center" v-if="results.length == 0">Sorry, your search returned no results!</h2>
         <v-card-actions>
-            <v-row dense>
-                <!-- We would need ot make sure we limit the number of characters shown -->
-                <v-col v-for="topic in results" :key="topic.id" md=6>
-                    <v-btn rounded width=100% depressed @click.stop="open(topic)" v-text='topic.name' />
-                </v-col>
-            </v-row>
+
+            <v-flex align-center xs12>
+                <!-- At the moment, topics are shown in a data table with rows that contain a topic's name and number of articles. Datatables allow us with a lot of options for sorting and presenting data, and are more scalable for different screen resolutions than other data presentation methods -->
+                <v-data-table :mobile-breakpoint="0" :items="results" :sort-by="['topicofarticlesByTopicId.totalCount']" :sort-desc="[true]">
+                    <template v-slot:item="{ item }">
+                        <tr @click="rowClicked(item)">
+                            <h2 class="subheading text-center">{{item.name}}</h2>
+                        </tr>
+                    </template>
+                </v-data-table>
+            </v-flex>
         </v-card-actions>
 
     </v-card>
@@ -67,6 +73,10 @@ export default {
         },
         close() {
             this.show = false
+        },
+        rowClicked(topic) {
+            this.open(topic)
+            console.log(topic);
         },
     },
 
