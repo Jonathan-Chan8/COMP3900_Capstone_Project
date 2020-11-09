@@ -44,7 +44,6 @@ CREATE TABLE NewsCollectorInfo.Articles (
 	id 					INT 			GENERATED ALWAYS AS IDENTITY,
 	created_at			TIMESTAMPTZ 	NOT NULL DEFAULT NOW(),
 	title 				VARCHAR(250)	NOT NULL, 
-	api_given_topic 	VARCHAR(50),
 	web_content_url		URL,
 	api_content_url		URL,
 	article_type 		TYPEOFARTICLE 	NOT NULL,
@@ -66,6 +65,7 @@ CREATE TABLE NewsCollectorInfo.TopicOfArticle (
 	CONSTRAINT foreign_key_topic 		FOREIGN KEY(topic_id)				REFERENCES NewsCollectorInfo.Topics(id),
 	CONSTRAINT foreign_key_article		FOREIGN KEY(article_id)				REFERENCES NewsCollectorInfo.Articles(id)
 );
+
 
 -- Smart Comments relied on by the Postgraphile GraphQL API engine
 --COMMENT ON COLUMN NewsCollectorInfo.ArticleInfo.topic IS E'@forwardExtension';
