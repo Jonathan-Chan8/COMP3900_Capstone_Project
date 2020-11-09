@@ -1,12 +1,17 @@
 query SearchForTopic ($keyword: String) {
   allTopics(
-    condition: { name : $keyword }){
+    # condition: { name : $keyword }){
+    filter:{
+      name : {
+        includesInsensitive: $keyword
+      }
+    }) {
     nodes {
-      id
+			id
       name
       topicofarticlesByTopicId{
         totalCount 
-      }
+      }      
     }
   }
 }
