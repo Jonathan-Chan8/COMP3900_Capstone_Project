@@ -4,7 +4,7 @@
         <v-container fluid>
 
             <v-layout wrap>
-                <v-flex xs12 md3>
+                <v-flex xs12 md4>
                     <!-- Really, these filters wont actually filter the datatable, but rather will be used as input to our db query, thus changing the reuslts of the topics list returned by the database -->
 
                     <!-- For now this filters the datatable, really we want it to produce a popup with possible matches on 'enter', and selecting a match will produce the corresponding topic popup. This field ought to be in the same position of the page on both Topics and Trends, to show continuity -->

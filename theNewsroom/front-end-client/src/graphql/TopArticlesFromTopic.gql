@@ -2,7 +2,7 @@
 # TODO: currently, it just orders the articles according to their primary key value
 #       - This will need to change as we want it by a measure of prevelance
 
-query TopArticlesFromTopic($topicId: Int! = 5, $numOfArticles: Int! = 5) {
+query TopArticlesFromTopic($topicId: Int!, $numOfArticles: Int! = 5) {
   topicById(id: $topicId) {
     topicofarticlesByTopicId(first: $numOfArticles, orderBy: PRIMARY_KEY_ASC) {
       nodes {
