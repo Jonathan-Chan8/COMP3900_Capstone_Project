@@ -60,8 +60,8 @@ for API in APIs:
     
     params = {
         #'q'                 : 'trump',
-        'from-date'         :    "2020-04-01",
-        'to-date'           :    "2020-05-01",
+        'from-date'         :    "2020-11-01",
+        'to-date'           :    "2020-11-01",
         'api-key'           :API.api_key_liam,
         'page-size'         :  API.page_limit,     # 200 = max page size for Guardian
         'show-editors-picks':          'true',
