@@ -3,13 +3,24 @@
     <v-card class="flex-wrap text-justify justify-space-between">
         <v-card-title class="headline"> Search: {{this.keyword}}</v-card-title>
         <v-divider />
+        <v-card-actions>
+            <v-row dense>
+                <!-- We would need ot make sure we limit the number of characters shown -->
+                <v-col v-for="topic in results" :key="topic.id" md=6>
+                    <v-btn rounded width=100% depressed @click.stop="open(topic)" v-text='topic.name' />
+                </v-col>
+            </v-row>
+        </v-card-actions>
 
     </v-card>
+    <Popup v-model="popup" />
 
 </v-dialog>
 </template>
 
 <script>
+import Popup from "./Popup"
+
 import {
     mapGetters,
     mapState,
@@ -22,7 +33,7 @@ export default {
     },
 
     components: {
-
+        Popup
     },
 
     computed: {
@@ -48,13 +59,40 @@ export default {
             'closeTopic',
             'openArticle',
         ]),
+        open(topic) {
+            this.popup = true
+            this.openTopic(topic)
+        },
         close() {
             this.show = false
         },
     },
 
     data: () => ({
+        popup: false,
+        results: [{
+                name: 'Football'
+            }, {
+                name: 'Football'
+            }, {
+                name: 'Football'
+            }, {
+                name: 'Football'
+            }, {
+                name: 'Football'
+            }, {
+                name: 'Football'
+            }, {
+                name: 'Football'
+            }, {
+                name: 'Football'
+            }, {
+                name: 'Football'
+            }, {
+                name: 'Football'
+            }
 
+        ]
     }),
 
     apollo: {
