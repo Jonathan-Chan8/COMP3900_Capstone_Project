@@ -44,13 +44,14 @@
                             <!-- Media selection -->
                             <v-list-item>
                                 <v-text-field dense rounded filled v-model="media" append-icon="mdi-book-open-variant" label="Filter by media outlet" single-line hide-details />
+
                             </v-list-item>
 
                         </v-list-group>
                         <v-list-item>
                             <v-spacer />
-                            <span> Need Help?</span>
-
+                            <v-btn rounded depressed @click="reset">
+                                Reset </v-btn>
                             <HelpTopics />
                         </v-list-item>
 
@@ -79,7 +80,6 @@
             <v-col />
         </v-layout>
     </template>
-    {{current_article}}
 </div>
 </template>
 
@@ -137,11 +137,24 @@ export default {
         topics: {
             query: ALL_TOPICS_WITH_FILTER,
             variables() {
-                // Use vue reactive properties here
                 if (this.start_date != null) {
-                    return {
-                        from: this.end_date,
-                        to: this.start_date,
+                    if (this.media != null) {
+                        return {
+                            media: this.media,
+                            from: this.end_date,
+                            to: this.start_date,
+                        }
+                    } else {
+                        return {
+                            from: this.end_date,
+                            to: this.start_date,
+                        }
+                    }
+                } else {
+                    if (this.media != null) {
+                        return {
+                            media: this.media,
+                        }
                     }
                 }
             },
@@ -194,6 +207,12 @@ export default {
         searchTopic() {
             this.search = true
             this.searchTopicKeyword(this.keyword)
+        },
+        reset() {
+            this.dates = []
+            this.start_date = null
+            this.end_date = null
+            this.media = ''
         }
     },
     computed: {
