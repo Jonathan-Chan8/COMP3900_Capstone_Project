@@ -97,7 +97,7 @@ export default {
             'nextTopic',
             'previousTopic',
             'closeTopic',
-            'openArticle'
+            'openArticle',
         ]),
         close() {
             this.show = false

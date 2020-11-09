@@ -162,6 +162,7 @@ export default {
             'setSelected',
             'saveTrend',
             'deleteTrend',
+            'searchTopicKeyword'
         ]),
         formatDate(date) {
             let month = `${date.getMonth() + 1}`;
@@ -192,7 +193,7 @@ export default {
         },
         searchTopic() {
             this.search = true
-            // this.searchTopics(keywords)
+            this.searchTopicKeyword(this.keyword)
         }
     },
     computed: {
