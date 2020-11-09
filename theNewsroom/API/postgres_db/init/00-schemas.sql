@@ -99,3 +99,4 @@ CREATE TABLE NewsCollectorInfo.TopicConfiguration (
 	CONSTRAINT foreign_key_usr_config 	FOREIGN KEY(usr_config_id) 	REFERENCES NewsCollectorInfo.UserConfiguration(id),
 	CONSTRAINT foreign_key_topic		FOREIGN KEY(topic_id)		REFERENCES NewsCollectorInfo.Topics(id)
 );
+
