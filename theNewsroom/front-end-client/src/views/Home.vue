@@ -1,12 +1,12 @@
 <template>
 <div class="home">
-    <h1 class="body subheading grey--text text-center">Welcome to the Newsroom</h1>
+    <h1 class="body subheading grey--text font-weight-bold text-center">Welcome to the Newsroom</h1>
     <v-container fluid>
 
         <v-row>
             <!-- Topic of the Day -->
             <v-col   cols="12" md='6'>
-                <v-card class="flex-wrap text-justify justify-space-between" height="100%" width="100%" hover @click="open(topics[0])">
+                <v-card  color='rgb(230, 235, 255)' class="flex-wrap text-justify justify-space-between" height="100%" width="100%" hover @click="open(topics[0])">
                     
                     <v-card-title class="headline">Topic of the Day</v-card-title>
                     <v-spacer/>
@@ -25,18 +25,18 @@
 
             <v-col   cols="12" md='6'>
                 <!-- Show login/register when user is not authenticated -->
-                <v-card v-if="!$auth.loading && !$auth.isAuthenticated" class="flex-wrap text-justify justify-space-between" height="100%" width="100%" hover>
+                <v-card  color='rgb(230, 235, 255)' v-if="!$auth.loading && !$auth.isAuthenticated" class="flex-wrap text-justify justify-space-between" height="100%" width="100%" hover>
                     <v-card-title class="headline" v-text="unauth.title" />
                     <v-card-text v-text='unauth.text' />
                     <v-card-actions>
-                        <v-btn depressed width=100% large @click="login">
+                        <v-btn dark depressed width=100% large @click="login">
                             Log In / Register
                         </v-btn>
                     </v-card-actions>
                 </v-card>
 
                 <!-- show saved/logout when user is authenticated -->
-                <v-card v-else class="flex-wrap text-justify justify-space-between" height="100%" hover :to='saved.route'>
+                <v-card  color='rgb(230, 235, 255)' v-else class="flex-wrap text-justify justify-space-between" height="100%" hover :to='saved.route'>
                     <v-card-title class="headline" v-text="saved.title" />
                     <v-card-text v-text='saved.text' />
                 </v-card>
@@ -47,7 +47,7 @@
             <!-- Topics/Trends -->
             <v-col v-for="card in cards" :key="card.id"   cols="12"
  md='6'>
-                <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" width="100%" hover :to='card.route'>
+                <v-card  color='rgb(230, 235, 255)' class=" flex-wrap text-justify justify-space-between" rounded height="100%" width="100%" hover :to='card.route'>
                     <v-card-title class="headline" v-text="card.title" />
                     <v-card-text v-text='card.text' />
                 </v-card>
@@ -189,4 +189,5 @@ export default {
 
     bottom: 0;
 }
+
 </style>

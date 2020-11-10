@@ -4,7 +4,6 @@
 
     <v-app id="inspire">
         <Header />
-        <v-spacer />
         <router-view></router-view>
         <Footer />
     </v-app>

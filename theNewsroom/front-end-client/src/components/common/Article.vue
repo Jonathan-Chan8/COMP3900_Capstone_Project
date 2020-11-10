@@ -1,6 +1,6 @@
 <template>
 <v-dialog d-flex style="box-shadow: none" elevation="0" v-model="show" width="1000px" height="500px">
-    <v-card>
+   <v-card>
         <v-card-title class="headline" v-text="current_article.articleByArticleId.title" />
         <v-divider />
         <div>

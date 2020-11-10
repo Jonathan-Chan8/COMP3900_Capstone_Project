@@ -1,7 +1,7 @@
 <template>
 <v-dialog d-flex elevation="0" v-model="show" width="1000px" height="500px">
-    <v-card class="flex-wrap text-justify justify-space-between">
-        <v-card-title class="headline" v-text='current_topic.name' />
+    <v-card class=" flex-wrap text-justify justify-space-between">
+        <v-card-title class="headline font-weight-bold" v-text='current_topic.name' />
         <v-divider />
         <v-card-title class="subheading">
             Related Topics
@@ -10,7 +10,7 @@
             <v-row dense>
                 <!-- We would need ot make sure we limit the number of characters shown -->
                 <v-col v-for="topic in topics" :key="topic.id" md=6>
-                    <v-btn rounded width=100% depressed @click.stop="nextTopic(topic)" v-text='topic.name' />
+                    <v-btn color="rgb(230, 235, 255)" rounded width=100% depressed @click.stop="nextTopic(topic)" v-text='topic.name' />
                 </v-col>
             </v-row>
         </v-card-actions>
@@ -19,29 +19,26 @@
             Top Articles
         </v-card-title>
         <!-- We need to make sure we limit the number of characters shown -->
-        <v-list depressed rounded>
-            <v-list-item-group color="none">
-
+        <v-list depressed rounded >
                 <v-list-item class="item align-items=center" v-for="article in articles" :key="article" depressed @click='open(article)'>
                     <v-list-item-title v-text='article.articleByArticleId.title.slice(0, 100)' />
                 </v-list-item>
-            </v-list-item-group>
 
         </v-list>
         <v-divider />
         <v-card-actions>
             <v-row dense>
-                <v-btn v-if='isSelected' rounded depressed @click='removeSelected(current_topic)'>
+                <v-btn  v-if='isSelected' rounded depressed @click='removeSelected(current_topic)'>
                     Remove
                 </v-btn>
-                <v-btn v-else rounded depressed @click='addSelected(current_topic)'>
+                <v-btn  v-else rounded depressed @click='addSelected(current_topic)'>
                     Add
                 </v-btn>
                 <v-spacer />
-                <v-btn v-if='!isRoot' rounded depressed @click="previousTopic">
+                <v-btn  v-if='!isRoot' rounded depressed @click="previousTopic">
                     Previous
                 </v-btn>
-                <v-btn rounded depressed @click.stop="close">
+                <v-btn  rounded depressed @click.stop="close">
                     Close
                 </v-btn>
                 <HelpPopup />
@@ -153,12 +150,14 @@ export default {
 }
 
 .item {
-    background: rgb(243, 245, 245);
+    background: rgb(230, 235, 255);
 
 }
 
 .item:hover {
-    background: rgb(239, 240, 240);
+     background:rgb(222, 229, 255);
 
 }
+
+
 </style>
