@@ -4,10 +4,28 @@
     <v-container fluid>
 
         <v-row>
-            <!-- Login/Register/Saved -->
-            <v-col cols='auto' md='6'>
+            <!-- Topic of the Day -->
+            <v-col   cols="12" md='6'>
+                <v-card class="flex-wrap text-justify justify-space-between" height="100%" width="100%" hover @click="open(topics[0])">
+                    
+                    <v-card-title class="headline">Topic of the Day</v-card-title>
+                    <v-spacer/>
+
+
+                    <v-card-text class="text-center font-weight-bold" v-resize-text v-text='topics[0].name' />
+                    <v-card-text class='text-center'> {{topics[0].topicofarticlesByTopicId.totalCount}} articles</v-card-text>
+
+                    
+
+                </v-card>
+                <Popup v-model="popup" />
+            </v-col>
+
+                        <!-- Login/Register/Saved -->
+
+            <v-col   cols="12" md='6'>
                 <!-- Show login/register when user is not authenticated -->
-                <v-card v-if="!$auth.loading && !$auth.isAuthenticated" class="flex-wrap text-justify justify-space-between" height="100%" hover>
+                <v-card v-if="!$auth.loading && !$auth.isAuthenticated" class="flex-wrap text-justify justify-space-between" height="100%" width="100%" hover>
                     <v-card-title class="headline" v-text="unauth.title" />
                     <v-card-text v-text='unauth.text' />
                     <v-card-actions>
@@ -24,18 +42,12 @@
                 </v-card>
             </v-col>
 
-            <!-- Topic of the Day -->
-            <v-col cols='auto' md='6'>
-                <v-card class="flex-wrap text-justify justify-space-between" height="100%" hover @click="open(totd.topic)">
-                    <v-card-title class="headline" v-text="totd.title" />
-                    <v-card-text v-text='totd.text' />
-                </v-card>
-                <Popup v-model="popup" />
-            </v-col>
+            
 
             <!-- Topics/Trends -->
-            <v-col v-for="card in cards" :key="card.id" cols='auto' md='6'>
-                <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" hover :to='card.route'>
+            <v-col v-for="card in cards" :key="card.id"   cols="12"
+ md='6'>
+                <v-card class="flex-wrap text-justify justify-space-between" rounded height="100%" width="100%" hover :to='card.route'>
                     <v-card-title class="headline" v-text="card.title" />
                     <v-card-text v-text='card.text' />
                 </v-card>
@@ -48,6 +60,8 @@
 
 <script>
 import Popup from "../components/common/Popup";
+
+import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
 
 import {
     mapGetters,
@@ -102,8 +116,23 @@ export default {
                     text: 'Looking to see how news topics change in relation to each other? Head to the Trends page to view the popularity of selected topics over time on a line graph. You can register an account for additional features, such as saving Trends configurations for later and selecting additional topics. Click to go to Trends!',
                     route: '/trends'
                 }
-            ]
+            ],
+            topics: []
 
+        }
+    },
+
+    apollo: {
+        topics: {
+            query: ALL_TOPICS_WITH_FILTER,
+            variables() {
+                return {
+                    limit: 1
+                }
+            },
+            update(data) {
+                return data.allTopics.nodes;
+            }
         }
     },
 
