@@ -22,3 +22,15 @@ query TopicArticlesByDate($topicId: Int!, $date: Datetime) {
     }
   }
 
+#   {
+#   "data": {
+#     "topicById": {
+#       "id": 2,
+#       "name": "US news",
+#       "topicofarticlesByTopicId": {
+#         "totalCount": 25
+#       }
+#     }
+#   }
+# }
+

@@ -114,6 +114,8 @@
                 <v-col />
             </v-layout>
         </v-container>
+
+        {{trends}}
     </template>
 </div>
 </template>
@@ -309,12 +311,12 @@ export default {
             query: TOPIC_ARTICLES_DATE,
             variables() {
                 return {
-                    date: this.date,
-                    topicId: this.topicId
+                    date: "2020-11-09T00:00:00",
+                    topicId: 2
                 }
             },
             update(data) {
-                return data.allTopics.nodes;
+                return data.topicById;
             }
         }
     },
