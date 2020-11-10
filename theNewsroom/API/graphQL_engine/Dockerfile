@@ -9,9 +9,7 @@ RUN npm install -g postgraphile@latest
 RUN npm install -g postgraphile-plugin-connection-filter@latest
 COPY ./postgraphile-configs/postgraphile-connection-filter-plugin_index.js ./usr/local/lib/node_modules/postgraphile-plugin-connection-filter/index.js
 
-# unable to get table-extension-plugin working
-# RUN npm install -g postgraphile-table-extension-plugin@latest
-# added to postgraphile append-plugin list -> postgraphile-table-extension-plugin:tableExtensionPlugin
+RUN npm install -g @graphile-contrib/pg-order-by-related@latest
 
 EXPOSE 5000
 
