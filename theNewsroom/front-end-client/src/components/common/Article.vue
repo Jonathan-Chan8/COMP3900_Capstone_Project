@@ -11,7 +11,7 @@
             <v-row dense>
                 <v-col md6>
                     <v-card-title>
-                        <strong>Publication Date</strong>: {{current_article.articleByArticleId.publicationDate}}
+                        <strong>Publication Date</strong>: {{current_article.articleByArticleId.publicationDate.slice(0,10)}}
                     </v-card-title>
                 </v-col>
                 <v-col md6>

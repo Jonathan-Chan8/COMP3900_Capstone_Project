@@ -23,7 +23,9 @@ export default new Vuex.Store({
 
 	mutations: {
 		addSelected(state, topic) {
-			state.selected.push(topic)
+			if (!state.selected.includes(topic)){
+				state.selected.push(topic)
+			}
 		},
 		removeSelected(state, topic) {
 			let index = state.selected.findIndex(item => item == topic)

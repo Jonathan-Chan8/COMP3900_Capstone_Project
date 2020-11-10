@@ -131,6 +131,9 @@ import {
 } from 'vuex';
 
 import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
+// import TOPIC_ARTICLES_DATE from '../graphql/TopArticlesFromTopic.gql'
+
+import TOPIC_ARTICLES_DATE from '../graphql/TopArticlesByDate.gql'
 
 export default {
     name: "Trends",
@@ -139,7 +142,6 @@ export default {
         SaveTrend,
         HelpTrends,
         Search
-
     },
 
     data: () => ({
@@ -147,7 +149,10 @@ export default {
             stroke: {
                 curve: 'smooth',
             },
-            colors: ['#E91E63', '#2E93fA', '#66DA26', '#FF9800'],
+            colors: [
+                '#EF476F', '#FFD166', '#06D6A0', '#AE847E', '#073B4C',
+                '#F08700', '#AF125A', '#33CA7F', '#DDEDAA', '#809BCE'
+            ],
             xaxis: {
                 type: 'datetime'
             },
@@ -234,6 +239,36 @@ export default {
                     }
                 ]
             },
+            {
+                name: "Topic 4",
+                data: [{
+                        x: new Date('2018-02-12').getTime(),
+                        y: 17
+                    }, {
+                        x: new Date('2019-02-13').getTime(),
+                        y: 44
+                    },
+                    {
+                        x: new Date('2020-02-18').getTime(),
+                        y: 198
+                    }
+                ]
+            },
+            {
+                name: "Topic 5",
+                data: [{
+                        x: new Date('2018-02-12').getTime(),
+                        y: 98
+                    }, {
+                        x: new Date('2019-02-13').getTime(),
+                        y: 43
+                    },
+                    {
+                        x: new Date('2020-02-18').getTime(),
+                        y: 102
+                    }
+                ]
+            },
 
         ],
 
@@ -255,6 +290,18 @@ export default {
             variables() {
                 return {
                     limit: 5
+                }
+            },
+            update(data) {
+                return data.allTopics.nodes;
+            }
+        },
+        TopicArticlesByDate: {
+            query: TOPIC_ARTICLES_DATE,
+            variables() {
+                return {
+                    date: this.date,
+                    topicId: this.topicId
                 }
             },
             update(data) {
@@ -310,6 +357,12 @@ export default {
         searchTopic() {
             this.search = true
             this.searchTopicKeyword(this.keyword)
+        }
+    },
+    watch: {
+        getSelected(value) {
+            // Change Trends graph
+            console.log('selected changed to', value);
         }
     },
     computed: {

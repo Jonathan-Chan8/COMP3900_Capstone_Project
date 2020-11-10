@@ -4,7 +4,7 @@
 
 query TopArticlesFromTopic($topicId: Int!, $numOfArticles: Int! = 5) {
   topicById(id: $topicId) {
-    topicofarticlesByTopicId(first: $numOfArticles, orderBy: PRIMARY_KEY_ASC) {
+    topicofarticlesByTopicId(first: $numOfArticles) {
       nodes {
         articleByArticleId {
           id
@@ -24,3 +24,5 @@ query TopArticlesFromTopic($topicId: Int!, $numOfArticles: Int! = 5) {
     }
   }
 }
+
+
