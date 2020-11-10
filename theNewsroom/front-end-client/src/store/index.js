@@ -10,6 +10,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 	
 	state: {
+		keyword: '',
 		current_topic: '',
 		current_article: '',
 		saved: [],
@@ -71,6 +72,9 @@ export default new Vuex.Store({
 		openArticle(state, article) {
 			state.current_article = article
 		},
+		searchTopicKeyword(state, keyword) {
+			state.keyword = keyword
+		}
 	},
 
 	actions: {

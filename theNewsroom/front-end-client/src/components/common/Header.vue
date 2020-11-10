@@ -1,5 +1,5 @@
 <template>
-<v-toolbar fixed flat max-height="65" class="toolbar" dark>
+<v-toolbar class="toolbar" fixed flat max-height="65" dark>
     <v-btn text>
         <v-toolbar-title class="text-uppercase">
             <router-link to="/">
