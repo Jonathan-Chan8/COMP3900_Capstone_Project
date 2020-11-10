@@ -62,7 +62,7 @@
                                     </v-list-item-content>
                                 </template>
                                 <v-list-item-group color="none">
-                                    <v-list-item class='item' v-for="item in getRelatedTopics" :key="item">
+                                    <v-list-item class='item' v-for="item in related" :key="item">
                                         <v-list-item-title @click='open(item)' v-text="item.name" />
                                         <v-btn icon @click='addSelected(item)'>
                                             <v-icon color="grey lighten-1">mdi-plus-circle</v-icon>
@@ -281,11 +281,20 @@ export default {
         keyword: '',
 
         menu: false,
-        getRelatedTopics: []
+        related: [],
+        trends: [],
     }),
+    watch: {
+        getSelected(value) {
+            // Call queries again with new parameters
+            this.$apollo.queries.related.refresh().
+            this.$apollo.queries.trends.refresh().
+            console.log('Related topics and Trends graph refreshed', value);
+        }
+    },
 
     apollo: {
-        getRelatedTopics: {
+        related: {
             query: ALL_TOPICS_WITH_FILTER,
             variables() {
                 return {
@@ -296,7 +305,7 @@ export default {
                 return data.allTopics.nodes;
             }
         },
-        TopicArticlesByDate: {
+        trends: {
             query: TOPIC_ARTICLES_DATE,
             variables() {
                 return {
@@ -357,13 +366,8 @@ export default {
         searchTopic() {
             this.search = true
             this.searchTopicKeyword(this.keyword)
-        }
-    },
-    watch: {
-        getSelected(value) {
-            // Change Trends graph
-            console.log('selected changed to', value);
-        }
+        },
+
     },
     computed: {
         todaysDate() {

@@ -12,8 +12,8 @@
                     <v-spacer/>
 
 
-                    <v-card-text class="text-center font-weight-bold" v-resize-text v-text='topics[0].name' />
-                    <v-card-text class='text-center'> {{topics[0].topicofarticlesByTopicId.totalCount}} articles</v-card-text>
+                    <v-card-text class="text-center font-weight-bold" v-resize-text v-text='topics[1].name' />
+                    <v-card-text class='text-center'> {{topics[1].topicofarticlesByTopicId.totalCount}} articles</v-card-text>
 
                     
 
@@ -127,7 +127,7 @@ export default {
             query: ALL_TOPICS_WITH_FILTER,
             variables() {
                 return {
-                    limit: 1
+                    limit: 2
                 }
             },
             update(data) {
