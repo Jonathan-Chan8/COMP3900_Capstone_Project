@@ -297,8 +297,8 @@ export default {
         menu: false,
         related: [],
         trends: [],
-        date: '',
-        topicId: null,
+        date: '2020-11-09T00:00:00',
+        topic_id: 2,
         trends_graph: [{
             name: null,
             data: [{
