@@ -152,8 +152,7 @@ export default {
                 curve: 'smooth',
             },
             colors: [
-                '#EF476F', '#FFD166', '#06D6A0', '#AE847E', '#073B4C',
-                '#F08700', '#AF125A', '#33CA7F', '#DDEDAA', '#809BCE'
+                '#66DB00', '#FF42DC', '#0096DB', '#DB0004', '#FF9D00',
             ],
             xaxis: {
                 type: 'datetime'
@@ -167,10 +166,21 @@ export default {
             grid: {
                 borderColor: '#f1f1f1',
             },
+            legend: {
+                horizontalAlign: 'right',
+    position: 'top',
+
+                onItemHover: {
+                    highlightDataSeries: true
+                },
+            },
 
             chart: {
+                selection: {
+                    enabled: true
+                },
                 toolbar: {
-                    show: true,
+                    show: false,
                     offsetX: 0,
                     offsetY: 0,
                     tools: {
@@ -199,7 +209,7 @@ export default {
             },
         },
         series: [{
-                name: "Topic 1",
+                name: "US News",
                 data: [{
                         x: new Date('2018-02-12').getTime(),
                         y: 76
@@ -213,7 +223,7 @@ export default {
                     }
                 ]
             }, {
-                name: "Topic 2",
+                name: "Coronavirus",
                 data: [{
                         x: new Date('2018-02-12').getTime(),
                         y: 123
@@ -227,7 +237,7 @@ export default {
                     }
                 ]
             }, {
-                name: "Topic 3",
+                name: "Joe Biden",
                 data: [{
                         x: new Date('2018-02-12').getTime(),
                         y: 12
@@ -242,7 +252,7 @@ export default {
                 ]
             },
             {
-                name: "Topic 4",
+                name: "News Corp",
                 data: [{
                         x: new Date('2018-02-12').getTime(),
                         y: 17
@@ -257,7 +267,7 @@ export default {
                 ]
             },
             {
-                name: "Topic 5",
+                name: "Vaccine",
                 data: [{
                         x: new Date('2018-02-12').getTime(),
                         y: 98
