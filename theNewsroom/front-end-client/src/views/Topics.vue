@@ -80,11 +80,13 @@
                 <v-col />
             </v-layout>
         </v-container>
+{{start_date}}
     </template>
 </div>
+
 </template>
 
-{{topics}}
+
 
 <script>
 // Components
@@ -140,16 +142,19 @@ export default {
         topics: {
             query: ALL_TOPICS_WITH_FILTER,
             variables() {
-                if (this.start_date != null) {
-                    return {
+
+                if (this.end_date == null) {
+                    this.end_date = new Date()
+                    this.start_date = new Date()
+                    this.start_date.setMonth(this.end_date.getMonth() - 1)
+
+                     this.end_date = this.formatDate(this.end_date)
+                    this.start_date = this.formatDate(this.start_date)
+                } 
+                return {
                         media: this.media,
                         from: this.start_date,
                         to: this.end_date,
-                    }
-                } else {
-                    return {
-                        media: this.media,
-                    }
                 }
             },
             update(data) {

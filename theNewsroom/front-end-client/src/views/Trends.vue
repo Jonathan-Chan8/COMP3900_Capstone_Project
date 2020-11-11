@@ -108,7 +108,7 @@
                 <v-flex align-center xs12 md8>
                     <template>
                         <div>
-                            <apexchart type="line" :options="options" :series="topics"></apexchart>
+                            <apexchart type="line" :options="options" :series="trends_graph"></apexchart>
                         </div>
                     </template>
                 </v-flex>
@@ -364,6 +364,9 @@ export default {
                     
                     date: this.date,
                     topicId: this.topic_id
+
+                    // date: '2020-11-09T00:00:00',
+                    // topicId: 2
                 }
             },
             update(data) {
@@ -385,13 +388,16 @@ export default {
                 var data_series = []
 
                 while (this.date <= this.end_date) {
+                    var date = this.date
+                    this.date =  this.formatDate(date) + 'T00:00:00'
+
                     this.$apollo.queries.trends.refresh()
                     data_series.push({
-                        x: this.date,
+                        x: new Date(this.formatDate(date)).getTime(),
                         y: this.trends.topicofarticlesByTopicId.totalCount
                     })
 
-                    let new_date = new Date(this.date)
+                    let new_date = new Date(date)
                     new_date.setDate(new_date.getDate() + 1)
                     this.date = new_date
                 }
