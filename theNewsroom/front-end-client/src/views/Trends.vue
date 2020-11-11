@@ -119,13 +119,19 @@
                 <v-col />
             </v-layout>
         </v-container>
-                <v-divider/>
 
 
         <v-divider/>
+
+        <v-divider/>
+        {{start_date}}
+        {{start_date.toISOString()}}
+        
+        {{start_date.toISOString().slice(0, 10)}}
         {{trends}}
-        <v-divider/>
         {{trends_graph}}
+
+
 
     </template>
 </div>
@@ -319,22 +325,21 @@ export default {
         getSelected: {
             handler: function() {
                 // this.$apollo.queries.related.refresh().
-                // this.update(this.topic_id+1)
                 this.updateTrends()
                 console.log('Related topics and Trends graph refreshed')
             },
             deep: true
         },
 
-        getDates: {
-            handler: function() {
-              // Call queries again with new parameters
-            this.$apollo.queries.trends.refresh().
-            this.updateTopics()
-            console.log('Trends graph refreshed');
-            },
-            deep: true
-        },
+        // start_date: {
+        //     handler: function() {
+        //         // Call queries again with new parameters
+        //         // this.$apollo.queries.trends.refresh().
+        //         this.updateTrends()
+        //         console.log('Trends graph refreshed');
+        //     },
+        //     deep: true
+        // },
 
     },
 
@@ -343,7 +348,7 @@ export default {
             query: ALL_TOPICS_WITH_FILTER,
             variables() {
                 return {
-                    limit: 10
+                    limit: 5
                 }
             },
             update(data) {
@@ -389,11 +394,11 @@ export default {
 
                 while (this.date <= this.end_date) {
                     var date = this.date
-                    this.date =  this.formatDate(date) + 'T00:00:00'
+                    this.date = this.date.toISOString().slice(0, 10)
 
                     this.$apollo.queries.trends.refresh()
                     data_series.push({
-                        x: new Date(this.formatDate(date)).getTime(),
+                        x: this.date,
                         y: this.trends.topicofarticlesByTopicId.totalCount
                     })
 
@@ -454,6 +459,7 @@ export default {
                 this.end_date = this.dates[0]
             }
             this.dates = [this.start_date, this.end_date]
+            this.updateTrends()
             // this.db = queryDB()
         },
         saveTrendSelection(name) {
