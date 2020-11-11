@@ -377,7 +377,7 @@ export default {
 
             // var topic
             // for (topic in this.getSelected) {
-            // this.trends_graph = []
+            this.trends_graph = []
             var i
             for (i = 0; i < this.getSelected.length; i++) {
                 this.date = this.start_date
