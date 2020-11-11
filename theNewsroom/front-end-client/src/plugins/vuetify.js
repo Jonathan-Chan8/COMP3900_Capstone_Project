@@ -7,3 +7,5 @@ export default new Vuetify({
     theme: { white: true },
 
 });
+
+

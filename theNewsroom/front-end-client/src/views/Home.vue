@@ -41,12 +41,11 @@
             
 
             <!-- Topics/Trends -->
-            <v-col v-for="card in cards" :key="card.id"   cols="12"
- md='6'>
+            <v-col dark v-for="card in cards" :key="card.id"   cols="12" md='6'>
                 <v-card  color='rgb(230, 235, 255)' class=" flex-wrap text-justify justify-space-between" rounded height="100%" width="100%" hover :to='card.route'>
                     <v-card-title class="headline" v-text="card.title" />
-                    <v-card-text >{{card.text}}</v-card-text>
-                    <v-card-text> <strong>{{card.second_text}}</strong></v-card-text>
+                    <v-card-text> {{card.text}} </v-card-text>
+                    <v-card-text> <strong>{{card.second_text}}</strong> </v-card-text>
                 </v-card>
             </v-col>
         </v-row>

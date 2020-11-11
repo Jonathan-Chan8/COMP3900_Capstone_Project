@@ -47,8 +47,13 @@
                                     </v-list-item-content>
                                 </template>
                                 <v-list-item-group value="true" color="none">
-                                    <v-list-item class='item' v-for="item in getSelected" :key="item">
+                                    <v-list-item class='item' v-for="(item, index) in getSelected" :key="item" >
                                         <v-list-item-title @click='open(item)' v-text="item.name" />
+                                        <v-icon v-if='index == 0' color="#FF9D00">mdi-circle</v-icon>
+                                        <v-icon v-if='index == 1' color='#66DB00'>mdi-circle</v-icon>
+                                        <v-icon v-if='index == 2' color="#FF42DC">mdi-circle</v-icon>
+                                        <v-icon v-if='index == 3' color="#0096DB">mdi-circle</v-icon>
+                                        <v-icon v-if='index == 4' color="#DB0004">mdi-circle</v-icon>
                                         <v-btn icon @click='removeSelected(item)'>
                                             <v-icon color="grey lighten-1">mdi-minus-circle</v-icon>
                                         </v-btn>
@@ -152,7 +157,7 @@ export default {
                 curve: 'smooth',
             },
             colors: [
-                '#66DB00', '#FF42DC', '#0096DB', '#DB0004', '#FF9D00',
+                '#FF9D00', '#66DB00', '#FF42DC', '#0096DB', '#DB0004', 
             ],
             xaxis: {
                 type: 'datetime'
@@ -404,6 +409,10 @@ td {
     font-size: 16px !important;
 }
 
+.item {
+    background: [];
+
+}
 .item:hover {
     background: ghostwhite;
 
