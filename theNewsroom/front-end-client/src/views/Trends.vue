@@ -67,7 +67,7 @@
                                     </v-list-item-content>
                                 </template>
                                 <v-list-item-group color="none">
-                                    <v-list-item class='item' v-for="item in related" :key="item">
+                                    <v-list-item  class='item' v-for="item in related" :key="item">
                                         <v-list-item-title @click='open(item)' v-text="item.name" />
                                         <v-btn icon @click='addSelected(item)'>
                                             <v-icon color="grey lighten-1">mdi-plus-circle</v-icon>
@@ -108,7 +108,7 @@
                 <v-flex align-center xs12 md8>
                     <template>
                         <div>
-                            <apexchart type="line" :options="options" :series="series"></apexchart>
+                            <apexchart type="line" :options="options" :series="topics"></apexchart>
                         </div>
                     </template>
                 </v-flex>
@@ -119,8 +119,8 @@
                 <v-col />
             </v-layout>
         </v-container>
-
-        {{trends}}
+{{trends}}
+        {{topics}}
     </template>
 </div>
 </template>
@@ -152,68 +152,7 @@ export default {
     },
 
     data: () => ({
-        options: {
-            stroke: {
-                curve: 'smooth',
-            },
-            colors: [
-                '#FF9D00', '#66DB00', '#FF42DC', '#0096DB', '#DB0004', 
-            ],
-            xaxis: {
-                type: 'datetime'
-            },
-            markers: {
-                size: 0,
-                hover: {
-                    sizeOffset: 6
-                }
-            },
-            grid: {
-                borderColor: '#f1f1f1',
-            },
-            legend: {
-                horizontalAlign: 'right',
-    position: 'top',
-
-                onItemHover: {
-                    highlightDataSeries: true
-                },
-            },
-
-            chart: {
-                selection: {
-                    enabled: true
-                },
-                toolbar: {
-                    show: false,
-                    offsetX: 0,
-                    offsetY: 0,
-                    tools: {
-                        download: true,
-                        selection: false,
-                        zoom: false,
-                        zoomin: true,
-                        zoomout: true,
-                        pan: false,
-                        reset: false,
-                        customIcons: []
-                    },
-                    export: {
-                        csv: {
-                            filename: undefined,
-                            columnDelimiter: ',',
-                            headerCategory: 'category',
-                            headerValue: 'value',
-                            dateFormatter(timestamp) {
-                                return new Date(timestamp).toDateString()
-                            }
-                        }
-                    },
-                    autoSelected: 'zoom'
-                },
-            },
-        },
-        series: [{
+        topics: [{
                 name: "US News",
                 data: [{
                         x: new Date('2018-02-12').getTime(),
@@ -285,9 +224,67 @@ export default {
                         y: 102
                     }
                 ]
+            }],
+        options: {
+            stroke: {
+                curve: 'smooth',
+            },
+            colors: [
+                '#FF9D00', '#66DB00', '#FF42DC', '#0096DB', '#DB0004', 
+            ],
+            xaxis: {
+                type: 'datetime'
+            },
+            markers: {
+                size: 0,
+                hover: {
+                    sizeOffset: 6
+                }
+            },
+            grid: {
+                borderColor: '#f1f1f1',
+            },
+            legend: {
+                horizontalAlign: 'right',
+                position: 'top',
+                onItemHover: {
+                    highlightDataSeries: true
+                },
             },
 
-        ],
+            chart: {
+                selection: {
+                    enabled: true
+                },
+                toolbar: {
+                    show: false,
+                    offsetX: 0,
+                    offsetY: 0,
+                    tools: {
+                        download: true,
+                        selection: false,
+                        zoom: false,
+                        zoomin: true,
+                        zoomout: true,
+                        pan: false,
+                        reset: false,
+                        customIcons: []
+                    },
+                    export: {
+                        csv: {
+                            filename: undefined,
+                            columnDelimiter: ',',
+                            headerCategory: 'category',
+                            headerValue: 'value',
+                            dateFormatter(timestamp) {
+                                return new Date(timestamp).toDateString()
+                            }
+                        }
+                    },
+                    autoSelected: 'zoom'
+                },
+            },
+        },
 
         search: false,
         save: false,
@@ -300,12 +297,28 @@ export default {
         menu: false,
         related: [],
         trends: [],
+        date: '',
+        topicId: null,
+        trends_graph: [{
+            name: null,
+            data: [{
+                x: null,
+                y: null,
+            }]
+        }]
     }),
+
     watch: {
+        getDates(value) {
+            // Call queries again with new parameters
+            this.$apollo.queries.trends.refresh().
+            updateTopics()
+            console.log('Trends graph refreshed', value);
+        },
         getSelected(value) {
             // Call queries again with new parameters
             this.$apollo.queries.related.refresh().
-            this.$apollo.queries.trends.refresh().
+            updateTopics()
             console.log('Related topics and Trends graph refreshed', value);
         }
     },
@@ -315,7 +328,7 @@ export default {
             query: ALL_TOPICS_WITH_FILTER,
             variables() {
                 return {
-                    limit: 5
+                    limit: 10
                 }
             },
             update(data) {
@@ -326,8 +339,8 @@ export default {
             query: TOPIC_ARTICLES_DATE,
             variables() {
                 return {
-                    date: "2020-11-09T00:00:00",
-                    topicId: 2
+                    date: this.date,
+                    topicId: this.topic_id
                 }
             },
             update(data) {
@@ -337,6 +350,24 @@ export default {
     },
 
     methods: {
+
+        // updateTrends() {
+        //     for (topic in this.getSelected) {
+        //         var current_date = this.start_date
+        //         while (current_date <= this.end_date) {
+        //             this.topic_id = topic.id
+        //             this.date = current_date
+        //             this.$apollo.queries.trends.refresh().
+
+        //             var count = 
+
+        //             this.trends_graph
+
+        //             currentDate = currentDate.addDays(1);
+        //         }
+        //     }
+
+        // },
         formatDate(date) {
             let month = `${date.getMonth() + 1}`;
             let day = `${date.getDate()}`;
@@ -393,6 +424,9 @@ export default {
         },
         dateRange() {
             return this.dates.join(' to ')
+        },
+        getDates() {
+            return [this.start_date, this.end_date]
         },
         ...mapState(['saved', 'popups', 'selected', 'current_topic']),
         ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved']),
