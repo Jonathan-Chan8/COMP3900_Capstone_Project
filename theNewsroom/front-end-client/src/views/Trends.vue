@@ -373,10 +373,6 @@ export default {
     },
 
     methods: {
-          foo() {
-        console.log("foo called");
-    },
-
         updateTrends() {
 
             // var topic
@@ -403,9 +399,10 @@ export default {
                 // this.trends_graph.push({topic: this.getSelected[i].name, data: data_series})
 
 
-                this.trends_graph.push({   name: this.getSelected[i].id.name,
-                                    data: data_series
-                                }   )
+                this.trends_graph.push({   
+                    name: this.getSelected[i].name,
+                    data: data_series
+                })
             }
         },
         update(topic_id) {
