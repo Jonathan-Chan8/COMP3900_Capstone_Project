@@ -122,9 +122,11 @@
                 <v-divider/>
 
         {{new Date(start_date)}}
+        {{new Date(end_date)}}
+
         <v-divider/>
 
-        {{date_from}}
+        {{date}}
                 <v-divider/>
 
         {{date_to}}
@@ -147,18 +149,14 @@ import Popup from "../components/common/Popup";
 import SaveTrend from "../components/common/SaveTrend";
 import HelpTrends from "../components/common/HelpTrends";
 import Search from "../components/common/Search"
-
 import {
     mapGetters,
     mapState,
     mapMutations
 } from 'vuex';
-
 import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
 // import TOPIC_ARTICLES_DATE from '../graphql/TopArticlesFromTopic.gql'
-
 import TOPIC_ARTICLES_DATE from '../graphql/TopArticlesByDate.gql'
-
 export default {
     name: "Trends",
     components: {
@@ -167,7 +165,6 @@ export default {
         HelpTrends,
         Search
     },
-
     data: () => ({
         mounted() {
       this.updateTrends()
@@ -271,7 +268,6 @@ export default {
                     highlightDataSeries: true
                 },
             },
-
             chart: {
                 selection: {
                     enabled: true
@@ -305,7 +301,6 @@ export default {
                 },
             },
         },
-
         search: false,
         save: false,
         popup: false,
@@ -313,7 +308,6 @@ export default {
         end_date: null,
         dates: [],
         keyword: '',
-
         menu: false,
         related: [],
         trends: [],
@@ -321,7 +315,6 @@ export default {
         topic_id: null,
         trends_graph: []
     }),
-
     watch: {
         getSelected: {
             handler: function() {
@@ -331,7 +324,6 @@ export default {
             },
             deep: true
         },
-
         // dates: {
         //     handler: function() {
         //         // Call queries again with new parameters
@@ -341,9 +333,7 @@ export default {
         //     },
         //     deep: true
         // },
-
     },
-
     apollo: {
         related: {
             query: ALL_TOPICS_WITH_FILTER,
@@ -363,48 +353,49 @@ export default {
                     this.end_date = new Date()
                     this.start_date = new Date()
                     this.start_date.setMonth(this.end_date.getMonth() - 1)
-
-                    this.date_from = new Date(this.start_date)
-                    this.date_to = new Date(this.end_date)
-
-
                 }
                 return {
-                    // date: this.date,
-                    from: new Date(this.date_from.toISOString().slice(0, 10)),
-                    to: new Date(this.date_to.toISOString().slice(0, 10)),               
+                    date: this.date,
                     topicId: this.topic_id
                 }
             },
             update(data) {
-                return data
+                return data.topicById
             }
         }
     },
-
     methods: {
         updateTrends() {
             this.trends_graph = []
             
             var i
             for (i = 0; i < this.getSelected.length; i++) {
-                this.date_from = new Date(this.start_date)
+                // Reset date to start of day
+                this.date = new Date(this.start_date.toISOString().slice(0, 10))
                 this.topic_id = this.getSelected[i].id
                 var data_series = []
 
-                while (this.date_from <= this.end_date) {
-                    this.date_to = new Date(this.date_from)
-                    this.date_to.setDate(this.date_to.getDate() + 1)
+                while (this.date <= this.end_date) {
+                    var next_date = new Date(this.date)
+                    next_date.setDate(next_date.getDate() + 1)
 
-                    // this.date = this.date.toISOString().slice(0, 10)
+                    // Convert to YYYY-MM-DDT00:00:000Z, same as in Topics
+                    this.date = this.date.toISOString()
                     this.$apollo.queries.trends.refresh()
                     
+                    var count = this.trends.topicofarticlesByTopicId.totalCount
+                    var id = this.trends.id
+
+                    // Log to view reults
+                    console.log(this.date, count, id)
+                    
+                    // Looks like, for the majority of queries the reults are correct, however sometimes the returned count is different to how it would be if I were to enter the EXACT same values into GraphQL manually
                     data_series.push({
-                        x: this.date_from,
-                        y: this.trends.topicById.topicofarticlesByTopicId.totalCount
+                        x: this.date.slice(0, 10),
+                        y: count
                     })
 
-                    this.date_from = this.date_to
+                    this.date = next_date
                 }
 
                 this.trends_graph.push({   
@@ -412,12 +403,10 @@ export default {
                     data: data_series
                 })
             }
-
             // for (i = 0; i < this.getSelected.length; i++) {
             //     var date = this.start_date
             //     this.topic_id = this.getSelected[i].id
             //     var data_series = []
-
             //     while (date <= this.end_date) {
             //         this.date = new Date(date.toISOString().slice(0,10))
             //         this.$apollo.queries.trends.refresh()
@@ -426,18 +415,13 @@ export default {
             //             x: this.date,
             //             y: this.trends.topicById.topicofarticlesByTopicId.totalCount
             //         })
-
                     
             //         date.setDate(date.getDate() + 1)                }
-
             //     this.trends_graph.push({   
             //         name: this.getSelected[i].name,
             //         data: data_series
             //     })
             // }
-
-
-
         },
         update(topic_id) {
             this.topic_id = topic_id
@@ -466,7 +450,6 @@ export default {
             'setSelected',
             'saveTrend',
             'searchTopicKeyword'
-
         ]),
         open(topic) {
             this.popup = true
@@ -482,10 +465,8 @@ export default {
                 this.end_date = this.dates[0]
             }
             this.dates = [this.start_date, this.end_date]
-
             this.start_date = new Date(this.start_date)
             this.end_date = new Date(this.end_date)
-
             this.updateTrends()
         },
         saveTrendSelection(name) {
@@ -505,12 +486,10 @@ export default {
             this.media = ''
             this.emptySelected()
         }
-
     },
     computed: {
         ...mapState(['current_topic', 'current_article', 'saved', 'popups', 'selected', 'related']),
         ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved', 'getRelated', 'getPopups']),
-
         todaysDate() {
             const today = new Date();
             return this.formatDate(today);
@@ -526,17 +505,13 @@ export default {
 td {
     text-align: center !important;
 }
-
 .list-title {
     font-size: 16px !important;
 }
-
 .item {
     background: [];
-
 }
 .item:hover {
     background: ghostwhite;
-
 }
 </style>
