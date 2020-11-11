@@ -119,8 +119,14 @@
                 <v-col />
             </v-layout>
         </v-container>
-{{trends}}
+        <v-divider/>
+        {{trends}}
+        <v-divider/>
+        {{trends_graph}}
+        <v-divider/>
         {{topics}}
+         <v-divider/>
+        {{getSelected}}
     </template>
 </div>
 </template>
@@ -299,28 +305,37 @@ export default {
         trends: [],
         date: '2020-11-09T00:00:00',
         topic_id: 2,
-        trends_graph: [{
-            name: null,
-            data: [{
-                x: null,
-                y: null,
-            }]
-        }]
+        trends_graph: []
+        // trends_graph: [{
+        //     name: null,
+        //     data: [{
+        //         x: null,
+        //         y: null,
+        //     }]
+        // }]
     }),
 
     watch: {
-        getDates(value) {
-            // Call queries again with new parameters
-            this.$apollo.queries.trends.refresh().
-            updateTopics()
-            console.log('Trends graph refreshed', value);
+        getSelected: {
+            handler: function() {
+                // this.$apollo.queries.related.refresh().
+                // this.update(this.topic_id+1)
+                this.updateTrends()
+                console.log('Related topics and Trends graph refreshed')
+            },
+            deep: true
         },
-        getSelected(value) {
-            // Call queries again with new parameters
-            this.$apollo.queries.related.refresh().
-            updateTopics()
-            console.log('Related topics and Trends graph refreshed', value);
-        }
+
+        getDates: {
+            handler: function() {
+              // Call queries again with new parameters
+            this.$apollo.queries.trends.refresh().
+            this.updateTopics()
+            console.log('Trends graph refreshed');
+            },
+            deep: true
+        },
+
     },
 
     apollo: {
@@ -350,24 +365,42 @@ export default {
     },
 
     methods: {
+          foo() {
+        console.log("foo called");
+    },
 
-        // updateTrends() {
-        //     for (topic in this.getSelected) {
-        //         var current_date = this.start_date
-        //         while (current_date <= this.end_date) {
-        //             this.topic_id = topic.id
-        //             this.date = current_date
-        //             this.$apollo.queries.trends.refresh().
+        updateTrends() {
+            var topic
+            for (topic in this.getSelected) {
 
-        //             var count = 
+            // for (let i = 0; i < this.getSelected.length; i++) {
+                this.date = this.start_date
+                let data_series = []
 
-        //             this.trends_graph
+                while (this.date <= this.end_date) {
+                    this.topic_id = topic.id
+                    this.$apollo.queries.trends.refresh()
+                    data_series.push({
+                        x: this.date,
+                        y: this.trends.topicofarticlesByTopicId.totalCount
+                    })
+                    this.date = this.date.addDays(1);
+                }
 
-        //             currentDate = currentDate.addDays(1);
-        //         }
-        //     }
-
-        // },
+                let new_topic = {   name: topic.name,
+                                    data: data_series
+                                }    
+                this.trends_graph.push(new_topic)
+            }
+        },
+        update(topic_id) {
+            this.topic_id = topic_id
+            this.$apollo.queries.trends.refresh()
+            // data_series.push({
+            //     x: this.date,
+            //     y: this.trends.topicofarticlesByTopicId.totalCount
+            // })
+        },
         formatDate(date) {
             let month = `${date.getMonth() + 1}`;
             let day = `${date.getDate()}`;
