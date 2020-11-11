@@ -200,6 +200,9 @@ export default {
                 this.end_date = this.dates[0]
             }
             this.dates = [this.start_date, this.end_date]
+
+            this.start_date = new Date(this.start_date)
+            this.end_date = new Date(this.end_date)
         },
         searchTopic() {
             this.search = true

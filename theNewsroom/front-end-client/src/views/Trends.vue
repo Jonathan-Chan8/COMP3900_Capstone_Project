@@ -118,6 +118,19 @@
                 <v-col />
             </v-layout>
         </v-container>
+        {{dates}}
+                <v-divider/>
+
+        {{new Date(start_date)}}
+        <v-divider/>
+
+        {{date_from}}
+                <v-divider/>
+
+        {{date_to}}
+                <v-divider/>
+                {{trends}}
+
 {{trends_graph}}
 
         <v-divider/>
@@ -350,14 +363,21 @@ export default {
                     this.end_date = new Date()
                     this.start_date = new Date()
                     this.start_date.setMonth(this.end_date.getMonth() - 1)
+
+                    this.date_from = new Date(this.start_date)
+                    this.date_to = new Date(this.end_date)
+
+
                 }
                 return {
-                    date: this.date,
+                    // date: this.date,
+                    from: new Date(this.date_from.toISOString().slice(0, 10)),
+                    to: new Date(this.date_to.toISOString().slice(0, 10)),               
                     topicId: this.topic_id
                 }
             },
             update(data) {
-                return data.topicById;
+                return data
             }
         }
     },
@@ -368,23 +388,23 @@ export default {
             
             var i
             for (i = 0; i < this.getSelected.length; i++) {
-                this.date = new Date(this.start_date)
+                this.date_from = new Date(this.start_date)
                 this.topic_id = this.getSelected[i].id
                 var data_series = []
 
-                while (this.date <= this.end_date) {
-                    var date = this.date
-                    this.date = this.date.toISOString().slice(0,10)
+                while (this.date_from <= this.end_date) {
+                    this.date_to = new Date(this.date_from)
+                    this.date_to.setDate(this.date_to.getDate() + 1)
+
+                    // this.date = this.date.toISOString().slice(0, 10)
                     this.$apollo.queries.trends.refresh()
                     
                     data_series.push({
-                        x: this.date,
-                        y: this.trends.topicofarticlesByTopicId.totalCount
+                        x: this.date_from,
+                        y: this.trends.topicById.topicofarticlesByTopicId.totalCount
                     })
 
-                    let new_date = new Date(date)
-                    new_date.setDate(new_date.getDate() + 1)
-                    this.date = new_date
+                    this.date_from = this.date_to
                 }
 
                 this.trends_graph.push({   
@@ -392,6 +412,32 @@ export default {
                     data: data_series
                 })
             }
+
+            // for (i = 0; i < this.getSelected.length; i++) {
+            //     var date = this.start_date
+            //     this.topic_id = this.getSelected[i].id
+            //     var data_series = []
+
+            //     while (date <= this.end_date) {
+            //         this.date = new Date(date.toISOString().slice(0,10))
+            //         this.$apollo.queries.trends.refresh()
+                    
+            //         data_series.push({
+            //             x: this.date,
+            //             y: this.trends.topicById.topicofarticlesByTopicId.totalCount
+            //         })
+
+                    
+            //         date.setDate(date.getDate() + 1)                }
+
+            //     this.trends_graph.push({   
+            //         name: this.getSelected[i].name,
+            //         data: data_series
+            //     })
+            // }
+
+
+
         },
         update(topic_id) {
             this.topic_id = topic_id
@@ -436,6 +482,11 @@ export default {
                 this.end_date = this.dates[0]
             }
             this.dates = [this.start_date, this.end_date]
+
+            this.start_date = new Date(this.start_date)
+            this.end_date = new Date(this.end_date)
+
+            this.updateTrends()
         },
         saveTrendSelection(name) {
             if (this.name.length > 3 && this.name.length <= 20 && this.selected.length > 0) {
