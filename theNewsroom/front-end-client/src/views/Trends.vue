@@ -119,14 +119,14 @@
                 <v-col />
             </v-layout>
         </v-container>
+                <v-divider/>
+
+
         <v-divider/>
         {{trends}}
         <v-divider/>
         {{trends_graph}}
-        <v-divider/>
-        {{topics}}
-         <v-divider/>
-        {{getSelected}}
+
     </template>
 </div>
 </template>
@@ -295,16 +295,16 @@ export default {
         search: false,
         save: false,
         popup: false,
-        start_date: '',
-        end_date: '',
+        start_date: null,
+        end_date: null,
         dates: [],
         keyword: '',
 
         menu: false,
         related: [],
         trends: [],
-        date: '2020-11-09T00:00:00',
-        topic_id: 2,
+        date: null,
+        topic_id: null,
         trends_graph: []
         // trends_graph: [{
         //     name: null,
@@ -353,7 +353,15 @@ export default {
         trends: {
             query: TOPIC_ARTICLES_DATE,
             variables() {
+                
+                if (this.end_date == null) {
+                    this.end_date = new Date()
+                    this.start_date = new Date()
+                    this.start_date.setMonth(this.end_date.getMonth() - 1)
+                } 
+                
                 return {
+                    
                     date: this.date,
                     topicId: this.topic_id
                 }
@@ -370,27 +378,34 @@ export default {
     },
 
         updateTrends() {
-            var topic
-            for (topic in this.getSelected) {
 
-            // for (let i = 0; i < this.getSelected.length; i++) {
+            // var topic
+            // for (topic in this.getSelected) {
+            // this.trends_graph = []
+            var i
+            for (i = 0; i < this.getSelected.length; i++) {
                 this.date = this.start_date
-                let data_series = []
+                this.topic_id = this.getSelected[i].id
+                var data_series = []
 
                 while (this.date <= this.end_date) {
-                    this.topic_id = topic.id
                     this.$apollo.queries.trends.refresh()
                     data_series.push({
                         x: this.date,
                         y: this.trends.topicofarticlesByTopicId.totalCount
                     })
-                    this.date = this.date.addDays(1);
+
+                    let new_date = new Date(this.date)
+                    new_date.setDate(new_date.getDate() + 1)
+                    this.date = new_date
                 }
 
-                let new_topic = {   name: topic.name,
+                // this.trends_graph.push({topic: this.getSelected[i].name, data: data_series})
+
+
+                this.trends_graph.push({   name: this.getSelected[i].id.name,
                                     data: data_series
-                                }    
-                this.trends_graph.push(new_topic)
+                                }   )
             }
         },
         update(topic_id) {
