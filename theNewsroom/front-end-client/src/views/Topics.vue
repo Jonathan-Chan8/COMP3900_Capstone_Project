@@ -81,6 +81,7 @@
             </v-layout>
         </v-container>
 {{start_date}}
+{{end_date}}
     </template>
 </div>
 
@@ -147,9 +148,6 @@ export default {
                     this.end_date = new Date()
                     this.start_date = new Date()
                     this.start_date.setMonth(this.end_date.getMonth() - 1)
-
-                     this.end_date = this.formatDate(this.end_date)
-                    this.start_date = this.formatDate(this.start_date)
                 } 
                 return {
                         media: this.media,

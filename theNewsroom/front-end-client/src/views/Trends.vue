@@ -25,10 +25,10 @@
                                     <Search v-model="search" />
                                 </v-list-item>
                                 <!-- Calendar -->
-                                <v-list-item>
+                                 <v-list-item>
                                     <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date" transition="scale-transition" offset-y min-width="290px">
                                         <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field dense filled rounded v-model="dateRange" label="Select time period" append-icon="mdi-calendar" single-line hide-details readonly v-bind="attrs" v-on="on" />
+                                            <v-text-field dense rounded filled v-model="dateRange" label="Select time period" append-icon="mdi-calendar" single-line hide-details readonly v-bind="attrs" v-on="on" />
                                         </template>
                                         <v-date-picker v-model="dates" :max='todaysDate' range no-title scrollable>
                                             <v-spacer />
@@ -94,9 +94,8 @@
                             <v-list-item>
                                 <v-spacer />
                                 <SaveTrend v-if="!$auth.loading & $auth.isAuthenticated" />
-                                <v-btn rounded depressed @click="emptySelected()">
-                                    Clear
-                                </v-btn>
+                                <v-btn rounded depressed @click="reset">
+                                    Reset </v-btn>
                                 <HelpTrends />
 
                             </v-list-item>
@@ -119,18 +118,11 @@
                 <v-col />
             </v-layout>
         </v-container>
-
-
-        <v-divider/>
+{{trends_graph}}
 
         <v-divider/>
-        {{start_date}}
-        {{start_date.toISOString()}}
-        
-        {{start_date.toISOString().slice(0, 10)}}
-        {{trends}}
-        {{trends_graph}}
 
+   
 
 
     </template>
@@ -164,6 +156,9 @@ export default {
     },
 
     data: () => ({
+        mounted() {
+      this.updateTrends()
+    },
         topics: [{
                 name: "US News",
                 data: [{
@@ -179,7 +174,7 @@ export default {
                     }
                 ]
             }, {
-                name: "Coronavirus",
+                name: "Politics",
                 data: [{
                         x: new Date('2018-02-12').getTime(),
                         y: 123
@@ -193,7 +188,7 @@ export default {
                     }
                 ]
             }, {
-                name: "Joe Biden",
+                name: "Media",
                 data: [{
                         x: new Date('2018-02-12').getTime(),
                         y: 12
@@ -208,7 +203,7 @@ export default {
                 ]
             },
             {
-                name: "News Corp",
+                name: "Business",
                 data: [{
                         x: new Date('2018-02-12').getTime(),
                         y: 17
@@ -223,7 +218,7 @@ export default {
                 ]
             },
             {
-                name: "Vaccine",
+                name: "Football",
                 data: [{
                         x: new Date('2018-02-12').getTime(),
                         y: 98
@@ -312,13 +307,6 @@ export default {
         date: null,
         topic_id: null,
         trends_graph: []
-        // trends_graph: [{
-        //     name: null,
-        //     data: [{
-        //         x: null,
-        //         y: null,
-        //     }]
-        // }]
     }),
 
     watch: {
@@ -331,7 +319,7 @@ export default {
             deep: true
         },
 
-        // start_date: {
+        // dates: {
         //     handler: function() {
         //         // Call queries again with new parameters
         //         // this.$apollo.queries.trends.refresh().
@@ -358,20 +346,14 @@ export default {
         trends: {
             query: TOPIC_ARTICLES_DATE,
             variables() {
-                
-                if (this.end_date == null) {
+                if (this.start_date == null) {
                     this.end_date = new Date()
                     this.start_date = new Date()
                     this.start_date.setMonth(this.end_date.getMonth() - 1)
-                } 
-                
+                }
                 return {
-                    
                     date: this.date,
                     topicId: this.topic_id
-
-                    // date: '2020-11-09T00:00:00',
-                    // topicId: 2
                 }
             },
             update(data) {
@@ -382,21 +364,19 @@ export default {
 
     methods: {
         updateTrends() {
-
-            // var topic
-            // for (topic in this.getSelected) {
             this.trends_graph = []
+            
             var i
             for (i = 0; i < this.getSelected.length; i++) {
-                this.date = this.start_date
+                this.date = new Date(this.start_date)
                 this.topic_id = this.getSelected[i].id
                 var data_series = []
 
                 while (this.date <= this.end_date) {
                     var date = this.date
-                    this.date = this.date.toISOString().slice(0, 10)
-
+                    this.date = this.date.toISOString().slice(0,10)
                     this.$apollo.queries.trends.refresh()
+                    
                     data_series.push({
                         x: this.date,
                         y: this.trends.topicofarticlesByTopicId.totalCount
@@ -406,9 +386,6 @@ export default {
                     new_date.setDate(new_date.getDate() + 1)
                     this.date = new_date
                 }
-
-                // this.trends_graph.push({topic: this.getSelected[i].name, data: data_series})
-
 
                 this.trends_graph.push({   
                     name: this.getSelected[i].name,
@@ -449,7 +426,7 @@ export default {
             this.popup = true
             this.openTopic(topic)
         },
-        saveDates() {
+       saveDates() {
             this.$refs.menu.save(this.dates)
             if (this.dates[0] < this.dates[1]) {
                 this.start_date = this.dates[0]
@@ -459,8 +436,6 @@ export default {
                 this.end_date = this.dates[0]
             }
             this.dates = [this.start_date, this.end_date]
-            this.updateTrends()
-            // this.db = queryDB()
         },
         saveTrendSelection(name) {
             if (this.name.length > 3 && this.name.length <= 20 && this.selected.length > 0) {
@@ -472,9 +447,19 @@ export default {
             this.search = true
             this.searchTopicKeyword(this.keyword)
         },
+        reset() {
+            this.dates = []
+            this.start_date = null
+            this.end_date = null
+            this.media = ''
+            this.emptySelected()
+        }
 
     },
     computed: {
+        ...mapState(['current_topic', 'current_article', 'saved', 'popups', 'selected', 'related']),
+        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved', 'getRelated', 'getPopups']),
+
         todaysDate() {
             const today = new Date();
             return this.formatDate(today);
@@ -482,12 +467,7 @@ export default {
         dateRange() {
             return this.dates.join(' to ')
         },
-        getDates() {
-            return [this.start_date, this.end_date]
-        },
-        ...mapState(['saved', 'popups', 'selected', 'current_topic']),
-        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved']),
-    },
+    }
 }
 </script>
 

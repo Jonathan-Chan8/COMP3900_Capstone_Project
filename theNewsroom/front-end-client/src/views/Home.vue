@@ -12,8 +12,8 @@
                     <v-spacer/>
 
 
-                    <v-card-text class="text-center font-weight-bold" v-resize-text v-text='topics[1].name' />
-                    <v-card-text class='text-center'> {{topics[1].topicofarticlesByTopicId.totalCount}} articles</v-card-text>
+                    <v-card-text class="text-center font-weight-bold" v-resize-text v-text='topics[0].name' />
+                    <v-card-text class='text-center'> {{topics[0].topicofarticlesByTopicId.totalCount}} articles</v-card-text>
 
                     
 
@@ -26,7 +26,7 @@
             <v-col   cols="12" md='6'>
                 <!-- Show login/register when user is not authenticated -->
                 <v-card  color='rgb(230, 235, 255)' v-if="!$auth.loading && !$auth.isAuthenticated" class="flex-wrap text-justify justify-space-between" height="100%" width="100%" hover>
-                    <v-card-title class="headline" v-text="unauth.title" />
+                    <v-card-title class="headline" >Log in for additional features!</v-card-title>
                     <v-card-text >{{unauth.text}}</v-card-text>
                     <v-card-text> <strong>{{unauth.second_text}}</strong></v-card-text>
                 </v-card>
@@ -106,7 +106,7 @@ export default {
                     id: 'topics',
                     title: 'What is Topics?',
                     text: 'Sometimes, you just need to see the big picture. On the Topics page, you can explore the most popular news topics however you want. Adjust the time period, and filter by media outlets, to view which topics are the most prominent in the media landscape.',
-                                        second_text: 'Click to go to Topics!',
+                    second_text: 'Click to go to Topics!',
 
                     route: '/topics'
                 },
