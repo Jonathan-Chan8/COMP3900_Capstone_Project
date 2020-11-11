@@ -5,7 +5,7 @@ Created on Wed Oct  7 17:37:11 2020
 
 @author: z5079346
 
-This script retrieve'es data from select news API's
+This script retrieve's data from select news API's
 and inserts the data into thenewsroom_database (postgreSQL)
 
 """
@@ -24,7 +24,7 @@ from datetime import datetime
 #--------------------------- API HashMap's ---------------------------#
 
 class Guardian():
-#                  thenewsroom_database   Guardian API
+
     def __init__(self):
         
         self.name = "Guardian"
@@ -60,8 +60,8 @@ for API in APIs:
     
     params = {
         #'q'                 : 'trump',
-        'from-date'         :    "2019-10-01",
-        'to-date'           :    "2019-10-01",
+        'from-date'         :    "2020-11-01",
+        'to-date'           :    "2020-11-01",
         'api-key'           :API.api_key_liam,
         'page-size'         :  API.page_limit,     # 200 = max page size for Guardian
         'show-editors-picks':          'true',
@@ -85,7 +85,7 @@ for API in APIs:
     # Convert webPublicationDate from unicode to datetime type
     if API.name == 'Guardian':
         for article in all_results:
-            article['webPublicationDate'] = datetime.strptime(article['webPublicationDate'],'%Y-%m-%dT%H:%M:%SZ')
+            article['webPublicationDate'] = datetime.strptime(article['webPublicationDate'], '%Y-%m-%dT%H:%M:%SZ').date()
 
 
     # Remove unwanted attributes from all_results 
@@ -167,9 +167,8 @@ for API in APIs:
     
         try:
            
-            # for article, content, topic in zip_tables:
             # Insert each article into the appropiate tables
-            for article, content, topic in zip(articles, article_content, article_topic):
+            for article, content, topic in zip(articles, article_content, article_topics):
                 
                 # insert article contents
                 cur.execute(content_row_format_string, (content,)) # Formatting: Needs to be a tuple (or list)
@@ -211,6 +210,5 @@ for API in APIs:
         # close the cursor and connection
         cur.close()
         conn.close()
-    
     
 

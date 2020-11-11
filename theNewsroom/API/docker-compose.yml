@@ -27,7 +27,7 @@ services:
 
     # these are arguments that will be added onto the docker ENTRYPOINT command
     # we can customise how we start up the postgraphile program with these - https://www.graphile.org/postgraphile/usage-cli/
-    command: ["--connection", "postgres://postgres:password@postgres-db:5432/thenewsroom_database", "--schema", "newscollectorinfo", "--append-plugins", "postgraphile-plugin-connection-filter"]
+    command: ["--connection", "postgres://postgres:password@postgres-db:5432/thenewsroom_database", "--schema", "newscollectorinfo", "--append-plugins", "postgraphile-plugin-connection-filter,@graphile-contrib/pg-order-by-related"]
     # Create this service after the postgres-db docker container is set up
     depends_on:
       - postgres-db

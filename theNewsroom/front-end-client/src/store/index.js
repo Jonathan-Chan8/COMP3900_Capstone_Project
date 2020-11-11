@@ -10,6 +10,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 	
 	state: {
+		keyword: '',
 		current_topic: '',
 		current_article: '',
 		saved: [],
@@ -22,7 +23,9 @@ export default new Vuex.Store({
 
 	mutations: {
 		addSelected(state, topic) {
-			state.selected.push(topic)
+			if (!state.selected.includes(topic)){
+				state.selected.push(topic)
+			}
 		},
 		removeSelected(state, topic) {
 			let index = state.selected.findIndex(item => item == topic)
@@ -71,6 +74,9 @@ export default new Vuex.Store({
 		openArticle(state, article) {
 			state.current_article = article
 		},
+		searchTopicKeyword(state, keyword) {
+			state.keyword = keyword
+		}
 	},
 
 	actions: {

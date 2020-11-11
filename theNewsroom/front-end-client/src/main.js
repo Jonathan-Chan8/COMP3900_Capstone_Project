@@ -4,8 +4,16 @@ import App from './App.vue'
 import router from './router/'
 import store from './store/'
 
+import VueResizeText from 'vue-resize-text';
+Vue.use(VueResizeText)
+
 import vuetify from './plugins/vuetify'
 import './scss/main.scss'
+
+import VueApexCharts from 'vue-apexcharts'
+Vue.use(VueApexCharts)
+
+Vue.component('apexchart', VueApexCharts)
 
 import MultiFiltersPlugin from './plugins/MultiFilters'
 Vue.use(MultiFiltersPlugin)

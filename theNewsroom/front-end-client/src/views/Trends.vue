@@ -1,122 +1,126 @@
 <template>
 <div class="trends">
     <template>
-        <v-spacer />
-        <v-layout wrap>
-            <v-spacer />
-            <v-flex xs10 md3>
-                <!-- Really, these filters wont actually filter the datatable, but rather will be used as input to our db query, thus changing the reuslts of the topics list returned by the database -->
+        <v-container fluid>
 
-                <!-- For now this filters the datatable, really we want it to produce a popup with possible matches on 'enter', and selecting a match will produce the corresponding topic popup. This field ought to be in the same position of the page on both Topics and Trends, to show continuity -->
-                <v-card flat tile width='100%'>
-                    <v-list ripple=false expand flat rounded dense>
+            <v-layout wrap>
+                <v-flex xs12 md4>
+                    <!-- Really, these filters wont actually filter the datatable, but rather will be used as input to our db query, thus changing the reuslts of the topics list returned by the database -->
 
-                        <!-- Search, calendar and media are subgroups in a the group Filters, allowing us to easily modify this entire list as a single element -->
-                        <v-list-group value="true" color="none">
+                    <!-- For now this filters the datatable, really we want it to produce a popup with possible matches on 'enter', and selecting a match will produce the corresponding topic popup. This field ought to be in the same position of the page on both Topics and Trends, to show continuity -->
+                    <v-card flat tile width='100%'>
+                        <v-list ripple=false expand flat rounded dense>
 
-                            <template v-slot:activator>
-                                <v-list-item-content>
-                                    <v-list-item-title class='font-weight-light list-title'>Filters</v-list-item-title>
-                                </v-list-item-content>
-                            </template>
-                            <!-- Search -->
-                            <v-list-item>
-                                <v-text-field dense rounded filled v-model="search" append-icon="mdi-magnify" label="Search for a topic" single-line hide-details />
-                            </v-list-item>
-                            <!-- Calendar -->
-                            <v-list-item>
-                                <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date" transition="scale-transition" offset-y min-width="290px">
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <v-text-field dense filled rounded v-model="dateRange" label="Select time period" append-icon="mdi-calendar" single-line hide-details readonly v-bind="attrs" v-on="on" />
-                                    </template>
-                                    <v-date-picker v-model="dates" :max='todaysDate' range no-title scrollable>
-                                        <v-spacer />
-                                        <v-btn text color="primary" @click="saveDates">
-                                            OK
-                                        </v-btn>
-                                    </v-date-picker>
-                                </v-menu>
-                            </v-list-item>
-                        </v-list-group>
-                        <!-- Selected, Related and Saved topics are also presented as groups in the List, allowing us to open and close them easily to show their internal components. Selected is set to true so that it is shown automatically, whilst the others are closed by default -->
-                        <v-list-group value="true" color="none">
-                            <template v-slot:activator>
-                                <v-list-item-content>
-                                    <v-list-item-title class='font-weight-light list-title'>Selected Topics</v-list-item-title>
-                                </v-list-item-content>
-                            </template>
-                            <v-list-item-group value="true" color="none">
-                                <v-list-item class='item' v-for="item in getSelected" :key="item">
-                                    <v-list-item-title @click='open(item)' v-text="item.name" />
-                                    <v-btn icon @click='removeSelected(item)'>
-                                        <v-icon color="grey lighten-1">mdi-minus-circle</v-icon>
-                                    </v-btn>
-                                </v-list-item>
-                            </v-list-item-group>
-                        </v-list-group>
-                        <v-list-group color="none">
-                            <template v-slot:activator>
-                                <v-list-item-content>
-                                    <v-list-item-title class='font-weight-light list-title'>Related Topics</v-list-item-title>
-                                </v-list-item-content>
-                            </template>
-                            <v-list-item-group color="none">
-                                <v-list-item class='item' v-for="item in getRelatedTopics" :key="item">
-                                    <v-list-item-title @click='open(item)' v-text="item.name" />
-                                    <v-btn icon @click='addSelected(item)'>
-                                        <v-icon color="grey lighten-1">mdi-plus-circle</v-icon>
-                                    </v-btn>
-                                </v-list-item>
-                            </v-list-item-group>
-                        </v-list-group>
-                        <template v-if="!$auth.loading & $auth.isAuthenticated">
-                            <v-list-group color="none">
+                            <!-- Search, calendar and media are subgroups in a the group Filters, allowing us to easily modify this entire list as a single element -->
+                            <v-list-group value="true" color="none">
+
                                 <template v-slot:activator>
                                     <v-list-item-content>
-                                        <v-list-item-title class='font-weight-light list-title'>Saved Trends</v-list-item-title>
+                                        <v-list-item-title class='font-weight-light list-title'>Filters</v-list-item-title>
                                     </v-list-item-content>
                                 </template>
-                                <v-list-item-group color="none">
-                                    <v-list-item class='item' v-for="config in getSaved" :key="config" @click="setSelected(config.topics)">
-                                        <v-list-item-title v-text=" config.title" />
+                                <!-- Search -->
+                                <v-list-item>
+                                    <v-text-field @keyup.enter.native="searchTopic" dense rounded filled v-model="keyword" append-icon="mdi-magnify" label="Search for a topic" single-line hide-details />
+                                    <Search v-model="search" />
+                                </v-list-item>
+                                <!-- Calendar -->
+                                <v-list-item>
+                                    <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date" transition="scale-transition" offset-y min-width="290px">
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-text-field dense filled rounded v-model="dateRange" label="Select time period" append-icon="mdi-calendar" single-line hide-details readonly v-bind="attrs" v-on="on" />
+                                        </template>
+                                        <v-date-picker v-model="dates" :max='todaysDate' range no-title scrollable>
+                                            <v-spacer />
+                                            <v-btn text color="primary" @click="saveDates">
+                                                OK
+                                            </v-btn>
+                                        </v-date-picker>
+                                    </v-menu>
+                                </v-list-item>
+                            </v-list-group>
+                            <!-- Selected, Related and Saved topics are also presented as groups in the List, allowing us to open and close them easily to show their internal components. Selected is set to true so that it is shown automatically, whilst the others are closed by default -->
+                            <v-list-group value="true" color="none">
+                                <template v-slot:activator>
+                                    <v-list-item-content>
+                                        <v-list-item-title class='font-weight-light list-title'>Selected Topics</v-list-item-title>
+                                    </v-list-item-content>
+                                </template>
+                                <v-list-item-group value="true" color="none">
+                                    <v-list-item class='item' v-for="(item, index) in getSelected" :key="item" >
+                                        <v-list-item-title @click='open(item)' v-text="item.name" />
+                                        <v-icon v-if='index == 0' color="#FF9D00">mdi-circle</v-icon>
+                                        <v-icon v-if='index == 1' color='#66DB00'>mdi-circle</v-icon>
+                                        <v-icon v-if='index == 2' color="#FF42DC">mdi-circle</v-icon>
+                                        <v-icon v-if='index == 3' color="#0096DB">mdi-circle</v-icon>
+                                        <v-icon v-if='index == 4' color="#DB0004">mdi-circle</v-icon>
+                                        <v-btn icon @click='removeSelected(item)'>
+                                            <v-icon color="grey lighten-1">mdi-minus-circle</v-icon>
+                                        </v-btn>
                                     </v-list-item>
                                 </v-list-item-group>
                             </v-list-group>
+                            <v-list-group color="none">
+                                <template v-slot:activator>
+                                    <v-list-item-content>
+                                        <v-list-item-title class='font-weight-light list-title'>Related Topics</v-list-item-title>
+                                    </v-list-item-content>
+                                </template>
+                                <v-list-item-group color="none">
+                                    <v-list-item  class='item' v-for="item in related" :key="item">
+                                        <v-list-item-title @click='open(item)' v-text="item.name" />
+                                        <v-btn icon @click='addSelected(item)'>
+                                            <v-icon color="grey lighten-1">mdi-plus-circle</v-icon>
+                                        </v-btn>
+                                    </v-list-item>
+                                </v-list-item-group>
+                            </v-list-group>
+                            <template v-if="!$auth.loading & $auth.isAuthenticated">
+                                <v-list-group color="none">
+                                    <template v-slot:activator>
+                                        <v-list-item-content>
+                                            <v-list-item-title class='font-weight-light list-title'>Saved Trends</v-list-item-title>
+                                        </v-list-item-content>
+                                    </template>
+                                    <v-list-item-group color="none">
+                                        <v-list-item class='item' v-for="config in getSaved" :key="config" @click="setSelected(config.topics)">
+                                            <v-list-item-title v-text=" config.title" />
+                                        </v-list-item>
+                                    </v-list-item-group>
+                                </v-list-group>
 
-                        </template>
+                            </template>
 
-                        <v-list-item>
-                            <v-spacer />
-                            <SaveTrend v-if="!$auth.loading & $auth.isAuthenticated" />
-                            <v-btn rounded depressed @click="emptySelected()">
-                                Clear
-                            </v-btn>
-                            <HelpTrends />
+                            <v-list-item>
+                                <v-spacer />
+                                <SaveTrend v-if="!$auth.loading & $auth.isAuthenticated" />
+                                <v-btn rounded depressed @click="emptySelected()">
+                                    Clear
+                                </v-btn>
+                                <HelpTrends />
 
-                        </v-list-item>
-                    </v-list>
-                </v-card>
-            </v-flex>
-            <v-spacer />
-
-            <v-flex align-center xs12 md6>
-                <!-- This is where the trends graph will go -->
-                <!--
-                <v-text> Current Topic: {{ current_topic}} </v-text>
+                            </v-list-item>
+                        </v-list>
+                    </v-card>
+                </v-flex>
                 <v-spacer />
-                <v-text> Popup Stack: {{ getPopups}} </v-text>
-                <v-spacer />
-                <v-text> Selected Topics: {{ getSelected}} </v-text>
-                <v-spacer />
-                <v-text> Saved: {{ getSaved}} </v-text>
-                -->
-            </v-flex>
 
-            <!-- Same as on Home and Topics, this is only shown when popup = true and is closed when popup = false -->
-            <Popup v-model="popup" />
+                <v-flex align-center xs12 md8>
+                    <template>
+                        <div>
+                            <apexchart type="line" :options="options" :series="topics"></apexchart>
+                        </div>
+                    </template>
+                </v-flex>
 
-            <v-col />
-        </v-layout>
+                <!-- Same as on Home and Topics, this is only shown when popup = true and is closed when popup = false -->
+                <Popup v-model="popup" />
+
+                <v-col />
+            </v-layout>
+        </v-container>
+{{trends}}
+        {{topics}}
     </template>
 </div>
 </template>
@@ -125,6 +129,7 @@
 import Popup from "../components/common/Popup";
 import SaveTrend from "../components/common/SaveTrend";
 import HelpTrends from "../components/common/HelpTrends";
+import Search from "../components/common/Search"
 
 import {
     mapGetters,
@@ -133,44 +138,236 @@ import {
 } from 'vuex';
 
 import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
+// import TOPIC_ARTICLES_DATE from '../graphql/TopArticlesFromTopic.gql'
+
+import TOPIC_ARTICLES_DATE from '../graphql/TopArticlesByDate.gql'
 
 export default {
     name: "Trends",
     components: {
         Popup,
         SaveTrend,
-        HelpTrends
+        HelpTrends,
+        Search
     },
 
     data: () => ({
+        topics: [{
+                name: "US News",
+                data: [{
+                        x: new Date('2018-02-12').getTime(),
+                        y: 76
+                    }, {
+                        x: new Date('2019-02-13').getTime(),
+                        y: 50
+                    },
+                    {
+                        x: new Date('2020-02-18').getTime(),
+                        y: 100
+                    }
+                ]
+            }, {
+                name: "Coronavirus",
+                data: [{
+                        x: new Date('2018-02-12').getTime(),
+                        y: 123
+                    }, {
+                        x: new Date('2019-02-13').getTime(),
+                        y: 48
+                    },
+                    {
+                        x: new Date('2020-02-18').getTime(),
+                        y: 13
+                    }
+                ]
+            }, {
+                name: "Joe Biden",
+                data: [{
+                        x: new Date('2018-02-12').getTime(),
+                        y: 12
+                    }, {
+                        x: new Date('2019-02-13').getTime(),
+                        y: 84
+                    },
+                    {
+                        x: new Date('2020-02-18').getTime(),
+                        y: 300
+                    }
+                ]
+            },
+            {
+                name: "News Corp",
+                data: [{
+                        x: new Date('2018-02-12').getTime(),
+                        y: 17
+                    }, {
+                        x: new Date('2019-02-13').getTime(),
+                        y: 44
+                    },
+                    {
+                        x: new Date('2020-02-18').getTime(),
+                        y: 198
+                    }
+                ]
+            },
+            {
+                name: "Vaccine",
+                data: [{
+                        x: new Date('2018-02-12').getTime(),
+                        y: 98
+                    }, {
+                        x: new Date('2019-02-13').getTime(),
+                        y: 43
+                    },
+                    {
+                        x: new Date('2020-02-18').getTime(),
+                        y: 102
+                    }
+                ]
+            }],
+        options: {
+            stroke: {
+                curve: 'smooth',
+            },
+            colors: [
+                '#FF9D00', '#66DB00', '#FF42DC', '#0096DB', '#DB0004', 
+            ],
+            xaxis: {
+                type: 'datetime'
+            },
+            markers: {
+                size: 0,
+                hover: {
+                    sizeOffset: 6
+                }
+            },
+            grid: {
+                borderColor: '#f1f1f1',
+            },
+            legend: {
+                horizontalAlign: 'right',
+                position: 'top',
+                onItemHover: {
+                    highlightDataSeries: true
+                },
+            },
 
+            chart: {
+                selection: {
+                    enabled: true
+                },
+                toolbar: {
+                    show: false,
+                    offsetX: 0,
+                    offsetY: 0,
+                    tools: {
+                        download: true,
+                        selection: false,
+                        zoom: false,
+                        zoomin: true,
+                        zoomout: true,
+                        pan: false,
+                        reset: false,
+                        customIcons: []
+                    },
+                    export: {
+                        csv: {
+                            filename: undefined,
+                            columnDelimiter: ',',
+                            headerCategory: 'category',
+                            headerValue: 'value',
+                            dateFormatter(timestamp) {
+                                return new Date(timestamp).toDateString()
+                            }
+                        }
+                    },
+                    autoSelected: 'zoom'
+                },
+            },
+        },
+
+        search: false,
         save: false,
         popup: false,
         start_date: '',
         end_date: '',
         dates: [],
+        keyword: '',
 
         menu: false,
-        search: '',
-
-        getRelatedTopics: []
+        related: [],
+        trends: [],
+        date: '',
+        topicId: null,
+        trends_graph: [{
+            name: null,
+            data: [{
+                x: null,
+                y: null,
+            }]
+        }]
     }),
 
+    watch: {
+        getDates(value) {
+            // Call queries again with new parameters
+            this.$apollo.queries.trends.refresh().
+            updateTopics()
+            console.log('Trends graph refreshed', value);
+        },
+        getSelected(value) {
+            // Call queries again with new parameters
+            this.$apollo.queries.related.refresh().
+            updateTopics()
+            console.log('Related topics and Trends graph refreshed', value);
+        }
+    },
+
     apollo: {
-        getRelatedTopics: {
+        related: {
             query: ALL_TOPICS_WITH_FILTER,
             variables() {
                 return {
-                    limit: 5
+                    limit: 10
                 }
             },
             update(data) {
                 return data.allTopics.nodes;
             }
+        },
+        trends: {
+            query: TOPIC_ARTICLES_DATE,
+            variables() {
+                return {
+                    date: this.date,
+                    topicId: this.topic_id
+                }
+            },
+            update(data) {
+                return data.topicById;
+            }
         }
     },
 
     methods: {
+
+        // updateTrends() {
+        //     for (topic in this.getSelected) {
+        //         var current_date = this.start_date
+        //         while (current_date <= this.end_date) {
+        //             this.topic_id = topic.id
+        //             this.date = current_date
+        //             this.$apollo.queries.trends.refresh().
+
+        //             var count = 
+
+        //             this.trends_graph
+
+        //             currentDate = currentDate.addDays(1);
+        //         }
+        //     }
+
+        // },
         formatDate(date) {
             let month = `${date.getMonth() + 1}`;
             let day = `${date.getDate()}`;
@@ -188,7 +385,9 @@ export default {
             'closeTopic',
             'emptySelected',
             'setSelected',
-            'saveTrend'
+            'saveTrend',
+            'searchTopicKeyword'
+
         ]),
         open(topic) {
             this.popup = true
@@ -211,8 +410,12 @@ export default {
                 this.dialog = false
                 this.saveTrend(name)
             }
+        },
+        searchTopic() {
+            this.search = true
+            this.searchTopicKeyword(this.keyword)
+        },
 
-        }
     },
     computed: {
         todaysDate() {
@@ -221,6 +424,9 @@ export default {
         },
         dateRange() {
             return this.dates.join(' to ')
+        },
+        getDates() {
+            return [this.start_date, this.end_date]
         },
         ...mapState(['saved', 'popups', 'selected', 'current_topic']),
         ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved']),
@@ -237,6 +443,10 @@ td {
     font-size: 16px !important;
 }
 
+.item {
+    background: [];
+
+}
 .item:hover {
     background: ghostwhite;
 

@@ -1,6 +1,6 @@
 <template>
 <v-dialog d-flex style="box-shadow: none" elevation="0" v-model="show" width="1000px" height="500px">
-    <v-card>
+   <v-card>
         <v-card-title class="headline" v-text="current_article.articleByArticleId.title" />
         <v-divider />
         <div>
@@ -11,7 +11,7 @@
             <v-row dense>
                 <v-col md6>
                     <v-card-title>
-                        <strong>Publication Date</strong>: {{current_article.articleByArticleId.publicationDate}}
+                        <strong>Publication Date</strong>: {{current_article.articleByArticleId.publicationDate.slice(0,10)}}
                     </v-card-title>
                 </v-col>
                 <v-col md6>
