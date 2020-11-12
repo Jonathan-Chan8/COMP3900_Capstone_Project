@@ -1,7 +1,12 @@
 <template>
 <div class="home">
-    <h1 class="body subheading grey--text font-weight-bold text-center">Welcome to the Newsroom</h1>
     <v-container fluid>
+        <v-col>
+            <v-list-item>
+                <v-text-field @keyup.enter.native="searchTopic" dense rounded filled v-model="keyword" append-icon="mdi-magnify" label="Looking for a specific topic?" single-line hide-details />
+                <Search v-model="search" />
+            </v-list-item>
+        </v-col>
 
         <v-row>
             <!-- Topic of the Day -->
@@ -26,15 +31,17 @@
             <v-col   cols="12" md='6'>
                 <!-- Show login/register when user is not authenticated -->
                 <v-card  color='rgb(230, 235, 255)' v-if="!$auth.loading && !$auth.isAuthenticated" class="flex-wrap text-justify justify-space-between" height="100%" width="100%" hover>
-                    <v-card-title class="headline" >Log in for additional features!</v-card-title>
+                    <v-card-title class="headline" v-text="unauth.title" />
                     <v-card-text >{{unauth.text}}</v-card-text>
-                    <v-card-text> <strong>{{unauth.second_text}}</strong></v-card-text>
+                    <v-card-text class='text-center'> <strong>{{unauth.second_text}}</strong></v-card-text>
                 </v-card>
 
                 <!-- show saved/logout when user is authenticated -->
                 <v-card  color='rgb(230, 235, 255)' v-else class="flex-wrap text-justify justify-space-between" height="100%" hover :to='saved.route'>
                     <v-card-title class="headline" v-text="saved.title" />
                     <v-card-text v-text='saved.text' />
+                    <v-card-text class='text-center'> <strong>{{saved.second_text}}</strong></v-card-text>
+
                 </v-card>
             </v-col>
 
@@ -45,7 +52,7 @@
                 <v-card  color='rgb(230, 235, 255)' class=" flex-wrap text-justify justify-space-between" rounded height="100%" width="100%" hover :to='card.route'>
                     <v-card-title class="headline" v-text="card.title" />
                     <v-card-text> {{card.text}} </v-card-text>
-                    <v-card-text> <strong>{{card.second_text}}</strong> </v-card-text>
+                    <v-card-text class='text-center'> <strong>{{card.second_text}}</strong> </v-card-text>
                 </v-card>
             </v-col>
         </v-row>
@@ -81,7 +88,7 @@ export default {
             overlay: false,
             unauth: {
                 id: 'unreg',
-                title: 'Register or Log In',
+                title: 'Log in for additional features!',
                 text: ' Register an account or log in to get access to additional features, such as selecting more topics on your Trends graph and saving topics for later!',
                 second_text: 'Click to Register or Log In!',
 
@@ -92,6 +99,8 @@ export default {
                 id: 'saved',
                 title: 'My Saved Trends',
                 text: 'Click here to view your saved trends, and explore how your selected topics are behaving!',
+                second_text: 'Click to view your Saved Trends!',
+
                 route: '/saved'
             },
             // totd: get_totd() ------ When we have connected to db

@@ -127,8 +127,14 @@ export default {
         articles: {
             query: TOP_ARTICLES_FROM_TOPIC,
             variables() {
+                var id
+                if (this.current_topic == '') {
+                    id = 1
+                } else {
+                    id = this.current_topic.id
+                }
                 return {
-                    topicId: this.current_topic.id
+                    topicId: id
                 }
             },
             update(data) {

@@ -26,7 +26,7 @@
                                 </v-list-item>
                                 <!-- Calendar -->
                                  <v-list-item>
-                                    <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date" transition="scale-transition" offset-y min-width="290px">
+                                    <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="dates" transition="scale-transition" offset-y min-width="290px">
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-text-field dense rounded filled v-model="dateRange" label="Select time period" append-icon="mdi-calendar" single-line hide-details readonly v-bind="attrs" v-on="on" />
                                         </template>
@@ -121,8 +121,8 @@
         {{dates}}
                 <v-divider/>
 
-        {{new Date(start_date)}}
-        {{new Date(end_date)}}
+        {{start_date}}
+        {{end_date}}
 
         <v-divider/>
 
@@ -166,9 +166,9 @@ export default {
         Search
     },
     data: () => ({
-        mounted() {
-      this.updateTrends()
-    },
+        created() {
+            this.updateTrends()
+        },
         topics: [{
                 name: "US News",
                 data: [{
@@ -315,16 +315,13 @@ export default {
         topic_id: null,
         trends_graph: [],
         skipQuery: true,
-
     }),
     watch: {
         getSelected: {
             handler: function() {
                 // this.$apollo.queries.related.refresh().
-
                 this.updateTrends()
                 // this.$apollo.queries.trends.refresh()
-
                 console.log('Related topics and Trends graph refreshed')
             },
             deep: true
@@ -354,7 +351,6 @@ export default {
         trends: {
             query: TOPIC_ARTICLES_DATE,
             variables() {
-
                 // var date = this.date
                 // var topic_id = this.topic_id
                 
@@ -362,7 +358,6 @@ export default {
                 //     date: date,
                 //     topicId: topic_id
                 // }
-
               
                 return {
                     date: this.date,
@@ -370,13 +365,21 @@ export default {
                 }
             },
             update(data) {
-                console.log(this.date.slice(0,10), 'ID:' + this.topic_id, 'Count: ' + data.topicById.topicofarticlesByTopicId.totalCount)
-
+                console.log(this.date, 'ID:' + this.topic_id, 'Count: ' + data.topicById.topicofarticlesByTopicId.totalCount)
                 return data.topicById
             },
             skip() {
                 return this.skipQuery
             },
+            deep() {
+                return true
+            },
+            options: {
+                awaitRefetchQueries: true,
+                fetchPolicy: 'network-only'
+            },
+
+            
         }
     },
     methods: {
@@ -399,10 +402,7 @@ export default {
                     var next_date = new Date(date)
                     next_date.setDate(next_date.getDate() + 1)
                     // Convert to YYYY-MM-DDT00:00:000Z, same as in Topics
-
-
-
-                    this.date = date.toISOString()
+                    this.date = date.toISOString().slice(0,10)
                     this.$apollo.queries.trends.skip = false
                     this.$apollo.queries.trends.refetch()                    
                     
