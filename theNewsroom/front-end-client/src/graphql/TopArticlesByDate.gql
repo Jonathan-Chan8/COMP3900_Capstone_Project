@@ -1,7 +1,30 @@
 
+# query TopicArticlesByDate($topicId: Int!, $from: Datetime, $to: Datetime) {
+#   topicById(id: $topicId) {
+
+#       id
+#       name
+#       topicofarticlesByTopicId(filter: { 
+#   	    articleByArticleId: {
+# 					and: [
+#             { 
+#               publicationDate: {
+#                 greaterThanOrEqualTo: $from,
+#                 lessThanOrEqualTo: $to,
+#                 isNull: false
+#               }
+#             },
+            
+#           ]
+#         }
+#       }) {
+#         totalCount 
+#       }
+#     }
+#   }
+
 query TopicArticlesByDate($topicId: Int!, $date: Datetime) {
   topicById(id: $topicId) {
-
       id
       name
       topicofarticlesByTopicId(filter: { 
@@ -21,16 +44,3 @@ query TopicArticlesByDate($topicId: Int!, $date: Datetime) {
       }
     }
   }
-
-#   {
-#   "data": {
-#     "topicById": {
-#       "id": 2,
-#       "name": "US news",
-#       "topicofarticlesByTopicId": {
-#         "totalCount": 25
-#       }
-#     }
-#   }
-# }
-
