@@ -1,4 +1,3 @@
-
 # query TopicArticlesByDate($topicId: Int!, $from: Datetime, $to: Datetime) {
 #   topicById(id: $topicId) {
 
