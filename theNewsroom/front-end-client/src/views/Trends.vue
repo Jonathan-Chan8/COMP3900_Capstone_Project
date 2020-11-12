@@ -376,8 +376,9 @@ export default {
             },
             options: {
                 awaitRefetchQueries: true,
-                fetchPolicy: 'network-only'
+                fetchPolicy: 'cache-and-network'
             },
+            
 
             
         }
@@ -404,15 +405,16 @@ export default {
                     // Convert to YYYY-MM-DDT00:00:000Z, same as in Topics
                     this.date = date.toISOString().slice(0,10)
                     this.$apollo.queries.trends.skip = false
-                    this.$apollo.queries.trends.refetch()                    
-                    
+                      
+                    Promise.all([this.$apollo.queries.trends ])
+                    this.$apollo.queries.trends.refetch()
                     var count = this.trends.topicofarticlesByTopicId.totalCount
                     // Log to view reults
                     // console.log(this.date, this.topic_id)
                     
                     // Looks like, for the majority of queries the reults are correct, however sometimes the returned count is different to how it would be if I were to enter the EXACT same values into GraphQL manually
                     data_series.push({
-                        x: this.date.slice(0, 10),
+                        x: this.date,
                         y: count
                     })
                     date = next_date
