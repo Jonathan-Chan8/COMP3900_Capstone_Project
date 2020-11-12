@@ -321,7 +321,6 @@ export default {
             handler: function() {
                 // this.$apollo.queries.related.refresh().
                 this.updateTrends()
-                // this.$apollo.queries.trends.refresh()
                 console.log('Related topics and Trends graph refreshed')
             },
             deep: true
@@ -360,13 +359,14 @@ export default {
                 // }
               
                 return {
+                    // date: "2020-11-02",
                     date: this.date,
                     topicId: this.topic_id
                 }
             },
             update(data) {
                 console.log(this.date, 'ID:' + this.topic_id, 'Count: ' + data.topicById.topicofarticlesByTopicId.totalCount)
-                return data.topicById
+                return data
             },
             skip() {
                 return this.skipQuery
@@ -376,7 +376,8 @@ export default {
             },
             options: {
                 awaitRefetchQueries: true,
-                fetchPolicy: 'cache-and-network'
+                fetchPolicy: 'cache-and-network',
+                forceFetch: true
             },
             
 
@@ -408,13 +409,13 @@ export default {
                       
                     Promise.all([this.$apollo.queries.trends ])
                     this.$apollo.queries.trends.refetch()
-                    var count = this.trends.topicofarticlesByTopicId.totalCount
+                    var count = this.trends.topicById.topicofarticlesByTopicId.totalCount
                     // Log to view reults
-                    // console.log(this.date, this.topic_id)
+                    console.log(this.date)
                     
                     // Looks like, for the majority of queries the reults are correct, however sometimes the returned count is different to how it would be if I were to enter the EXACT same values into GraphQL manually
                     data_series.push({
-                        x: this.date,
+                        x: this.date.slice(0,10),
                         y: count
                     })
                     date = next_date

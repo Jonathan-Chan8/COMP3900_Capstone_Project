@@ -22,7 +22,7 @@
 #     }
 #   }
 
-query TopicArticlesByDate($topicId: Int!, $date: Datetime) {
+query TopicArticlesByDate($topicId: Int!, $date: Datetime!) {
   topicById(id: $topicId) {
       id
       name
