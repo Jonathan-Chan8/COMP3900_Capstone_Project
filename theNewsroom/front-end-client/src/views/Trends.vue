@@ -370,7 +370,7 @@ export default {
                 }
             },
             update(data) {
-                console.log(this.date, this.topic_id, data.topicById.topicofarticlesByTopicId.totalCount)
+                console.log(this.date.slice(0,10), 'ID:' + this.topic_id, 'Count: ' + data.topicById.topicofarticlesByTopicId.totalCount)
 
                 return data.topicById
             },
