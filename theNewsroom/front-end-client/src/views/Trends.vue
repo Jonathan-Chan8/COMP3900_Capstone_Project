@@ -94,6 +94,8 @@
                             <v-list-item>
                                 <v-spacer />
                                 <SaveTrend v-if="!$auth.loading & $auth.isAuthenticated" />
+                                <v-btn rounded depressed @click="updateTrends">
+                                    Refresh </v-btn>
                                 <v-btn rounded depressed @click="reset">
                                     Reset </v-btn>
                                 <HelpTrends />
@@ -375,8 +377,8 @@ export default {
                 return true
             },
             options: {
-                awaitFetchQueries: true,
-                fetchPolicy: 'cache-and-network',
+                awaitFetchQueries: false,
+                // fetchPolicy: 'cache-and-network',
                 forceFetch: false
             }
             
@@ -409,11 +411,7 @@ export default {
                     this.$apollo.queries.trends.skip = false
                     // this.$apollo.queries.trends.stop()
                     this.$apollo.queries.trends.refetch()
-                   
-
-
-                 
-
+       
                     var count = this.trends.topicById.topicofarticlesByTopicId.totalCount
                     // Log to view reults
                     console.log(this.date, count)
