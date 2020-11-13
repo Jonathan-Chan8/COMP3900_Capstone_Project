@@ -131,10 +131,7 @@
         {{date}}
                 <v-divider/>
 
-        {{date_to}}
                 <v-divider/>
-                {{trends}}
-
 {{trends_graph}}
 
         <v-divider/>
@@ -314,7 +311,7 @@ export default {
         trends: '',
         date: null,
         topic_id: null,
-        trends_graph: [],
+        trends_graph: null,
         skipQuery: true,
     }),
     watch: {
@@ -326,15 +323,6 @@ export default {
             },
             deep: true
         },
-        // dates: {
-        //     handler: function() {
-        //         // Call queries again with new parameters
-        //         // this.$apollo.queries.trends.refresh().
-        //         this.updateTrends()
-        //         console.log('Trends graph refreshed');
-        //     },
-        //     deep: true
-        // },
     },
     apollo: {
         related: {
@@ -367,19 +355,35 @@ export default {
                 }
             },
             update(data) {
-                return data
-            }
+                return data.aggregatearticlecountbydays.nodes
+            },
+            skip() {
+                return this.skipQuery
+            },
+            // options {
+
+            // }
         }
     },
     methods: {
         updateTrends() {
-            // this.trends_graph = []
+            this.trends_graph = []
             
             var i
             for (i = 0; i < this.getSelected.length; i++) {
                 this.topic_id =  this.getSelected[i].id
+                this.$apollo.queries.trends.skip = false
                 this.$apollo.queries.trends.refetch()
-                this.trends_graph.push(this.trends)
+
+                var data_series = this.trends.map(el => ({
+                    x: el.x,
+                    y: el.y
+                }))
+
+                this.trends_graph.push({
+                    name: this.getSelected[i].name,
+                    data: data_series
+                })
             }
             // for (i = 0; i < this.getSelected.length; i++) {
             //     var date = this.start_date

@@ -26,8 +26,8 @@
 query TopicArticlesByDate($topicId: Int!, $startdate: Date!, $enddate: Date!) {
  aggregatearticlecountbydays(topicid: $topicId, startdate: $startdate, enddate: $enddate) {
   nodes {
-    publicationDate
-    articleCount
+    x
+    y
   }
 }
 }

@@ -5,8 +5,8 @@
 -- For returning SETOF's with multiple columns, you need to declare a new type
 
 CREATE TYPE ArticleCountByDate AS (
-    publication_date    DATE,
-    article_count       BIGINT
+    x    DATE,
+    y    BIGINT
 );
 
 -- Given a start and end date and a topic Id, return the number of articles under each day
