@@ -164,82 +164,14 @@ export default {
         Search
     },
     data: () => ({
-        created() {
+                el: '#app',
+
+        mounted: function() {
             this.updateTrends()
+            console.log("Mounted!")
+
         },
-        topics: [{
-                name: "US News",
-                data: [{
-                        x: new Date('2018-02-12').getTime(),
-                        y: 76
-                    }, {
-                        x: new Date('2019-02-13').getTime(),
-                        y: 50
-                    },
-                    {
-                        x: new Date('2020-02-18').getTime(),
-                        y: 100
-                    }
-                ]
-            }, {
-                name: "Politics",
-                data: [{
-                        x: new Date('2018-02-12').getTime(),
-                        y: 123
-                    }, {
-                        x: new Date('2019-02-13').getTime(),
-                        y: 48
-                    },
-                    {
-                        x: new Date('2020-02-18').getTime(),
-                        y: 13
-                    }
-                ]
-            }, {
-                name: "Media",
-                data: [{
-                        x: new Date('2018-02-12').getTime(),
-                        y: 12
-                    }, {
-                        x: new Date('2019-02-13').getTime(),
-                        y: 84
-                    },
-                    {
-                        x: new Date('2020-02-18').getTime(),
-                        y: 300
-                    }
-                ]
-            },
-            {
-                name: "Business",
-                data: [{
-                        x: new Date('2018-02-12').getTime(),
-                        y: 17
-                    }, {
-                        x: new Date('2019-02-13').getTime(),
-                        y: 44
-                    },
-                    {
-                        x: new Date('2020-02-18').getTime(),
-                        y: 198
-                    }
-                ]
-            },
-            {
-                name: "Football",
-                data: [{
-                        x: new Date('2018-02-12').getTime(),
-                        y: 98
-                    }, {
-                        x: new Date('2019-02-13').getTime(),
-                        y: 43
-                    },
-                    {
-                        x: new Date('2020-02-18').getTime(),
-                        y: 102
-                    }
-                ]
-            }],
+       
         options: {
             stroke: {
                 curve: 'smooth',
@@ -311,7 +243,7 @@ export default {
         trends: '',
         date: null,
         topic_id: null,
-        trends_graph: null,
+        trends_graph: [],
         skipQuery: true,
     }),
     watch: {
@@ -321,7 +253,9 @@ export default {
                 this.updateTrends()
                 console.log('Related topics and Trends graph refreshed')
             },
-            deep: true
+            // deep: true,
+            immediate: true
+
         },
     },
     apollo: {
@@ -355,14 +289,18 @@ export default {
                 }
             },
             update(data) {
+                console.log(this.topic_id, this.start_date, this.end_date)
                 return data.aggregatearticlecountbydays.nodes
             },
             skip() {
                 return this.skipQuery
             },
-            // options {
+            options: {
+                awaitFetchQueries: false,
+                fetchPolicy: 'cache-first',
+                forceFetch: false
 
-            // }
+            }
         }
     },
     methods: {
@@ -372,6 +310,7 @@ export default {
             var i
             for (i = 0; i < this.getSelected.length; i++) {
                 this.topic_id =  this.getSelected[i].id
+                
                 this.$apollo.queries.trends.skip = false
                 this.$apollo.queries.trends.refetch()
 
@@ -385,33 +324,6 @@ export default {
                     data: data_series
                 })
             }
-            // for (i = 0; i < this.getSelected.length; i++) {
-            //     var date = this.start_date
-            //     this.topic_id = this.getSelected[i].id
-            //     var data_series = []
-            //     while (date <= this.end_date) {
-            //         this.date = new Date(date.toISOString().slice(0,10))
-            //         this.$apollo.queries.trends.refresh()
-                    
-            //         data_series.push({
-            //             x: this.date,
-            //             y: this.trends.topicById.topicofarticlesByTopicId.totalCount
-            //         })
-                    
-            //         date.setDate(date.getDate() + 1)                }
-            //     this.trends_graph.push({   
-            //         name: this.getSelected[i].name,
-            //         data: data_series
-            //     })
-            // }
-        },
-        update(topic_id) {
-            this.topic_id = topic_id
-            this.$apollo.queries.trends.refresh()
-            // data_series.push({
-            //     x: this.date,
-            //     y: this.trends.topicofarticlesByTopicId.totalCount
-            // })
         },
         formatDate(date) {
             let month = `${date.getMonth() + 1}`;
