@@ -157,7 +157,7 @@ import {
     mapMutations
 } from 'vuex';
 import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
-import TOPIC_ARTICLES_DATE from '../graphql/TopArticlesByDate.gql'
+import TOPIC_ARTICLES_DATE from '../graphql/TopicArticlesByDate.gql'
 export default {
     name: "Trends",
     components: {
