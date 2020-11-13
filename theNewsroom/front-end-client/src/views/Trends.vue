@@ -311,10 +311,25 @@ export default {
                 this.$apollo.queries.trends.skip = false
                 this.$apollo.queries.trends.refetch()
 
-                var data_series = this.trends.map(el => ({
+                var data_series = []
+                data_series = this.trends.map(el => ({
                     x: el.x,
                     y: el.y
                 }))
+
+                // var date = new Date(this.start_date)
+                // while (date <= this.end_date) {
+                //     let index = this.trends.findIndex(item => item.x == date)
+                //     if (index == -1) {
+                //         data_series.push({
+                //         x: date.toISOString().slice(10),
+                //         y: 0
+                //     })
+                //     }
+                //     var next = new Date(date)
+                //     next.setDate(next.getDate()+1)
+                //     date = next
+                // }
 
                 this.trends_graph.push({
                     name: this.getSelected[i].name,
