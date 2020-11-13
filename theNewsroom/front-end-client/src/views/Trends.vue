@@ -155,7 +155,6 @@ import {
     mapMutations
 } from 'vuex';
 import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
-// import TOPIC_ARTICLES_DATE from '../graphql/TopArticlesFromTopic.gql'
 import TOPIC_ARTICLES_DATE from '../graphql/TopArticlesByDate.gql'
 export default {
     name: "Trends",
@@ -542,3 +541,4 @@ td {
     background: ghostwhite;
 }
 </style>
+
