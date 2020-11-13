@@ -164,14 +164,11 @@ export default {
         Search
     },
     data: () => ({
-                el: '#app',
-
+        el: '#app',
         mounted: function() {
             this.updateTrends()
             console.log("Mounted!")
-
         },
-       
         options: {
             stroke: {
                 curve: 'smooth',
