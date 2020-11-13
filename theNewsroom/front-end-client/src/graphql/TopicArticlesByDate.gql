@@ -1,6 +1,6 @@
-# query TopicArticlesByDate($topicId: Int!, $from: Datetime, $to: Datetime) {
-#   topicById(id: $topicId) {
 
+# query TopicArticlesByDate($topicId: Int!, $date: Datetime!) {
+#   topicById(id: $topicId) {
 #       id
 #       name
 #       topicofarticlesByTopicId(filter: { 
@@ -8,8 +8,7 @@
 # 					and: [
 #             { 
 #               publicationDate: {
-#                 greaterThanOrEqualTo: $from,
-#                 lessThanOrEqualTo: $to,
+#                 equalTo: $date,
 #                 isNull: false
 #               }
 #             },
@@ -22,24 +21,13 @@
 #     }
 #   }
 
-query TopicArticlesByDate($topicId: Int!, $date: Datetime!) {
-  topicById(id: $topicId) {
-      id
-      name
-      topicofarticlesByTopicId(filter: { 
-  	    articleByArticleId: {
-					and: [
-            { 
-              publicationDate: {
-                equalTo: $date,
-                isNull: false
-              }
-            },
-            
-          ]
-        }
-      }) {
-        totalCount 
-      }
-    }
+
+
+query TopicArticlesByDate($topicId: Int!, $startdate: Date!, $enddate: Date!) {
+ aggregatearticlecountbydays(topicid: $topicId, startdate: $startdate, enddate: $enddate) {
+  nodes {
+    publicationDate
+    articleCount
   }
+}
+}

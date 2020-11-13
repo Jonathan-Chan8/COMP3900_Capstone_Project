@@ -351,81 +351,35 @@ export default {
         trends: {
             query: TOPIC_ARTICLES_DATE,
             variables() {
-                // var date = this.date
-                // var topic_id = this.topic_id
-                
-                // return {
-                //     date: date,
-                //     topicId: topic_id
-                // }
+                if (this.start_date == null) {
+                    this.end_date = new Date()
+                    this.start_date = new Date()
+                    this.start_date.setMonth(this.end_date.getMonth() - 1)
+
+                    this.start_date = this.start_date.toISOString().slice(0, 10)                    
+                    this.end_date = this.end_date.toISOString().slice(0, 10)
+                }
               
                 return {
-                    // date: "2020-11-02",
-                    date: this.date,
-                    topicId: this.topic_id
+                    topicId: this.topic_id,
+                    startdate: this.start_date,
+                    enddate: this.end_date
                 }
             },
             update(data) {
-                console.log(this.date, 'ID:' + this.topic_id, 'Count: ' + data.topicById.topicofarticlesByTopicId.totalCount)
                 return data
-            },
-            skip() {
-                return this.skipQuery
-            },
-            deep() {
-                return true
-            },
-            options: {
-                awaitFetchQueries: false,
-                // fetchPolicy: 'cache-and-network',
-                forceFetch: false
             }
-            
-
-            
         }
     },
     methods: {
         updateTrends() {
-            this.trends_graph = []
-            if (this.start_date == null) {
-                    this.end_date = new Date()
-                    this.start_date = new Date()
-                    this.start_date.setMonth(this.end_date.getMonth() - 1)
-                }
+            // this.trends_graph = []
             
             var i
             for (i = 0; i < this.getSelected.length; i++) {
-                // Reset date to start of day
-                var date = new Date(this.start_date.toISOString().slice(0, 10))
-                this.topic_id = this.getSelected[i].id
-                var data_series = []
-                
-                while (date <= this.end_date) {
-                    var next_date = new Date(date)
-                    next_date.setDate(next_date.getDate() + 1)
-                    // Convert to YYYY-MM-DDT00:00:000Z, same as in Topics
-                    this.trends = ''
-                    this.date = date.toISOString().slice(0,10)
-                    this.$apollo.queries.trends.skip = false
-                    // this.$apollo.queries.trends.stop()
-                    this.$apollo.queries.trends.refetch()
-       
-                    var count = this.trends.topicById.topicofarticlesByTopicId.totalCount
-                    // Log to view reults
-                    console.log(this.date, count)
-                    
-                    // Looks like, for the majority of queries the reults are correct, however sometimes the returned count is different to how it would be if I were to enter the EXACT same values into GraphQL manually
-                    data_series.push({
-                        x: this.date.slice(0,10),
-                        y: count
-                    })
-                    date = next_date
-                }
-                this.trends_graph.push({   
-                    name: this.getSelected[i].name,
-                    data: data_series
-                })
+                this.topic_id =  this.getSelected[i].id
+                this.$apollo.queries.trends.refetch()
+                this.trends_graph.push(this.trends)
             }
             // for (i = 0; i < this.getSelected.length; i++) {
             //     var date = this.start_date
