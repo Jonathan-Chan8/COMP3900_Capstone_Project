@@ -72,7 +72,7 @@ export default new Vuex.Store({
 		},
 	
 		openArticle(state, article) {
-			state.current_article = article
+			state.current_article = article.articleByArticleId
 		},
 		searchTopicKeyword(state, keyword) {
 			state.keyword = keyword

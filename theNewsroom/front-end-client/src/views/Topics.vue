@@ -29,7 +29,7 @@
                                 </v-list-item>
                                 <!-- Calendar (a menu that opens a calendar, the user selects a date range and the date that occurs first is automatically saved as the starting date (to be used in our queries)-->
                                 <v-list-item>
-                                    <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date" transition="scale-transition" offset-y min-width="290px">
+                                    <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="dates" transition="scale-transition" offset-y min-width="290px">
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-text-field dense rounded filled v-model="dateRange" label="Select time period" append-icon="mdi-calendar" single-line hide-details readonly v-bind="attrs" v-on="on" />
                                         </template>
@@ -143,12 +143,6 @@ export default {
         topics: {
             query: ALL_TOPICS_WITH_FILTER,
             variables() {
-
-                if (this.end_date == null) {
-                    this.end_date = new Date()
-                    this.start_date = new Date()
-                    this.start_date.setMonth(this.end_date.getMonth() - 1)
-                } 
                 return {
                         media: this.media,
                         from: this.start_date,
@@ -214,6 +208,15 @@ export default {
             this.end_date = null
             this.media = ''
         }
+    },
+     mounted: function() {
+        this.end_date = new Date()
+        this.start_date = new Date()
+        this.start_date.setMonth(this.end_date.getMonth() - 1)
+
+        this.start_date = this.start_date.toISOString().slice(0, 10)                    
+        this.end_date = this.end_date.toISOString().slice(0, 10)
+        console.log("Mounted!")
     },
     computed: {
         ...mapState(['current_topic', 'current_article', 'saved', 'popups', 'selected', 'related']),

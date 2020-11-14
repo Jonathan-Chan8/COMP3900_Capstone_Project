@@ -240,7 +240,6 @@ export default {
         //     console.log('Selected watcher start')
         //     this.callTrends()
             
-
             
         //     // this.updateTrends()
         //     this.checkRemove()
@@ -252,7 +251,6 @@ export default {
             console.log('Selected watcher start')
             this.callTrends()
             
-
             
             // this.updateTrends()
             this.checkRemove()
@@ -272,15 +270,11 @@ export default {
                         console.log('replace')
                         this.trends[index] = this.result
                         console.log('replace 2')
-
                     }
                 }
                 this.checkRemove()
-
                 console.log('Result watcher end')
-
             },
-
         }
     },
     apollo: {
@@ -302,7 +296,6 @@ export default {
                     this.end_date = new Date()
                     this.start_date = new Date()
                     this.start_date.setMonth(this.end_date.getMonth() - 1)
-
                     this.start_date = this.start_date.toISOString().slice(0, 10)                    
                     this.end_date = this.end_date.toISOString().slice(0, 10)
                 }
@@ -314,10 +307,13 @@ export default {
             },
             update(data) {
                 console.log(this.topic_id, this.start_date, this.end_date)
-                return {name: data.topicById.name, data: data.aggregatearticlecountbydays.nodes.map(a => ({
-                    x: a.x,
-                    y: a.y
-                }))}
+                return {
+                    name: data.topicById.name, 
+                    data: data.aggregatearticlecountbydays.nodes.map(a => ({
+                        x: a.x,
+                        y: a.y
+                    }))
+                }
             },
             skip() {
                 return this.skipQuery
@@ -326,7 +322,6 @@ export default {
                 awaitFetchQueries: false,
                 fetchPolicy: 'cache-first',
                 forceFetch: false
-
             }
         }
     },
@@ -350,10 +345,8 @@ export default {
                 this.$apollo.queries.result.refetch()
                 console.log('Result fetched')
             }
-
             // this.updateTrends()
             console.log('Exiting call')
-
         },
         formatDate(date) {
             let month = `${date.getMonth() + 1}`;
@@ -442,4 +435,3 @@ td {
     background: ghostwhite;
 }
 </style>
-

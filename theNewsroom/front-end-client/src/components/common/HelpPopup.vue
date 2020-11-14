@@ -21,7 +21,6 @@
                 <p><b>Close</b> will close this popup. Clicking anywhere other than this popup will also close it.</p>
 
             </v-card-text>
-            {{getArticle}}
             <v-card-actions>
                 <v-row dense>
 
