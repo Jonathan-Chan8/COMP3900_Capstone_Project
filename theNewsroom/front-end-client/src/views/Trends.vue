@@ -67,7 +67,7 @@
                                     </v-list-item-content>
                                 </template>
                                 <v-list-item-group color="none">
-                                    <v-list-item  class='item' v-for="item in related" :key="item">
+                                    <v-list-item  class='item' v-for="item in relatedTopics" :key="item.id">
                                         <v-list-item-title @click='open(item)' v-text="item.name" />
                                         <v-btn icon @click='addSelected(item)'>
                                             <v-icon color="grey lighten-1">mdi-plus-circle</v-icon>
@@ -166,7 +166,7 @@ export default {
     data: () => ({
         el: '#app',
         mounted: function() {
-            //this.updateTrends()
+            this.updateTrends()
             console.log("Mounted!")
         },
         options: {
@@ -236,27 +236,27 @@ export default {
         dates: [],
         keyword: '',
         menu: false,
-        related: [],
-        //trends: '',
+        relatedTopics: [],
+        trends: '',
         date: null,
-        topic_id: null,
+        topic_id: [],
         trends_graph: [],
-        skipQuery: true,
+        skipQuery: true, 
     }),
     watch: {
         getSelected: {
-            handler: function() {
-                // this.$apollo.queries.related.refresh().
-                //this.updateTrends()
+            handler: function() 
+            {
+                this.updateTrends()
+                //this.$apollo.queries.fetch(
                 console.log('Related topics and Trends graph refreshed')
             },
-            // deep: true,
-            immediate: true
-
+            deep: true,
+            //immediate: true
         },
     },
     apollo: {
-        related: { query: ALL_TOPICS_WITH_FILTER, variables() { return {
+        relatedTopics: { query: ALL_TOPICS_WITH_FILTER, variables() { return {
                                    limit: 5
                 }
             },
@@ -298,13 +298,15 @@ export default {
         }
     },
     methods: {
-/*         updateTrends() {
+        updateTrends() {
             this.trends_graph = []
-            
             var i
+            console.log("Get Selected " + this.getSelected)
             for (i = 0; i < this.getSelected.length; i++) {
+
                 this.topic_id =  this.getSelected[i].id
-                
+                //console.log("Get selected name: " + this.getSelected[i].name + "Get selected id: " + this.getSelected[i].id 
+                    //+ " Length of getSelected == " + this.getSelected.length) 
                 this.$apollo.queries.trends.skip = false
                 this.$apollo.queries.trends.refetch()
 
@@ -332,7 +334,7 @@ export default {
                     data: data_series
                 })
             }
-        }, */
+        },
         formatDate(date) {
             let month = `${date.getMonth() + 1}`;
             let day = `${date.getDate()}`;
@@ -369,7 +371,7 @@ export default {
             this.dates = [this.start_date, this.end_date]
             this.start_date = new Date(this.start_date)
             this.end_date = new Date(this.end_date)
-            //this.updateTrends()
+            this.updateTrends()
         },
         saveTrendSelection(name) {
             if (this.name.length > 3 && this.name.length <= 20 && this.selected.length > 0) {

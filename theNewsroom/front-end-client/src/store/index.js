@@ -16,8 +16,7 @@ export default new Vuex.Store({
 		saved: [],
 		popups: [],
 		selected: [],
-		related: []
-
+		related: [],
 		
 	},
 
