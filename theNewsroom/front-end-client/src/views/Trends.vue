@@ -120,11 +120,13 @@
                 <v-col />
             </v-layout>
         </v-container>
-        {{getSelected}}
+
         <v-divider/>
-        {{trends}}
+        Result: {{result}}
         <v-divider/>
-        {{trends_graph}}
+        Trends: {{trends}}
+        <v-divider/>
+        Graph: {{trends_graph}}
         <v-divider/>
 
    
@@ -155,11 +157,8 @@ export default {
         Search
     },
     data: () => ({
-        // el: '#app',
-        // mounted: function() {
-        //     this.updateTrends()
-        //     console.log("Mounted!")
-        // },
+        el: '#app',
+        
         options: {
             stroke: {
                 curve: 'smooth',
@@ -228,7 +227,8 @@ export default {
         keyword: '',
         menu: false,
         related: [],
-        trends: '',
+        result: '',
+        trends: [],
         date: null,
         topic_id: null,
         trends_graph: [],
@@ -238,15 +238,19 @@ export default {
         getSelected: {
             handler: function() {
                 // this.$apollo.queries.related.refresh().
-                this.trends_graph = []            
-                console.log('In watcher')
-                this.updateTrends()
-                console.log('Trends graph has been refreshed')
+            this.callTrends()
+            console.log('Watcher: Query called')
             },
-            // deep: true,
+            immediate: true
+        },
+        result: {
+            handler: function() {
+                this.updateTrends()
+                console.log('Watcher: Trends updating')
+            },
             immediate: true
 
-        },
+        }
     },
     apollo: {
         related: {
@@ -260,7 +264,7 @@ export default {
                 return data.allTopics.nodes;
             }
         },
-        trends: {
+        result: {
             query: TOPIC_ARTICLES_DATE,
             variables() {
                 if (this.start_date == null) {
@@ -293,28 +297,31 @@ export default {
         }
     },
     methods: {
-        updateTrends() {
-            // this.trends_graph = []
-            console.log('In updateTrends()')
-
-            
+        callTrends() {
+            console.log('In call')
+            this.trends = []
             var i
             for (i = 0; i < this.getSelected.length; i++) {
                 this.topic_id =  this.getSelected[i].id
-                
-                this.$apollo.queries.trends.skip = false
-                this.$apollo.queries.trends.refetch()
-
-                var data_series = []
-                data_series = this.trends.map(el => ({
+                this.$apollo.queries.result.skip = false
+                this.$apollo.queries.result.refetch()
+                this.trends[i] = this.result
+            }
+        },
+        updateTrends() {
+            console.log('In update')
+            var i
+            for (i = 0; i < this.getSelected.length; i++) {
+                var data_series = this.trends[i].map(el => ({
                     x: el.x,
                     y: el.y
                 }))
-
                 this.trends_graph.push({
                     name: this.getSelected[i].name,
                     data: data_series
                 })
+                console.log('Trends updated')
+
             }
         },
         formatDate(date) {
@@ -372,6 +379,13 @@ export default {
             this.media = ''
             this.emptySelected()
         }
+    },
+    mounted: function() {
+        this.result = []
+        this.trends = []
+        this.callTrends()
+        this.updateTrends()
+        console.log("Mounted!")
     },
     computed: {
         ...mapState(['current_topic', 'current_article', 'saved', 'popups', 'selected', 'related']),
