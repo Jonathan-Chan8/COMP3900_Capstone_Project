@@ -278,7 +278,6 @@ export default {
                     this.start_date = this.start_date.toISOString().slice(0, 10)                    
                     this.end_date = this.end_date.toISOString().slice(0, 10)
                 }
-              
                 return {
                     topicId: this.topic_id,
                     startdate: this.start_date,
