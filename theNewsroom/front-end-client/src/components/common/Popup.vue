@@ -9,7 +9,9 @@
         <v-card-actions>
             <v-row dense>
                 <!-- We would need ot make sure we limit the number of characters shown -->
-                <v-col v-for="topic in topics" :key="topic.id" md=6>
+                <v-col v-for="(topic, id) in topics" :key="id" md=6>
+                console.log("id");
+                console.log("topic");
                     <v-btn color="rgb(230, 235, 255)" rounded width=100% depressed @click.stop="nextTopic(topic)" v-text='topic.name' />
                 </v-col>
             </v-row>

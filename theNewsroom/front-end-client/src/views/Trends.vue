@@ -47,7 +47,7 @@
                                     </v-list-item-content>
                                 </template>
                                 <v-list-item-group value="true" color="none">
-                                    <v-list-item class='item' v-for="(item, index) in getSelected" :key="item" >
+                                    <v-list-item class='item' v-for="(item, index) in getSelected" :key="index" >
                                         <v-list-item-title @click='open(item)' v-text="item.name" />
                                         <v-icon v-if='index == 0' color="#FF9D00">mdi-circle</v-icon>
                                         <v-icon v-if='index == 1' color='#66DB00'>mdi-circle</v-icon>
@@ -94,8 +94,8 @@
                             <v-list-item>
                                 <v-spacer />
                                 <SaveTrend v-if="!$auth.loading & $auth.isAuthenticated" />
-                                <v-btn rounded depressed @click="updateTrends">
-                                    Refresh </v-btn>
+                                <!--v-btn rounded depressed @click="updateTrends"-->
+                                    <!--Refresh </=-v-btn>-->
                                 <v-btn rounded depressed @click="reset">
                                     Reset </v-btn>
                                 <HelpTrends />
@@ -166,7 +166,7 @@ export default {
     data: () => ({
         el: '#app',
         mounted: function() {
-            this.updateTrends()
+            //this.updateTrends()
             console.log("Mounted!")
         },
         options: {
@@ -237,7 +237,7 @@ export default {
         keyword: '',
         menu: false,
         related: [],
-        trends: '',
+        //trends: '',
         date: null,
         topic_id: null,
         trends_graph: [],
@@ -247,7 +247,7 @@ export default {
         getSelected: {
             handler: function() {
                 // this.$apollo.queries.related.refresh().
-                this.updateTrends()
+                //this.updateTrends()
                 console.log('Related topics and Trends graph refreshed')
             },
             // deep: true,
@@ -256,11 +256,8 @@ export default {
         },
     },
     apollo: {
-        related: {
-            query: ALL_TOPICS_WITH_FILTER,
-            variables() {
-                return {
-                    limit: 5
+        related: { query: ALL_TOPICS_WITH_FILTER, variables() { return {
+                                   limit: 5
                 }
             },
             update(data) {
@@ -301,7 +298,7 @@ export default {
         }
     },
     methods: {
-        updateTrends() {
+/*         updateTrends() {
             this.trends_graph = []
             
             var i
@@ -335,7 +332,7 @@ export default {
                     data: data_series
                 })
             }
-        },
+        }, */
         formatDate(date) {
             let month = `${date.getMonth() + 1}`;
             let day = `${date.getDate()}`;
@@ -372,7 +369,7 @@ export default {
             this.dates = [this.start_date, this.end_date]
             this.start_date = new Date(this.start_date)
             this.end_date = new Date(this.end_date)
-            this.updateTrends()
+            //this.updateTrends()
         },
         saveTrendSelection(name) {
             if (this.name.length > 3 && this.name.length <= 20 && this.selected.length > 0) {
