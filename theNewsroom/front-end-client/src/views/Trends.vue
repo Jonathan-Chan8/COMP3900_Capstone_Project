@@ -94,7 +94,7 @@
                             <v-list-item>
                                 <v-spacer />
                                 <SaveTrend v-if="!$auth.loading & $auth.isAuthenticated" />
-                                <v-btn rounded depressed @click="updateTrends">
+                                <v-btn rounded depressed @click="callTrends">
                                     Refresh </v-btn>
                                 <v-btn rounded depressed @click="reset">
                                     Reset </v-btn>
@@ -237,18 +237,28 @@ export default {
     watch: {
         getSelected: {
             handler: function() {
-                // this.$apollo.queries.related.refresh().
+            console.log('Selected watcher start')
             this.callTrends()
-            console.log('Watcher: Query called')
+            // this.updateTrends()
+            console.log('Selected watcher end')
             },
-            immediate: true
         },
         result: {
             handler: function() {
-                this.updateTrends()
-                console.log('Watcher: Trends updating')
+                console.log('Result watcher start')
+                // this.trends.push(this.result)     
+                let index = this.trends.findIndex(item => item.name == this.result.name)
+
+                if (index == -1) {
+                    this.trends.push(this.result)
+                } else {
+                    this.trends[index] = this.result
+                }
+          
+               
+                console.log('Result watcher end')
+
             },
-            immediate: true
 
         }
     },
@@ -283,7 +293,10 @@ export default {
             },
             update(data) {
                 console.log(this.topic_id, this.start_date, this.end_date)
-                return data.aggregatearticlecountbydays.nodes
+                return {name: data.topicById.name, data: data.aggregatearticlecountbydays.nodes.map(a => ({
+                    x: a.x,
+                    y: a.y
+                }))}
             },
             skip() {
                 return this.skipQuery
@@ -298,31 +311,17 @@ export default {
     },
     methods: {
         callTrends() {
-            console.log('In call')
-            this.trends = []
             var i
             for (i = 0; i < this.getSelected.length; i++) {
                 this.topic_id =  this.getSelected[i].id
                 this.$apollo.queries.result.skip = false
                 this.$apollo.queries.result.refetch()
-                this.trends[i] = this.result
+                console.log('Result fetched')
             }
-        },
-        updateTrends() {
-            console.log('In update')
-            var i
-            for (i = 0; i < this.getSelected.length; i++) {
-                var data_series = this.trends[i].map(el => ({
-                    x: el.x,
-                    y: el.y
-                }))
-                this.trends_graph.push({
-                    name: this.getSelected[i].name,
-                    data: data_series
-                })
-                console.log('Trends updated')
 
-            }
+            // this.updateTrends()
+            console.log('Exiting call')
+
         },
         formatDate(date) {
             let month = `${date.getMonth() + 1}`;
@@ -360,7 +359,7 @@ export default {
             this.dates = [this.start_date, this.end_date]
             this.start_date = new Date(this.start_date)
             this.end_date = new Date(this.end_date)
-            this.updateTrends()
+            this.callTrends()
         },
         saveTrendSelection(name) {
             if (this.name.length > 3 && this.name.length <= 20 && this.selected.length > 0) {
@@ -384,7 +383,6 @@ export default {
         this.result = []
         this.trends = []
         this.callTrends()
-        this.updateTrends()
         console.log("Mounted!")
     },
     computed: {
