@@ -54,7 +54,7 @@
                                         <v-icon v-if='index == 2' color="#FF42DC">mdi-circle</v-icon>
                                         <v-icon v-if='index == 3' color="#0096DB">mdi-circle</v-icon>
                                         <v-icon v-if='index == 4' color="#DB0004">mdi-circle</v-icon>
-                                        <v-btn icon @click='removeSelected(item)'>
+                                        <v-btn icon @click='remove(item)'>
                                             <v-icon color="grey lighten-1">mdi-minus-circle</v-icon>
                                         </v-btn>
                                     </v-list-item>
@@ -109,7 +109,7 @@
                 <v-flex align-center xs12 md8>
                     <template>
                         <div>
-                            <apexchart type="line" :options="options" :series="trends_graph"></apexchart>
+                            <apexchart type="line" :options="options" :series="trends"></apexchart>
                         </div>
                     </template>
                 </v-flex>
@@ -227,7 +227,7 @@ export default {
         keyword: '',
         menu: false,
         related_topics: [],
-        result: '',
+        result: null,
         trends: [],
         date: null,
         topic_id: null,
@@ -248,11 +248,12 @@ export default {
                 console.log('Result watcher start')
                 // this.trends.push(this.result)     
                 let index = this.trends.findIndex(item => item.name == this.result.name)
-
-                if (index == -1) {
-                    this.trends.push(this.result)
-                } else {
-                    this.trends[index] = this.result
+                if (this.result != '') {
+                    if (index == -1 ) {
+                        this.trends.push(this.result)
+                    } else {
+                        this.trends[index] = this.result
+                    }
                 }
           
                
@@ -377,11 +378,15 @@ export default {
             this.end_date = null
             this.media = ''
             this.emptySelected()
+        },
+        remove(topic) {
+            this.removeSelected(topic)
+            let index = this.trends.findIndex(item => item.name == topic.name)
+            this.trends.splice(index, 1)
         }
     },
     mounted: function() {
         this.result = []
-        this.trends = []
         this.callTrends()
         console.log("Mounted!")
     },
