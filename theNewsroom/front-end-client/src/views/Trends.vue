@@ -109,7 +109,7 @@
                 <v-flex align-center xs12 md8>
                     <template>
                         <div>
-                            <apexchart type="line" :options="options" :series="trends"></apexchart>
+                            <apexchart type="line" :options="options" :series="graph"></apexchart>
                         </div>
                     </template>
                 </v-flex>
@@ -126,7 +126,7 @@
         <v-divider/>
         Trends: {{trends}}
         <v-divider/>
-        Graph: {{trends_graph}}
+        Graph: {{graph}}
         <v-divider/>
 
    
@@ -164,7 +164,7 @@ export default {
                 curve: 'smooth',
             },
             colors: [
-                '#FF9D00', '#66DB00', '#FF42DC', '#0096DB', '#DB0004', 
+                '#FF42DC', '#0096DB', '#FF9D00', '#66DB00', '#DB0004', 
             ],
             xaxis: {
                 type: 'datetime'
@@ -231,7 +231,7 @@ export default {
         trends: [],
         date: null,
         topic_id: null,
-        trends_graph: [],
+        graph: [],
         skipQuery: true,
     }),
     watch: {
@@ -254,6 +254,10 @@ export default {
             
             // this.updateTrends()
             this.checkRemove()
+
+            if (this.getSelected.length == 0) {
+                this.graph = []
+            }
             console.log('Selected watcher end')
             },
         },
@@ -262,16 +266,15 @@ export default {
                 console.log('Result watcher start')
                 // this.trends.push(this.result)     
                 let index = this.trends.findIndex(item => item.name == this.result.name)
-                if (this.result != '') {
-                    if (index == -1 ) {
-                        console.log('push')
-                        this.trends.push(this.result)
-                    } else {
-                        console.log('replace')
-                        this.trends[index] = this.result
-                        console.log('replace 2')
-                    }
+                if (index == -1 ) {
+                    console.log('push')
+                    this.trends.push(this.result)
+                } else {
+                    console.log('replace')
+                    this.trends[index] = this.result
+                    console.log('replace 2')
                 }
+                
                 this.checkRemove()
                 console.log('Result watcher end')
             },
@@ -292,13 +295,6 @@ export default {
         result: {
             query: TOPIC_ARTICLES_DATE,
             variables() {
-                if (this.start_date == null) {
-                    this.end_date = new Date()
-                    this.start_date = new Date()
-                    this.start_date.setMonth(this.end_date.getMonth() - 1)
-                    this.start_date = this.start_date.toISOString().slice(0, 10)                    
-                    this.end_date = this.end_date.toISOString().slice(0, 10)
-                }
                 return {
                     topicId: this.topic_id,
                     startdate: this.start_date,
@@ -337,15 +333,19 @@ export default {
                 }
             }
         },
-        callTrends() {
+        async callTrends() {
             var i
             for (i = 0; i < this.getSelected.length; i++) {
                 this.topic_id =  this.getSelected[i].id
                 this.$apollo.queries.result.skip = false
-                this.$apollo.queries.result.refetch()
+                await this.$apollo.queries.result.refetch()
+
+                
+
                 console.log('Result fetched')
             }
             // this.updateTrends()
+            this.graph = this.trends.map(a => a)
             console.log('Exiting call')
         },
         formatDate(date) {
@@ -395,15 +395,29 @@ export default {
             this.searchTopicKeyword(this.keyword)
         },
         reset() {
+            console.log('Reset')
             this.dates = []
-            this.start_date = null
-            this.end_date = null
-            this.media = ''
+            // this.graph = [] // For some reason, this doesnt work?? I've moved it into the watcher and now it functions
+            if (this.start_date == null) {
+                this.end_date = new Date()
+                this.start_date = new Date()
+                this.start_date.setMonth(this.end_date.getMonth() - 1)
+                this.start_date = this.start_date.toISOString().slice(0, 10)                    
+                this.end_date = this.end_date.toISOString().slice(0, 10)
+            }
             this.emptySelected()
         }
     },
     mounted: function() {
         this.result = []
+        if (this.start_date == null) {
+            this.end_date = new Date()
+            this.start_date = new Date()
+            this.start_date.setMonth(this.end_date.getMonth() - 1)
+            this.start_date = this.start_date.toISOString().slice(0, 10)                    
+            this.end_date = this.end_date.toISOString().slice(0, 10)
+        }
+        this.dates = [this.start_date, this.end_date]
         this.callTrends()
         console.log("Mounted!")
     },
