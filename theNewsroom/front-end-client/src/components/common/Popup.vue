@@ -20,7 +20,7 @@
         </v-card-title>
         <!-- We need to make sure we limit the number of characters shown -->
         <v-list depressed rounded >
-                <v-list-item class="item align-items=center" v-for="(article, id) in articles" :key="id" depressed @click='open(article)'>
+                <v-list-item class="item align-items=center" v-for="article in articles" :key="article.id" depressed @click='open(article)'>
                     <v-list-item-title v-text='article.articleByArticleId.title.slice(0, 100)' />
                 </v-list-item>
 
