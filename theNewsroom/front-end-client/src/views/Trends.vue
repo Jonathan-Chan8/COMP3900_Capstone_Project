@@ -67,7 +67,7 @@
                                     </v-list-item-content>
                                 </template>
                                 <v-list-item-group color="none">
-                                    <v-list-item  class='item' v-for="item in related" :key="item.id">
+                                    <v-list-item  class='item' v-for="item in related_topics" :key="item.id">
                                         <v-list-item-title @click='open(item)' v-text="item.name" />
                                         <v-btn icon @click='addSelected(item)'>
                                             <v-icon color="grey lighten-1">mdi-plus-circle</v-icon>
@@ -226,7 +226,7 @@ export default {
         dates: [],
         keyword: '',
         menu: false,
-        related: [],
+        related_topics: [],
         result: '',
         trends: [],
         date: null,
@@ -253,7 +253,7 @@ export default {
         }
     },
     apollo: {
-        related: {
+        related_topics: {
             query: ALL_TOPICS_WITH_FILTER,
             variables() {
                 return {
