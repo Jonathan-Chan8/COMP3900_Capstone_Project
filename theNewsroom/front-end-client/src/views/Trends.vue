@@ -47,7 +47,7 @@
                                     </v-list-item-content>
                                 </template>
                                 <v-list-item-group value="true" color="none">
-                                    <v-list-item class='item' v-for="(item, index) in getSelected" :key="item" >
+                                    <v-list-item class='item' v-for="(item, index) in getSelected" :key="index" >
                                         <v-list-item-title @click='open(item)' v-text="item.name" />
                                         <v-icon v-if='index == 0' color="#FF9D00">mdi-circle</v-icon>
                                         <v-icon v-if='index == 1' color='#66DB00'>mdi-circle</v-icon>
@@ -67,7 +67,7 @@
                                     </v-list-item-content>
                                 </template>
                                 <v-list-item-group color="none">
-                                    <v-list-item  class='item' v-for="item in related" :key="item">
+                                    <v-list-item  class='item' v-for="item in related" :key="item.id">
                                         <v-list-item-title @click='open(item)' v-text="item.name" />
                                         <v-btn icon @click='addSelected(item)'>
                                             <v-icon color="grey lighten-1">mdi-plus-circle</v-icon>
