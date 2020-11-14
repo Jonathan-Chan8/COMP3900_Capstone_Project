@@ -271,6 +271,8 @@ export default {
                     } else {
                         console.log('replace')
                         this.trends[index] = this.result
+                        console.log('replace 2')
+
                     }
                 }
                 this.checkRemove()
