@@ -235,20 +235,27 @@ export default {
         skipQuery: true,
     }),
     watch: {
+        // dates: s{
+        //     handler: function() {
+        //     console.log('Selected watcher start')
+        //     this.callTrends()
+            
+
+            
+        //     // this.updateTrends()
+        //     this.checkRemove()
+        //     console.log('Selected watcher end')
+        //     },
+        // },
         getSelected: {
             handler: function() {
             console.log('Selected watcher start')
             this.callTrends()
-            var i
-            for (i = 0; i < this.trends.length; i++) {
-                let index = this.getSelected.findIndex(item => item.name == this.trends[i].name)
-                if (index == -1) {
-                    this.trends.splice(index, 1)
+            
 
-                }
-
-            }
+            
             // this.updateTrends()
+            this.checkRemove()
             console.log('Selected watcher end')
             },
         },
@@ -259,11 +266,15 @@ export default {
                 let index = this.trends.findIndex(item => item.name == this.result.name)
                 if (this.result != '') {
                     if (index == -1 ) {
+                        console.log('push')
                         this.trends.push(this.result)
                     } else {
+                        console.log('replace')
                         this.trends[index] = this.result
                     }
                 }
+                this.checkRemove()
+
                 console.log('Result watcher end')
 
             },
@@ -318,6 +329,17 @@ export default {
         }
     },
     methods: {
+        checkRemove() {
+            if (this.getSelected.length != this.trends.length){
+                var i
+                for (i = 0; i < this.trends.length; i++) {
+                    let index = this.getSelected.findIndex(item => item.name == this.trends[i].name)
+                    if (index == -1) {
+                        this.trends.splice(index, 1)
+                    }
+                }
+            }
+        },
         callTrends() {
             var i
             for (i = 0; i < this.getSelected.length; i++) {
@@ -365,8 +387,6 @@ export default {
                 this.end_date = this.dates[0]
             }
             this.dates = [this.start_date, this.end_date]
-            this.start_date = new Date(this.start_date)
-            this.end_date = new Date(this.end_date)
             this.callTrends()
         },
         saveTrendSelection(name) {
