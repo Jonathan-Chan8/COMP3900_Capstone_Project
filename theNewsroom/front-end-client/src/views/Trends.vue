@@ -120,20 +120,11 @@
                 <v-col />
             </v-layout>
         </v-container>
-        {{dates}}
-                <v-divider/>
-
-        {{start_date}}
-        {{end_date}}
-
+        {{getSelected}}
         <v-divider/>
-
-        {{date}}
-                <v-divider/>
-
-                <v-divider/>
-{{trends_graph}}
-
+        {{trends}}
+        <v-divider/>
+        {{trends_graph}}
         <v-divider/>
 
    
@@ -164,11 +155,11 @@ export default {
         Search
     },
     data: () => ({
-        el: '#app',
-        mounted: function() {
-            this.updateTrends()
-            console.log("Mounted!")
-        },
+        // el: '#app',
+        // mounted: function() {
+        //     this.updateTrends()
+        //     console.log("Mounted!")
+        // },
         options: {
             stroke: {
                 curve: 'smooth',
@@ -247,8 +238,10 @@ export default {
         getSelected: {
             handler: function() {
                 // this.$apollo.queries.related.refresh().
+                this.trends_graph = []            
+                console.log('In watcher')
                 this.updateTrends()
-                console.log('Related topics and Trends graph refreshed')
+                console.log('Trends graph has been refreshed')
             },
             // deep: true,
             immediate: true
@@ -278,7 +271,6 @@ export default {
                     this.start_date = this.start_date.toISOString().slice(0, 10)                    
                     this.end_date = this.end_date.toISOString().slice(0, 10)
                 }
-              
                 return {
                     topicId: this.topic_id,
                     startdate: this.start_date,
@@ -302,7 +294,9 @@ export default {
     },
     methods: {
         updateTrends() {
-            this.trends_graph = []
+            // this.trends_graph = []
+            console.log('In updateTrends()')
+
             
             var i
             for (i = 0; i < this.getSelected.length; i++) {
@@ -316,20 +310,6 @@ export default {
                     x: el.x,
                     y: el.y
                 }))
-
-                // var date = new Date(this.start_date)
-                // while (date <= this.end_date) {
-                //     let index = this.trends.findIndex(item => item.x == date)
-                //     if (index == -1) {
-                //         data_series.push({
-                //         x: date.toISOString().slice(10),
-                //         y: 0
-                //     })
-                //     }
-                //     var next = new Date(date)
-                //     next.setDate(next.getDate()+1)
-                //     date = next
-                // }
 
                 this.trends_graph.push({
                     name: this.getSelected[i].name,
