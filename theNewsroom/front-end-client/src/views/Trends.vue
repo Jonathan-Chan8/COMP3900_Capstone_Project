@@ -54,7 +54,7 @@
                                         <v-icon v-if='index == 2' color="#FF42DC">mdi-circle</v-icon>
                                         <v-icon v-if='index == 3' color="#0096DB">mdi-circle</v-icon>
                                         <v-icon v-if='index == 4' color="#DB0004">mdi-circle</v-icon>
-                                        <v-btn icon @click='remove(item)'>
+                                        <v-btn icon @click='removeSelected(item)'>
                                             <v-icon color="grey lighten-1">mdi-minus-circle</v-icon>
                                         </v-btn>
                                     </v-list-item>
@@ -239,6 +239,15 @@ export default {
             handler: function() {
             console.log('Selected watcher start')
             this.callTrends()
+            var i
+            for (i = 0; i < this.trends.length; i++) {
+                let index = this.getSelected.findIndex(item => item.name == this.trends[i].name)
+                if (index == -1) {
+                    this.trends.splice(index, 1)
+
+                }
+
+            }
             // this.updateTrends()
             console.log('Selected watcher end')
             },
@@ -255,8 +264,6 @@ export default {
                         this.trends[index] = this.result
                     }
                 }
-          
-               
                 console.log('Result watcher end')
 
             },
@@ -378,11 +385,6 @@ export default {
             this.end_date = null
             this.media = ''
             this.emptySelected()
-        },
-        remove(topic) {
-            this.removeSelected(topic)
-            let index = this.trends.findIndex(item => item.name == topic.name)
-            this.trends.splice(index, 1)
         }
     },
     mounted: function() {
