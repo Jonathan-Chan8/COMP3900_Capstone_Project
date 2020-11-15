@@ -5,29 +5,20 @@
 
             <v-layout wrap>
                 <v-flex xs12 md4>
-                    <!-- Really, these filters wont actually filter the datatable, but rather will be used as input to our db query, thus changing the reuslts of the topics list returned by the database -->
-
-                    <!-- For now this filters the datatable, really we want it to produce a popup with possible matches on 'enter', and selecting a match will produce the corresponding topic popup. This field ought to be in the same position of the page on both Topics and Trends, to show continuity -->
-
                     <v-card flat tile width='100%'>
-
                         <v-list flat rounded dense>
-                            <!-- Search, calendar and media are subgroups in a the group Filters, allowing us to easily modify this entire list as a single element -->
                             <v-list-group value="true" color="none">
-
                                 <template v-slot:activator>
-
                                     <v-list-item-content>
                                         <v-list-item-title class='font-weight-light list-title'>Filters </v-list-item-title>
                                     </v-list-item-content>
-
                                 </template>
                                 <!-- Search -->
                                 <v-list-item>
                                     <v-text-field @keyup.enter.native="searchTopic" dense rounded filled v-model="keyword" append-icon="mdi-magnify" label="Search for a topic" single-line hide-details />
                                     <Search v-model="search" />
                                 </v-list-item>
-                                <!-- Calendar (a menu that opens a calendar, the user selects a date range and the date that occurs first is automatically saved as the starting date (to be used in our queries)-->
+                                <!-- Calendar -->
                                 <v-list-item>
                                     <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="dates" transition="scale-transition" offset-y min-width="290px">
                                         <template v-slot:activator="{ on, attrs }">
@@ -44,9 +35,7 @@
                                 <!-- Media selection -->
                                 <v-list-item>
                                     <v-text-field dense rounded filled v-model="media" append-icon="mdi-book-open-variant" label="Filter by media outlet" single-line hide-details />
-
                                 </v-list-item>
-
                             </v-list-group>
                             <v-list-item>
                                 <v-spacer />
@@ -54,15 +43,11 @@
                                     Reset </v-btn>
                                 <HelpTopics />
                             </v-list-item>
-
                         </v-list>
-
                     </v-card>
-
                     <v-spacer />
                 </v-flex>
                 <v-spacer />
-
                 <v-flex align-center xs12 md8>
                     <!-- At the moment, topics are shown in a data table with rows that contain a topic's name and number of articles. Datatables allow us with a lot of options for sorting and presenting data, and are more scalable for different screen resolutions than other data presentation methods -->
                     <v-data-table :mobile-breakpoint="0" :headers="headers" :items="topics" :sort-by="['topicofarticlesByTopicId.totalCount']" :sort-desc="[true]">
@@ -74,14 +59,11 @@
                         </template>
                     </v-data-table>
                 </v-flex>
-
-                <!-- This is only ever opened when popup=true. Selecting a row will open the Popup component, and when the component is closed (by pressing close, or clicking off of the popup), that component emits a signal that sets popup=false, thus closing the popup -->
                 <Popup v-model="popup" />
                 <v-col />
             </v-layout>
         </v-container>
-{{start_date}}
-{{end_date}}
+
     </template>
 </div>
 
@@ -90,17 +72,11 @@
 
 
 <script>
-// Components
 import Popup from "../components/common/Popup"
 import HelpTopics from "../components/common/HelpTopics"
 import Search from "../components/common/Search"
-
-// GQL Queries
 import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
-
 import {
-    mapGetters,
-    mapState,
     mapMutations
 } from 'vuex';
 
@@ -122,7 +98,6 @@ export default {
         menu: false,
         media: '',
         sortDesc: true,
-
         headers: [{
                 text: '# Articles',
                 value: 'topicofarticlesByTopicId.totalCount',
@@ -156,16 +131,7 @@ export default {
     },
     methods: {
         ...mapMutations([
-            'addSelected',
-            'removeSelected',
             'openTopic',
-            'nextTopic',
-            'previousTopic',
-            'closeTopic',
-            'emptySelected',
-            'setSelected',
-            'saveTrend',
-            'deleteTrend',
             'searchTopicKeyword'
         ]),
         formatDate(date) {
@@ -221,9 +187,6 @@ export default {
         console.log("Mounted!")
     },
     computed: {
-        ...mapState(['current_topic', 'current_article', 'saved', 'popups', 'selected', 'related']),
-        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved', 'getRelated', 'getPopups']),
-
         todaysDate() {
             const today = new Date();
             return this.formatDate(today);
@@ -232,7 +195,6 @@ export default {
             return this.dates.join(' to ')
         },
     },
-
 }
 </script>
 

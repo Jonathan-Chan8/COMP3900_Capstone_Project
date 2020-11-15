@@ -8,7 +8,6 @@
         </v-card-title>
         <v-card-actions>
             <v-row dense>
-                <!-- We would need ot make sure we limit the number of characters shown -->
                 <v-col v-for="(topic, index) in topics" :key="index" md=6>
                     <v-btn color="rgb(230, 235, 255)" rounded width=100% depressed @click.stop="nextTopic(topic)" v-text='topic.name' />
                 </v-col>
@@ -18,12 +17,10 @@
         <v-card-title class="subheading">
             Top Articles
         </v-card-title>
-        <!-- We need to make sure we limit the number of characters shown -->
         <v-list depressed rounded >
                 <v-list-item class="item align-items=center" v-for="article in articles" :key="article.id" depressed @click='open(article)'>
                     <v-list-item-title v-text='article.articleByArticleId.title.slice(0, 100)' />
                 </v-list-item>
-
         </v-list>
         <v-divider />
         <v-card-actions>
@@ -31,7 +28,7 @@
                 <v-btn  v-if='isSelected' rounded depressed @click='removeSelected(current_topic)'>
                     Remove
                 </v-btn>
-                <v-btn  v-else rounded depressed @click='addSelected(current_topic)'>
+                <v-btn  v-else rounded depressed @click='add(current_topic)'>
                     Add
                 </v-btn>
                 <v-spacer />
@@ -46,6 +43,7 @@
         </v-card-actions>
     </v-card>
     <Article v-model="article" />
+    <Replace v-model="replace" />
 
 </v-dialog>
 </template>
@@ -59,6 +57,7 @@ import {
 
 import HelpPopup from "./HelpPopup";
 import Article from "./Article";
+import Replace from "./Replace";
 
 import ALL_TOPICS_WITH_FILTER from '../../graphql/TopicsAndArticleCount.gql'
 import TOP_ARTICLES_FROM_TOPIC from '../../graphql/TopArticlesFromTopic.gql'
@@ -67,15 +66,14 @@ export default {
     props: {
         value: Boolean
     },
-
     components: {
         HelpPopup,
-        Article
+        Article,
+        Replace
     },
-
     computed: {
         ...mapState(['popups', 'selected', 'current_topic']),
-        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getPopups']),
+        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getPopups', 'numSelected']),
 
         show: {
             get() {
@@ -86,32 +84,12 @@ export default {
             }
         }
     },
-    methods: {
-        ...mapMutations([
-            'addSelected',
-            'removeSelected',
-            'openTopic',
-            'nextTopic',
-            'previousTopic',
-            'closeTopic',
-            'openArticle'
-        ]),
-        close() {
-            this.show = false
-            this.closeTopic()
-        },
-        open(article) {
-            this.article = true
-            this.openArticle(article)
-        }
-    },
-
     data: () => ({
         article: false,
         topics: [],
         articles: [],
+        replace: false
     }),
-
     apollo: {
         topics: {
             query: ALL_TOPICS_WITH_FILTER,
@@ -141,12 +119,36 @@ export default {
                 return data.topicById.topicofarticlesByTopicId.nodes;
             }
         }
-
     },
-
+    methods: {
+        ...mapMutations([
+            'addSelected',
+            'removeSelected',
+            'openTopic',
+            'nextTopic',
+            'previousTopic',
+            'closeTopic',
+            'openArticle'
+        ]),
+        close() {
+            this.show = false
+            this.closeTopic()
+        },
+        open(article) {
+            this.article = true
+            this.openArticle(article)
+        },
+        add(topic) {
+            if (this.numSelected == 5) {
+                this.replace = true
+            } else {
+                this.addSelected(topic)
+            }
+        }
+    },
 }
-</script>
 
+</script>
 <style scoped>
 .v-list-item {
     justify-content: center !important;
@@ -154,16 +156,12 @@ export default {
     text-align: center !important;
     align-items: center !important;
 }
-
 .item {
     background: rgb(230, 235, 255);
 
 }
-
 .item:hover {
      background:rgb(222, 229, 255);
 
 }
-
-
 </style>

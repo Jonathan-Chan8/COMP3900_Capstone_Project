@@ -19,24 +19,12 @@
                 <p><b>Saved Trends</b> will allow you to revisist saved selections, whilst selecting the <b>Save</b> button will save your current selection for later. This is only avaoiable for registered users, so remember to log in!</p>
                 <p>You can also <b>Clear</b> your selection at any time.
                 </p>
-
             </v-card-text>
-
             <v-card-actions>
-                <v-row dense>
-
-                    <v-col>
-
-                        <v-btn width=100% rounded depressed @click.stop="close">
-                            Close
-                        </v-btn>
-
-                    </v-col>
-
-                </v-row>
-
+                <v-btn width=100% rounded depressed @click.stop="close">
+                    Close
+                </v-btn>
             </v-card-actions>
-
         </v-card>
     </v-dialog>
 </div>
@@ -44,15 +32,13 @@
 
 <script>
 export default {
-    data: () => ({
-        show: false
-    }),
-
     props: {
         value: Boolean
     },
-
-    compute: {
+    data: () => ({
+        show: false
+    }),
+    computed: {
         show: {
             get() {
                 return this.value
@@ -62,7 +48,6 @@ export default {
             }
         }
     },
-
     methods: {
         close() {
             this.show = false

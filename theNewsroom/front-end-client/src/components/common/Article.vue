@@ -22,7 +22,6 @@
                 </v-col>
             </v-row>
         </v-card-actions>
-
         <v-divider />
         <v-card-actions>
             <v-row dense>
@@ -35,7 +34,6 @@
                 </v-btn>
             </v-row>
         </v-card-actions>
-
     </v-card>
 </v-dialog>
 </template>
@@ -43,7 +41,6 @@
 <script>
 import {
     mapState,
-    mapGetters,
 } from 'vuex';
 
 export default {
@@ -52,8 +49,7 @@ export default {
     },
 
     computed: {
-        ...mapState(['popups', 'selected', 'current_topic', 'current_article']),
-        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getPopups']),
+        ...mapState(['current_article']),
 
         show: {
             get() {
@@ -65,14 +61,11 @@ export default {
         }
     },
     methods: {
-
         close() {
             this.show = false
         },
     },
-
     data: () => ({
-
     }),
 
 }

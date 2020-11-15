@@ -36,25 +36,7 @@
             </v-list>
         </v-row>
         <Popup v-model="popup" />
-
     </v-container>
-    <!--
-    <v-text> Current Topic: {{ current_topic}} </v-text>
-    <v-spacer />
-    <v-text> Popup Stack: {{ getPopups}} </v-text>
-    <v-spacer />
-    <v-text> Selected Topics: {{ getSelected}} </v-text>
-    <v-spacer />
-    <v-text> Saved: {{ getSaved}} </v-text>
-    <v-spacer />
-    <v-text> Current Saved: {{ current_saved}} </v-text>
-    <v-spacer />
-
-    <v-text> Edit: {{editted}} </v-text>
-    <v-spacer />
-
-    <v-text> old: {{old}} </v-text>
--->
 </template>
 
 </div>
@@ -76,7 +58,6 @@ export default {
         Popup,
         HelpSaved
     },
-
     data: () => ({
         trend: {
             title: '',
@@ -86,20 +67,13 @@ export default {
         popup: false,
     }),
     computed: {
-        ...mapState(['current_topic', 'saved', 'popups', 'selected', 'related']),
-        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved', 'getRelated', 'getPopups']),
+        ...mapState(['saved']),
+        ...mapGetters(['getSaved']),
     },
     methods: {
         ...mapMutations([
-            'addSelected',
-            'removeSelected',
             'openTopic',
-            'nextTopic',
-            'previousTopic',
-            'closeTopic',
-            'emptySelected',
             'setSelected',
-            'saveTrend',
             'deleteTrend',
         ]),
         open(title) {
@@ -121,21 +95,16 @@ export default {
 td {
     text-align: center !important;
 }
-
 .saved {
     padding-top: 20px
 }
-
 .edit {
     max-width: 150px;
 }
-
 .item {
     background: rgb(230, 235, 255);
 }
-
 .item:hover {
     background:rgb(222, 229, 255);
-
 }
 </style>

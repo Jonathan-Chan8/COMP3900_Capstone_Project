@@ -5,8 +5,6 @@
 
             <v-layout wrap>
                 <v-flex xs12 md4>
-                    <!-- Really, these filters wont actually filter the datatable, but rather will be used as input to our db query, thus changing the reuslts of the topics list returned by the database -->
-
                     <!-- For now this filters the datatable, really we want it to produce a popup with possible matches on 'enter', and selecting a match will produce the corresponding topic popup. This field ought to be in the same position of the page on both Topics and Trends, to show continuity -->
                     <v-card flat tile width='100%'>
                         <v-list ripple=false expand flat rounded dense>
@@ -69,7 +67,7 @@
                                 <v-list-item-group color="none">
                                     <v-list-item  class='item' v-for="item in related_topics" :key="item.id">
                                         <v-list-item-title @click='open(item)' v-text="item.name" />
-                                        <v-btn icon @click='addSelected(item)'>
+                                        <v-btn icon @click='add(item)'>
                                             <v-icon color="grey lighten-1">mdi-plus-circle</v-icon>
                                         </v-btn>
                                     </v-list-item>
@@ -114,30 +112,22 @@
                     </template>
                 </v-flex>
 
-                <!-- Same as on Home and Topics, this is only shown when popup = true and is closed when popup = false -->
                 <Popup v-model="popup" />
-
+                <Replace v-model="replace" />
                 <v-col />
             </v-layout>
         </v-container>
-
-        <v-divider/>
-        Result: {{result}}
-        <v-divider/>
-        Trends: {{trends}}
-        <v-divider/>
-        Graph: {{graph}}
-        <v-divider/>
-
-   
-
-
     </template>
+
+    {{trends}}
+    <v-divider/>
+    {{graph}}
 </div>
 </template>
 
 <script>
 import Popup from "../components/common/Popup";
+import Replace from "../components/common/Replace";
 import SaveTrend from "../components/common/SaveTrend";
 import HelpTrends from "../components/common/HelpTrends";
 import Search from "../components/common/Search"
@@ -154,7 +144,8 @@ export default {
         Popup,
         SaveTrend,
         HelpTrends,
-        Search
+        Search,
+        Replace
     },
     data: () => ({
         el: '#app',
@@ -233,26 +224,13 @@ export default {
         topic_id: null,
         graph: [],
         skipQuery: true,
+        replace: false
     }),
     watch: {
-        // dates: s{
-        //     handler: function() {
-        //     console.log('Selected watcher start')
-        //     this.callTrends()
-            
-            
-        //     // this.updateTrends()
-        //     this.checkRemove()
-        //     console.log('Selected watcher end')
-        //     },
-        // },
         getSelected: {
             handler: function() {
             console.log('Selected watcher start')
             this.callTrends()
-            
-            
-            // this.updateTrends()
             this.checkRemove()
 
             if (this.getSelected.length == 0) {
@@ -264,7 +242,6 @@ export default {
         result: {
             handler: function() {
                 console.log('Result watcher start')
-                // this.trends.push(this.result)     
                 let index = this.trends.findIndex(item => item.name == this.result.name)
                 if (index == -1 ) {
                     console.log('push')
@@ -274,7 +251,6 @@ export default {
                     this.trends[index] = this.result
                     console.log('replace 2')
                 }
-                
                 this.checkRemove()
                 console.log('Result watcher end')
             },
@@ -315,9 +291,7 @@ export default {
                 return this.skipQuery
             },
             options: {
-                awaitFetchQueries: false,
-                fetchPolicy: 'cache-first',
-                forceFetch: false
+                // fetchPolicy: 'cache-first',
             }
         }
     },
@@ -339,12 +313,8 @@ export default {
                 this.topic_id =  this.getSelected[i].id
                 this.$apollo.queries.result.skip = false
                 await this.$apollo.queries.result.refetch()
-
-                
-
                 console.log('Result fetched')
             }
-            // this.updateTrends()
             this.graph = this.trends.map(a => a)
             console.log('Exiting call')
         },
@@ -360,11 +330,7 @@ export default {
             'addSelected',
             'removeSelected',
             'openTopic',
-            'nextTopic',
-            'previousTopic',
-            'closeTopic',
             'emptySelected',
-            'setSelected',
             'saveTrend',
             'searchTopicKeyword'
         ]),
@@ -397,7 +363,6 @@ export default {
         reset() {
             console.log('Reset')
             this.dates = []
-            // this.graph = [] // For some reason, this doesnt work?? I've moved it into the watcher and now it functions
             if (this.start_date == null) {
                 this.end_date = new Date()
                 this.start_date = new Date()
@@ -406,10 +371,18 @@ export default {
                 this.end_date = this.end_date.toISOString().slice(0, 10)
             }
             this.emptySelected()
+        },
+        add(topic) {
+            if (this.numSelected == 5) {
+                this.replace = true
+            } else {
+                this.addSelected(topic)
+            }
         }
     },
     mounted: function() {
         this.result = []
+        this.trends = []
         if (this.start_date == null) {
             this.end_date = new Date()
             this.start_date = new Date()
@@ -422,8 +395,8 @@ export default {
         console.log("Mounted!")
     },
     computed: {
-        ...mapState(['current_topic', 'current_article', 'saved', 'popups', 'selected', 'related']),
-        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved', 'getRelated', 'getPopups']),
+        ...mapState(['saved', 'selected', 'related']),
+        ...mapGetters(['numSelected', 'getSelected', 'getSaved', 'getRelated']),
         todaysDate() {
             const today = new Date();
             return this.formatDate(today);

@@ -17,13 +17,11 @@ export default new Vuex.Store({
 		popups: [],
 		selected: [],
 		related: []
-
-		
 	},
 
 	mutations: {
 		addSelected(state, topic) {
-			if (!state.selected.includes(topic)){
+			if (!state.selected.includes(topic) && state.selected.length < 5){
 				state.selected.push(topic)
 			}
 		},
@@ -34,9 +32,6 @@ export default new Vuex.Store({
 		openTopic(state, topic) {
 			state.current_topic = topic
 		},
-		// openArticle(state, article) {
-		// 	state.current_article = article
-		// },
 		nextTopic(state, topic) {
 			state.popups.push(state.current_topic)
 			state.current_topic = topic
@@ -121,9 +116,11 @@ export default new Vuex.Store({
 			return state.current_article
 		},
 
-
+		maxSelected: state => {
+			if (state.selected.length < 5) return false
+			return true
+		}
 	},
-	
 })
 
 

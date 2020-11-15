@@ -14,10 +14,7 @@
     <v-toolbar-items class="d-none d-md-block">
         <v-btn text v-for="item in menu" :key="item.icon" :to="item.route" depressed>{{ item.title }}
         </v-btn>
-
         <v-btn text depressed v-if="!$auth.loading && !$auth.isAuthenticated" @click="login">Log In / Register</v-btn>
-
-        <!-- show saved/logout when authenticated -->
         <v-menu v-else offset-y>
             <template v-slot:activator=" { on }">
                 <v-btn text v-on="on">
@@ -25,7 +22,6 @@
                 </v-btn>
             </template>
             <v-list class="responsiveMenu">
-                <!-- show saved/logout when authenticated -->
                 <v-list-item text v-if="$auth.isAuthenticated" to='/profile'>
                     Profile
                 </v-list-item>
@@ -47,10 +43,7 @@
                 <v-app-bar-nav-icon v-on="on" />
             </template>
             <v-list class="responsiveMenu" size="auto">
-                <!-- Always shown -->
                 <v-list-item text v-for="item in menu" :key="item.icon" :to="item.route" depressed v-text='item.title' />
-
-                <!-- show login/register when not authenticated -->
                 <template v-if="!$auth.loading && !$auth.isAuthenticated">
                     <v-list-item text @click="login">
                         Log In
@@ -59,8 +52,6 @@
                         Register
                     </v-list-item>
                 </template>
-
-                <!-- show saved/logout when authenticated -->
                 <template v-else>
                     <v-list-item text to='/profile'>
                         Profile
@@ -83,11 +74,9 @@
 export default {
     name: "Header",
     methods: {
-        // Log the user in
         login() {
             this.$auth.loginWithPopup();
         },
-        // Log the user out
         logout() {
             this.$auth.logout({
                 returnTo: window.location.origin
@@ -106,16 +95,13 @@ export default {
                 icon: 'topics',
                 title: 'Topics',
                 route: '/topics'
-
             },
             {
                 icon: 'trends',
                 title: 'Trends',
                 route: '/trends'
             },
-
         ]
-
     }),
 }
 </script>

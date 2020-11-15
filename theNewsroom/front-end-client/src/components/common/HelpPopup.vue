@@ -11,7 +11,6 @@
             <v-card-title class="headline">
                 Need Help?
             </v-card-title>
-
             <v-card-text class="flex-wrap text-justify justify-space-between">
                 <p><b>Related Topics</b> allow you to view information for those topics most related to this one.</p>
                 <p><b>Top Articles</b> alllow you to view news articles most related to this topic.</p>
@@ -22,18 +21,9 @@
 
             </v-card-text>
             <v-card-actions>
-                <v-row dense>
-
-                    <v-col>
-
-                        <v-btn width=100% rounded depressed @click.stop="close">
-                            Close
-                        </v-btn>
-
-                    </v-col>
-
-                </v-row>
-
+                <v-btn width=100% rounded depressed @click.stop="close">
+                    Close
+                </v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -41,24 +31,14 @@
 </template>
 
 <script>
-import {
-    mapState,
-    mapGetters,
-} from 'vuex';
-
 export default {
+     props: {
+        value: Boolean
+    },
     data: () => ({
         show: false
     }),
-
-    props: {
-        value: Boolean
-    },
-
-    compute: {
-        ...mapState(['current_article']),
-        ...mapGetters(['getArticle']),
-
+    computed: {
         show: {
             get() {
                 return this.value
@@ -68,7 +48,6 @@ export default {
             }
         }
     },
-
     methods: {
         close() {
             this.show = false

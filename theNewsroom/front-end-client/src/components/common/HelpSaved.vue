@@ -16,22 +16,11 @@
                 </p>
                 <p>You can view a <b>Topic</b> by selecting it from the saved trend.</p>
                 <p>If you would like to removed a saved trend, simply select the <b>Delete</b> button.</p>
-
             </v-card-text>
-
             <v-card-actions>
-                <v-row dense>
-
-                    <v-col>
-
-                        <v-btn width=100% rounded depressed @click.stop="close">
-                            Close
-                        </v-btn>
-
-                    </v-col>
-
-                </v-row>
-
+                <v-btn width=100% rounded depressed @click.stop="close">
+                    Close
+                </v-btn>
             </v-card-actions>
 
         </v-card>
@@ -41,15 +30,13 @@
 
 <script>
 export default {
-    data: () => ({
-        show: false
-    }),
-
     props: {
         value: Boolean
     },
-
-    compute: {
+    data: () => ({
+        show: false
+    }),
+    computed: {
         show: {
             get() {
                 return this.value
@@ -59,7 +46,6 @@ export default {
             }
         }
     },
-
     methods: {
         close() {
             this.show = false

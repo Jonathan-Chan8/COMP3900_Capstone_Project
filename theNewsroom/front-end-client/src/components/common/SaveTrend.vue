@@ -34,7 +34,6 @@
 <script>
 import {
     mapGetters,
-    mapState,
     mapMutations
 } from 'vuex';
 export default {
@@ -42,8 +41,7 @@ export default {
         value: Boolean
     },
     computed: {
-        ...mapState(['saved', 'popups', 'selected', 'current_topic']),
-        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getSaved', 'getRelated']),
+        ...mapGetters(['getSelected']),
         show: {
             get() {
                 return this.value
@@ -55,21 +53,13 @@ export default {
     },
     methods: {
         ...mapMutations([
-            'addSelected',
-            'removeSelected',
-            'openTopic',
-            'nextTopic',
-            'previousTopic',
-            'closeTopic',
-            'emptySelected',
-            'setSelected',
             'saveTrend'
         ]),
         close() {
             this.show = false
         },
         saveTrendSelection(title) {
-            if (this.title.length > 3 && this.title.length <= 20 && this.selected.length > 0) {
+            if (this.title.length > 3 && this.title.length <= 20 && this.getSelected.length > 0) {
                 this.saveTrend(title.charAt(0).toUpperCase() + title.slice(1))
                 this.close()
             }
