@@ -39,6 +39,8 @@
     </v-container>
 </template>
 
+{{configs}}
+
 </div>
 </template>
 
@@ -67,14 +69,16 @@ export default {
         dialog: false,
         popup: false,
         userId: '',
-        saved: []
+        configs: [],
+        saved: [],
+        skipQuery: false
     }),
     computed: {
         ...mapState(['saved']),
         ...mapGetters(['getSaved']),
     },
     apollo: {
-        saved: {
+        configs: {
             query: USER_CONFIGS,
             variables() {
                 return {
@@ -85,6 +89,9 @@ export default {
                 return {
                     data: data.allUserconfigurations.nodes
                 }
+            },
+            skip() {
+                return this.skipQuery
             },
         }
     },
@@ -103,12 +110,19 @@ export default {
             this.$router.push({
                 name: 'trends'
             })
+        },
+        async getConfigs() {
+            this.$apollo.queries.configs.skip = false
+            this.$apollo.queries.configs.refetch()
         }
     },
     mounted: function() {
-        this.userId = this.$auth.user.sub
+        // this.userId = this.$auth.user.sub
+        this.userId = "hello"
         console.log(this.userId)
-        // this.$apollo.queries.saved.refetch()
+        this.getConfigs()
+        // this.saved = this.configs
+    //     // this.$apollo.queries.saved.refetch()
     }
 
 }
