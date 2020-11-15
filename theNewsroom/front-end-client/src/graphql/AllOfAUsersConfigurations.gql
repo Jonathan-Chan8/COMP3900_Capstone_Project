@@ -1,6 +1,6 @@
-query AllOfAUsersConfigurations($userId: Int! = 2) {
+query AllOfAUsersConfigurations($userId: String!) {
 	allUserconfigurations (filter: {
-    usrId: {
+    userId: {
       equalTo: $userId
     }
   }) {

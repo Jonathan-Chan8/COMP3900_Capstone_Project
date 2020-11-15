@@ -11,7 +11,7 @@
                     <span> Need Help?</span>
 
                 </v-list-item>
-                <v-list-item  class="item" v-for="config in getSaved" :key="config.title" depressed hover @click.stop="viewTrends(config.topics)">
+                <v-list-item  class="item" v-for="config in saved" :key="config.title" depressed hover @click.stop="viewTrends(config.topics)">
 
                     <v-col d-flex>
                         <v-list-item-title class="headline" v-text="config.title" />
@@ -45,6 +45,7 @@
 <script>
 import Popup from "../components/common/Popup";
 import HelpSaved from "../components/common/HelpSaved";
+import USER_CONFIGS from "../graphql/AllOfAUsersConfigurations.gql"
 
 import {
     mapGetters,
@@ -65,10 +66,27 @@ export default {
         },
         dialog: false,
         popup: false,
+        userId: '',
+        saved: []
     }),
     computed: {
         ...mapState(['saved']),
         ...mapGetters(['getSaved']),
+    },
+    apollo: {
+        saved: {
+            query: USER_CONFIGS,
+            variables() {
+                return {
+                    userId: this.userId
+                }
+            },
+            update(data) {
+                return {
+                    data: data.allUserconfigurations.nodes
+                }
+            },
+        }
     },
     methods: {
         ...mapMutations([
@@ -85,8 +103,13 @@ export default {
             this.$router.push({
                 name: 'trends'
             })
-        },
+        }
     },
+    mounted: function() {
+        this.userId = this.$auth.user.sub
+        console.log(this.userId)
+        // this.$apollo.queries.saved.refetch()
+    }
 
 }
 </script>

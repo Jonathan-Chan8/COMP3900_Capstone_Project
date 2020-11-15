@@ -1,0 +1,24 @@
+
+mutation {
+  createUserconfiguration
+    (
+    input: {
+      userconfiguration:{
+        configName: "config"
+        usrId:"hello"
+      }
+    }
+    ) {
+    userconfiguration {
+      id
+      configName
+      topicconfigurationsByUsrConfigId {
+        edges {
+          node {
+            id
+          }
+        }
+      }
+    }
+  }
+}

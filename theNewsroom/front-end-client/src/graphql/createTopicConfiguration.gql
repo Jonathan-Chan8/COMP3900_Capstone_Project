@@ -1,0 +1,15 @@
+mutation {
+  createTopicconfiguration
+    (
+    input: {
+      topicconfiguration:{
+        usrConfigId: 1
+        topicId:1
+      }
+    }
+    ) {
+    topicconfiguration {
+     id
+    }
+  }
+}
