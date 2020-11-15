@@ -92,8 +92,6 @@
                             <v-list-item>
                                 <v-spacer />
                                 <SaveTrend v-if="!$auth.loading & $auth.isAuthenticated" />
-                                <v-btn rounded depressed @click="callTrends">
-                                    Refresh </v-btn>
                                 <v-btn rounded depressed @click="reset">
                                     Reset </v-btn>
                                 <HelpTrends />
@@ -159,7 +157,10 @@ export default {
                 type: 'datetime'
             },
             tooltip: {
-                shared: true
+                enabled: true,
+                followCursor: true,
+                shared: true,
+
             },
             markers: {
                 size: 0,
@@ -360,8 +361,10 @@ export default {
             }
         },
         searchTopic() {
-            this.search = true
-            this.searchTopicKeyword(this.keyword)
+            if (this.keyword != '') {
+                this.search = true
+                this.searchTopicKeyword(this.keyword)
+            }
         },
         reset() {
             console.log('Reset')

@@ -165,8 +165,10 @@ export default {
             this.end_date = new Date(this.end_date)
         },
         searchTopic() {
-            this.search = true
-            this.searchTopicKeyword(this.keyword)
+            if (this.keyword != '') {
+                this.search = true
+                this.searchTopicKeyword(this.keyword)
+            }
         },
         reset() {
             this.dates = []

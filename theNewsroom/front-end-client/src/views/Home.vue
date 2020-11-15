@@ -153,8 +153,10 @@ export default {
             this.openTopic(topic)
         },
         searchTopic() {
-            this.search = true
-            this.searchTopicKeyword(this.keyword)
+            if (this.keyword != '') {
+                this.search = true
+                this.searchTopicKeyword(this.keyword)
+            }
         },
 
     },
