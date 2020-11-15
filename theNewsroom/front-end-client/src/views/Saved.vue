@@ -18,8 +18,8 @@
                         <v-card-actions>
                             <v-row dense>
                                 <!-- We would need ot make sure we limit the number of characters shown -->
-                                <v-col v-for="topic in config.topics" :key="topic.topicId">
-                                    <v-btn dark rounded width=100% depressed @click.stop="open(topic)" v-text='topic.topicName' />
+                                <v-col v-for="topic in config.topics" :key="topic.id">
+                                    <v-btn dark rounded width=100% depressed @click.stop="open(topic)" v-text='topic.name' />
                                 </v-col>
                             </v-row>
                             <v-row class="edit" dense>
@@ -38,11 +38,6 @@
         <Popup v-model="popup" />
     </v-container>
 </template>
-
-{{configs}}
-<v-divider />
-{{saved}}
-
 </div>
 </template>
 
@@ -52,8 +47,6 @@ import HelpSaved from "../components/common/HelpSaved";
 import USER_CONFIGS from "../graphql/AllOfAUsersConfigurations.gql"
 
 import {
-    mapGetters,
-    mapState,
     mapMutations
 } from 'vuex';
 
@@ -72,12 +65,9 @@ export default {
         popup: false,
         userId: '',
         configs: [],
-        saved: [],
         skipQuery: false
     }),
     computed: {
-        ...mapState(['saved']),
-        ...mapGetters(['getSaved']),
     },
     apollo: {
         configs: {
@@ -88,35 +78,19 @@ export default {
                 }
             },
             update(data) {
-                data = data.allUserconfigurations.nodes.map(a => ({
+                return data.allUserconfigurations.nodes.map(a => ({
                     title: a.configName,
-                    topics: a.topicconfigurationsByUsrConfigId.nodes
+                    topics: a.topicconfigurationsByUsrConfigId.nodes.map(el => ({
+                        id: el.topicId,
+                        name: el.topicName
+                    }))
                 }))
-
-    
-                return data
             },
             skip() {
                 return this.skipQuery
             },
         }
     },
-    // watch: {
-    //     configs: {
-    //         handler: function() {
-    //             var i
-    //             for (i = 0; i < this.configs.length; i++) {
-    //                 var j
-    //                 for (j = 0; i < this.configs[i].topics.length; j++) {
-    //                     this.configs[i].topics[j] = {
-    //                         id: this.configs[i].topics[j].topicId, 
-    //                         name: this.configs[i].topics[j].topicName
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // },
     methods: {
         ...mapMutations([
             'openTopic',
@@ -136,7 +110,6 @@ export default {
         async getConfigs() {
             this.$apollo.queries.configs.skip = false
             await this.$apollo.queries.configs.refetch()
-            this.saved = this.configs
         }
     },
     mounted: function() {
