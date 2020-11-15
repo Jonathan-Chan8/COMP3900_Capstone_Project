@@ -158,8 +158,12 @@ export default {
             xaxis: {
                 type: 'datetime'
             },
+            tooltip: {
+                shared: true
+            },
             markers: {
                 size: 0,
+                
                 hover: {
                     sizeOffset: 6
                 }
