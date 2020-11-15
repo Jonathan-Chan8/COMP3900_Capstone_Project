@@ -118,6 +118,7 @@
             </v-layout>
         </v-container>
     </template>
+</div>
 </template>
 
 <script>
