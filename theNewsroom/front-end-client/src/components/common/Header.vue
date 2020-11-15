@@ -12,27 +12,11 @@
 
     <!-- Full screen size -->
     <v-toolbar-items class="d-none d-md-block">
-        <v-btn text v-for="item in menu" :key="item.icon" :to="item.route" depressed>{{ item.title }}
-        </v-btn>
+        <v-btn text depressed to='/topics'>Topics</v-btn>
+        <v-btn text depressed to='/trends'>Trends</v-btn>
         <v-btn text depressed v-if="!$auth.loading && !$auth.isAuthenticated" @click="login">Log In / Register</v-btn>
-        <v-menu v-else offset-y>
-            <template v-slot:activator=" { on }">
-                <v-btn text v-on="on">
-                    My Account
-                </v-btn>
-            </template>
-            <v-list class="responsiveMenu">
-                <v-list-item text v-if="$auth.isAuthenticated" to='/profile'>
-                    Profile
-                </v-list-item>
-                <v-list-item text v-if="$auth.isAuthenticated" to='/saved'>
-                    Saved Trends
-                </v-list-item>
-                <v-list-item text v-if="$auth.isAuthenticated" @click="logout">
-                    Log Out
-                </v-list-item>
-            </v-list>
-        </v-menu>
+        <v-btn v-if="!$auth.loading && $auth.isAuthenticated" depressed to='/saved'>Saved</v-btn>
+        <v-btn v-if="!$auth.loading && $auth.isAuthenticated" text depressed @click="logout">Log Out</v-btn>
 
     </v-toolbar-items>
 
@@ -53,11 +37,8 @@
                     </v-list-item>
                 </template>
                 <template v-else>
-                    <v-list-item text to='/profile'>
-                        Profile
-                    </v-list-item>
                     <v-list-item text to='/saved'>
-                        Saved Trends
+                        Saved
                     </v-list-item>
                     <v-list-item text @click="logout">
                         Log Out

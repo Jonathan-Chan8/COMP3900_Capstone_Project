@@ -164,7 +164,6 @@ export default {
             },
             markers: {
                 size: 0,
-                
                 hover: {
                     sizeOffset: 6
                 }
@@ -173,8 +172,8 @@ export default {
                 borderColor: '#f1f1f1',
             },
             legend: {
-                horizontalAlign: 'right',
-                position: 'top',
+                horizontalAlign: 'center',
+                position: 'bottom',
                 onItemHover: {
                     highlightDataSeries: true
                 },
@@ -184,7 +183,7 @@ export default {
                     enabled: true
                 },
                 toolbar: {
-                    show: false,
+                    show: true,
                     offsetX: 0,
                     offsetY: 0,
                     tools: {
@@ -193,8 +192,8 @@ export default {
                         zoom: false,
                         zoomin: true,
                         zoomout: true,
-                        pan: false,
-                        reset: false,
+                        pan: true,
+                        reset: true,
                         customIcons: []
                     },
                     export: {
