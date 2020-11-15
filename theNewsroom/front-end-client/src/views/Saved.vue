@@ -3,7 +3,7 @@
 <template>
 
     <v-container fluid>
-        <h2 class="subheading grey--text text-center" v-if="saved.length == 0">Looks like you haven't saved any Trends yet! You can save a selection of topics on the Trends page.</h2>
+        <h2 class="subheading grey--text text-center" v-if="configs.length == 0">Looks like you haven't saved any Trends yet! You can save a selection of topics on the Trends page.</h2>
         <v-row v-else>
             <v-list two-line width=100% rounded>
                 <v-list-item>
@@ -11,15 +11,15 @@
                     <span> Need Help?</span>
 
                 </v-list-item>
-                <v-list-item  class="item" v-for="config in saved" :key="config.title" depressed hover @click.stop="viewTrends(config.topics)">
+                <v-list-item  class="item" v-for="config in configs" :key="config.title" depressed hover @click.stop="viewTrends(config.topics)">
 
                     <v-col d-flex>
                         <v-list-item-title class="headline" v-text="config.title" />
                         <v-card-actions>
                             <v-row dense>
                                 <!-- We would need ot make sure we limit the number of characters shown -->
-                                <v-col v-for="topic in config.topics" :key="topic.id">
-                                    <v-btn dark rounded width=100% depressed @click.stop="open(topic)" v-text='topic.name' />
+                                <v-col v-for="topic in config.topics" :key="topic.topicId">
+                                    <v-btn dark rounded width=100% depressed @click.stop="open(topic)" v-text='topic.topicName' />
                                 </v-col>
                             </v-row>
                             <v-row class="edit" dense>
@@ -101,21 +101,22 @@ export default {
             },
         }
     },
-    watch: {
-        configs: {
-            handler: function() {
-                var i
-                for (i = 0; i < this.configs.length; i++) {
-                    var j
-                    for (j = 0; i < this.configs[i].topics.length; j++) {
-                        this.configs[i].topics[j] = {
-                            id: this.configs[i].topics[j].topicByTopicId.id, name: this.configs[i].topics[j].topicByTopicId.name
-                        }
-                    }
-                }
-            }
-        }
-    },
+    // watch: {
+    //     configs: {
+    //         handler: function() {
+    //             var i
+    //             for (i = 0; i < this.configs.length; i++) {
+    //                 var j
+    //                 for (j = 0; i < this.configs[i].topics.length; j++) {
+    //                     this.configs[i].topics[j] = {
+    //                         id: this.configs[i].topics[j].topicId, 
+    //                         name: this.configs[i].topics[j].topicName
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // },
     methods: {
         ...mapMutations([
             'openTopic',

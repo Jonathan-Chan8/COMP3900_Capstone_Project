@@ -5,11 +5,13 @@ mutation {
       topicconfiguration:{
         usrConfigId: Int!
         topicId: Int!
+        topicName: String!
       }
     }
     ) {
     topicconfiguration {
      id
+     topicName
     }
   }
 }

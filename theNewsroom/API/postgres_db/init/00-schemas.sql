@@ -95,6 +95,7 @@ CREATE TABLE NewsCollectorInfo.TopicConfiguration (
 	id 					INT 			GENERATED ALWAYS AS IDENTITY,
 	usr_config_id		INT 			NOT NULL, 
 	topic_id 			INT 			NOT NULL,
+	topic_name 			VARCHAR(100)	NOT NULL,
 	PRIMARY KEY(id),
 	CONSTRAINT foreign_key_usr_config 	FOREIGN KEY(usr_config_id) 	REFERENCES NewsCollectorInfo.UserConfiguration(id),
 	CONSTRAINT foreign_key_topic		FOREIGN KEY(topic_id)		REFERENCES NewsCollectorInfo.Topics(id)

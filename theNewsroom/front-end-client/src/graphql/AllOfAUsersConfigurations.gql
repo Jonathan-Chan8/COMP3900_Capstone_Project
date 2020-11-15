@@ -10,10 +10,9 @@ query AllOfAUsersConfigurations($userId: String!) {
       configName
       topicconfigurationsByUsrConfigId {
         nodes {
-          topicByTopicId{
-            id
-            name
-          }
+            topicId
+            topicName
+          
         }
       }
     }
