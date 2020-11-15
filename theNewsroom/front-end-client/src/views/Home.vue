@@ -46,6 +46,7 @@
             </v-col>
         </v-row>
     </v-container>
+    <v-btn @click='createUser()' />
     {{auth}}
 
     
@@ -56,7 +57,7 @@
 import Popup from "../components/common/Popup";
 import Search from "../components/common/Search";
 
-// import CREATE_USER from '../graphql/createUser.gql'
+import CREATE_USER from '../graphql/createUser.gql'
 import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
 import {
     mapMutations
@@ -158,18 +159,28 @@ export default {
             'searchTopicKeyword'
 
         ]),
+        createUser() {
+            var userId = this.$auth.user.sub
+            console.log(userId)
+            this.$apollo.mutate({
+                mutation: CREATE_USER,
+                variables: {
+                    userId
+                }
+            })
+        },
         login() {
              this.$auth.loginWithPopup()
              
 
-             var user = this.$auth.getUser
-             const token =  this.$auth.getTokenSilently();
-                console.log(token, user);
-                // var id = this.$auth.user.sub
-                // console.log(id)
-                // this.$apollo.mutate({
-                //     mutation: CREATE_USER,
-                //     variables: {
+            //  var user = this.$auth.getUser
+            //  const token =  this.$auth.getTokenSilently();
+            //     console.log(token, user);
+            //     // var id = this.$auth.user.sub
+            //     // console.log(id)
+            //     // this.$apollo.mutate({
+            //     //     mutation: CREATE_USER,
+            //     //     variables: {
                 //         id
                 //     }
                 // })
