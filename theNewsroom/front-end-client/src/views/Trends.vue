@@ -118,11 +118,6 @@
             </v-layout>
         </v-container>
     </template>
-
-    {{trends}}
-    <v-divider/>
-    {{graph}}
-</div>
 </template>
 
 <script>
