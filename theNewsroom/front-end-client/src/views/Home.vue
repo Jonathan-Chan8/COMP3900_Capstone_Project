@@ -7,7 +7,6 @@
                 <Search v-model="search" />
             </v-list-item>
         </v-col>
-
         <v-row>
             <!-- Topic of the Day -->
             <v-col   cols="12" md='6'>

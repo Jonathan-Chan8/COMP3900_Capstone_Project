@@ -106,7 +106,7 @@ export default {
             query: TOP_ARTICLES_FROM_TOPIC,
             variables() {
                 var id
-                if (this.current_topic == '') {
+                if (this.current_topic.id == null) {
                     id = 1
                 } else {
                     id = this.current_topic.id

@@ -11,8 +11,24 @@ export default new Vuex.Store({
 	
 	state: {
 		keyword: '',
-		current_topic: '',
-		current_article: '',
+		current_topic: {
+			id: null,
+			name: null
+		},
+		current_article: {
+			id: null,
+			title: null,
+			publicationDate: '',
+			webContentUrl: null,
+			author: null,
+			mediaoutletByMediaOutletId: {
+				name: null,
+			},
+			articlecontentByContentId: {
+				id: null,
+				content: '',
+			},
+		},
 		saved: [],
 		popups: [],
 		selected: [],
