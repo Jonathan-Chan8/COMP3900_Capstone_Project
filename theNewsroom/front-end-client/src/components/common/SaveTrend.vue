@@ -36,13 +36,21 @@ import {
     mapGetters,
     mapMutations
 } from 'vuex';
+
+
+import CREATE_USER_CONFIG from '../../graphql/createUserConfiguration.gql'
+import CREATE_TOPIC_CONFIG from '../../graphql/createUserConfiguration.gql'
+
+
 export default {
     props: {
         value: Boolean
     },
     data: () => ({
         title: null,
-        save: false
+        save: false,
+        create_user_config: [],
+        create_topic_config: []
     }),
     computed: {
         ...mapGetters(['getSelected']),
@@ -55,6 +63,7 @@ export default {
             }
         }
     },
+    
     methods: {
         ...mapMutations([
             'saveTrend'
@@ -62,10 +71,41 @@ export default {
         close() {
             this.save = false
         },
-        saveTrendSelection(title) {
-            if (this.title.length > 3 && this.title.length <= 20 && this.getSelected.length > 0) {
-                this.saveTrend(title.charAt(0).toUpperCase() + title.slice(1))
+        async saveTrendSelection(configName) {
+            if (configName.length > 3 && configName.length <= 20 && this.getSelected.length > 0) {
+                configName = configName.charAt(0).toUpperCase() + configName.slice(1)
                 this.close()
+                var usrId = this.$auth.user.sub
+                console.log('start create user')
+                const { id } = this.$data
+
+                await this.$apollo.mutate({
+                    mutation: CREATE_USER_CONFIG,
+                    variables: {
+                        configName,
+                        usrId
+                    }
+                })
+                console.log('end create user')
+
+                var usrConfigId = id
+                var i
+                console.log('start create topic')
+                for (i = 0; i < this.getSelected.length; i++) {
+                    console.log('create topic', i)
+
+                    var topicId = this.getSelected[i].id
+                    await this.$apollo.mutate({
+                    mutation: CREATE_TOPIC_CONFIG,
+                        variables: {
+                            usrConfigId,
+                            topicId
+                        }
+                    })
+                }
+                console.log('end create topic')
+
+        
             }
         }
     },

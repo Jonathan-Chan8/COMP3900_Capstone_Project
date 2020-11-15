@@ -4,8 +4,8 @@ mutation {
     (
     input: {
       userconfiguration:{
-        configName: "config"
-        usrId:"hello"
+        configName: String
+        usrId: String
       }
     }
     ) {

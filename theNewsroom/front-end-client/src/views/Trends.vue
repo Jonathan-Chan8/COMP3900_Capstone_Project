@@ -303,7 +303,7 @@ export default {
             options: {
                 // fetchPolicy: 'cache-first',
             }
-        }
+        },
     },
     methods: {
         checkRemove() {
@@ -361,14 +361,34 @@ export default {
             this.dates = [this.start_date, this.end_date]
             this.callTrends()
         },
-        saveTrendSelection(name) {
-            if (this.name.length > 3 && this.name.length <= 20 && this.selected.length > 0) {
-                this.dialog = false
-                this.saveTrend(name)
-            }
-        },
         // saveTrendSelection(name) {
+        //     if (this.name.length > 3 && this.name.length <= 20 && this.selected.length > 0) {
+        //         this.dialog = false
+        //         this.saveTrend(name)
+        //     }
+        // },
+        // async saveTrendSelection(configName) {
+        //     var usrId = this.$auth.user.sub
+        //     await this.$apollo.mutate({
+        //         mutation: CREATE_USER_CONFIG,
+        //         variables: {
+        //             configName,
+        //             usrId
+        //         }
+        //     })
+        //     var usrConfigId = this.create_user_config
 
+        //     var i
+        //     for (i = 0; i < this.getSelected.length; i++) {
+        //         var topicId = this.getSelected[i].id
+        //         await this.$apollo.mutate({
+        //         mutation: CREATE_TOPIC_CONFIG,
+        //             variables: {
+        //                 usrConfigId,
+        //                 topicId
+        //             }
+        //         })
+        //     }
         // },
         searchTopic() {
             if (this.keyword != '') {

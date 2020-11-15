@@ -93,7 +93,7 @@ export default {
                     topics: a.topicconfigurationsByUsrConfigId.nodes
                 }))
 
-                
+    
                 return data
             },
             skip() {
