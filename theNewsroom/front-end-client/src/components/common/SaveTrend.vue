@@ -95,11 +95,13 @@ export default {
                     console.log('create topic', i)
 
                     var topicId = this.getSelected[i].id
+                    var topicName = this.getSelected[i].name
                     await this.$apollo.mutate({
                     mutation: CREATE_TOPIC_CONFIG,
                         variables: {
                             usrConfigId,
-                            topicId
+                            topicId,
+                            topicName
                         }
                     })
                 }
