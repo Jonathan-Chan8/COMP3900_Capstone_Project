@@ -123,7 +123,15 @@ export default {
             query: ALL_TOPICS_WITH_FILTER,
             variables() {
                 return {
-                    limit: 1
+                    limit: 1,
+                    // The $to and $from here are pre-set for submission
+                    to: "2020-11-13",
+                    from: "2020-11-13",
+                    // // If the database has been updated for the current date, pass the current date as argument
+                    // to: (new Date()).toISOString().slice(0, 10),
+                    // from: (new Date()).toISOString().slice(0, 10),
+                    
+
                 }
             },
             update(data) {
