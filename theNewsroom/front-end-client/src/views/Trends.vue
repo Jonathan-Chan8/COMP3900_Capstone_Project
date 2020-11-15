@@ -47,10 +47,10 @@
                                 <v-list-item-group value="true" color="none">
                                     <v-list-item class='item' v-for="(item, index) in getSelected" :key="index" >
                                         <v-list-item-title @click='open(item)' v-text="item.name" />
-                                        <v-icon v-if='index == 0' color="#FF9D00">mdi-circle</v-icon>
-                                        <v-icon v-if='index == 1' color='#66DB00'>mdi-circle</v-icon>
-                                        <v-icon v-if='index == 2' color="#FF42DC">mdi-circle</v-icon>
-                                        <v-icon v-if='index == 3' color="#0096DB">mdi-circle</v-icon>
+                                        <v-icon v-if='index == 0' color="#FF42DC">mdi-circle</v-icon>
+                                        <v-icon v-if='index == 1' color="#0096DB">mdi-circle</v-icon>
+                                        <v-icon v-if='index == 2' color="#FF9D00">mdi-circle</v-icon>
+                                        <v-icon v-if='index == 3' color='#66DB00'>mdi-circle</v-icon>
                                         <v-icon v-if='index == 4' color="#DB0004">mdi-circle</v-icon>
                                         <v-btn icon @click='removeSelected(item)'>
                                             <v-icon color="grey lighten-1">mdi-minus-circle</v-icon>
@@ -118,6 +118,8 @@
             </v-layout>
         </v-container>
     </template>
+
+
 </div>
 </template>
 
@@ -378,8 +380,6 @@ export default {
         }
     },
     mounted: function() {
-        this.result = []
-        this.trends = []
         if (this.start_date == null) {
             this.end_date = new Date()
             this.start_date = new Date()
