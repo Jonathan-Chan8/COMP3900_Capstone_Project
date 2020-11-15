@@ -47,7 +47,7 @@
         </v-row>
     </v-container>
     <v-btn @click='createUser()' />
-    {{auth}}
+    {{user}}
 
     
 </div>
@@ -58,6 +58,8 @@ import Popup from "../components/common/Popup";
 import Search from "../components/common/Search";
 
 import CREATE_USER from '../graphql/createUser.gql'
+import CHECK_USER from '../graphql/checkUser.gql'
+
 import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
 import {
     mapMutations
@@ -72,8 +74,9 @@ export default {
 
     data() {
         return {
-            auth: this.$auth.isAuthenticated,
-            user_id: null,
+            skipQuery: false,
+            user_id: '',
+            user: null,
             popup: false,
             keyword: '',
             search: false,
@@ -123,14 +126,6 @@ export default {
         }
     },
 
-    watch: {
-        auth: {
-            handler: function() {
-                console.log(this.auth)
-
-            }
-        }
-    },
     apollo: {
         totd: {
             query: ALL_TOPICS_WITH_FILTER,
@@ -150,6 +145,20 @@ export default {
             update(data) {
                 return data.allTopics.nodes[0];
             }
+        },
+        user : {
+            query: CHECK_USER,
+            variables() {
+                return {
+                    userId: this.user_id
+                }
+            },
+            update(data) {
+                return data;
+            },
+            skip() {
+                return this.skipQuery
+            },
         }
     },
 
@@ -159,32 +168,29 @@ export default {
             'searchTopicKeyword'
 
         ]),
-        createUser() {
+        async createUser() {
             var userId = this.$auth.user.sub
             console.log(userId)
-            this.$apollo.mutate({
-                mutation: CREATE_USER,
-                variables: {
-                    userId
-                }
-            })
+            this.user_id = userId
+
+            this.$apollo.queries.user.skip = false
+            await this.$apollo.queries.user.refetch()
+            if (this.user.allUsers.nodes.length == 0) {
+                this.$apollo.mutate({
+                    mutation: CREATE_USER,
+                    variables: {
+                        userId
+                    }
+                })
+                console.log("User Created")
+            } else {
+                console.log("User Exists")
+            }
+            
         },
-        login() {
-             this.$auth.loginWithPopup()
-             
-
-            //  var user = this.$auth.getUser
-            //  const token =  this.$auth.getTokenSilently();
-            //     console.log(token, user);
-            //     // var id = this.$auth.user.sub
-            //     // console.log(id)
-            //     // this.$apollo.mutate({
-            //     //     mutation: CREATE_USER,
-            //     //     variables: {
-                //         id
-                //     }
-                // })
-
+        async login() {
+            await this.$auth.loginWithPopup();
+            this.createUser();
         },
         logout() {
             this.$auth.logout({
