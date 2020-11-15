@@ -81,7 +81,7 @@
                                         </v-list-item-content>
                                     </template>
                                     <v-list-item-group color="none">
-                                        <v-list-item class='item' v-for="config in getSaved" :key="config" @click="setSelected(config.topics)">
+                                        <v-list-item class='item' v-for="config in getSaved" :key="config.title" @click="setSelected(config.topics)">
                                             <v-list-item-title v-text=" config.title" />
                                         </v-list-item>
                                     </v-list-item-group>
@@ -330,6 +330,7 @@ export default {
             'addSelected',
             'removeSelected',
             'openTopic',
+            'setSelected',
             'emptySelected',
             'saveTrend',
             'searchTopicKeyword'

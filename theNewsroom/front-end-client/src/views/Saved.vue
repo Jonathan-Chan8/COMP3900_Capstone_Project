@@ -11,14 +11,14 @@
                     <span> Need Help?</span>
 
                 </v-list-item>
-                <v-list-item  class="item" v-for="config in getSaved" :key="config" depressed hover @click.stop="viewTrends(config.topics)">
+                <v-list-item  class="item" v-for="config in getSaved" :key="config.title" depressed hover @click.stop="viewTrends(config.topics)">
 
                     <v-col d-flex>
                         <v-list-item-title class="headline" v-text="config.title" />
                         <v-card-actions>
                             <v-row dense>
                                 <!-- We would need ot make sure we limit the number of characters shown -->
-                                <v-col v-for="topic in config.topics" :key="topic">
+                                <v-col v-for="topic in config.topics" :key="topic.id">
                                     <v-btn dark rounded width=100% depressed @click.stop="open(topic)" v-text='topic.name' />
                                 </v-col>
                             </v-row>

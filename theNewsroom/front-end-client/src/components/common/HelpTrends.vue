@@ -1,6 +1,6 @@
 <template>
 <div class="text-center">
-    <v-dialog v-model="show" width="500">
+    <v-dialog v-model="help" width="500">
         <template v-slot:activator="{ on, attrs }">
             <v-btn icon v-bind="attrs" v-on="on">
                 <v-icon>mdi-help-circle-outline</v-icon>
@@ -39,7 +39,7 @@ export default {
         show: false
     }),
     computed: {
-        show: {
+        help: {
             get() {
                 return this.value
             },

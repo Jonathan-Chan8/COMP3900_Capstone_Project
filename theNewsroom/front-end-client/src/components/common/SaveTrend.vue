@@ -1,5 +1,5 @@
 <template>
-<v-dialog v-model="show" max-width="600px" max-height="100px">
+<v-dialog v-model="save" max-width="600px" max-height="100px">
     <template v-slot:activator="{ on, attrs }">
         <v-btn depressed rounded v-bind="attrs" v-on="on">
             Save
@@ -13,7 +13,7 @@
         <v-card-text>
             <v-text-field v-model='title' :rules="[
                 () => !!title || 'This field is required',
-                () => !!title && this.selected.length > 0 || 'Please select a topic first', 
+                () => !!title && this.getSelected.length > 0 || 'Please select a topic first', 
                 () => !!title && title.length > 3 || 'Name must have more than 3 characters',
                 () => !!title && title.length <= 25 || 'Name must be less than 20 characters', 
                 ]" placeholder="Enter a name for your selection" counter="20" />
@@ -40,6 +40,10 @@ export default {
     props: {
         value: Boolean
     },
+    data: () => ({
+        title: null,
+        save: false
+    }),
     computed: {
         ...mapGetters(['getSelected']),
         show: {
@@ -56,7 +60,7 @@ export default {
             'saveTrend'
         ]),
         close() {
-            this.show = false
+            this.save = false
         },
         saveTrendSelection(title) {
             if (this.title.length > 3 && this.title.length <= 20 && this.getSelected.length > 0) {
@@ -65,8 +69,6 @@ export default {
             }
         }
     },
-    data: () => ({
-        show: false
-    }),
+    
 }
 </script>
