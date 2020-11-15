@@ -156,6 +156,13 @@ export default {
             xaxis: {
                 type: 'datetime'
             },
+            yaxis: {
+                label: {
+                    text: 'Number of Articles'
+                },
+                min: 0,
+                forceNiceScale: true
+            },
             tooltip: {
                 enabled: true,
                 followCursor: true,
@@ -226,7 +233,7 @@ export default {
         topic_id: null,
         graph: [],
         skipQuery: true,
-        replace: false
+        replace: false,
     }),
     watch: {
         getSelected: {

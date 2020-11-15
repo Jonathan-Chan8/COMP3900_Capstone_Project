@@ -33,23 +33,13 @@ export default {
     props: {
         value: Boolean
     },
-    data: () => ({
-        show: false
-    }),
-    computed: {
-        show: {
-            get() {
-                return this.value
-            },
-            set(value) {
-                this.$emit('input', value)
-            }
-        }
-    },
     methods: {
         close() {
             this.show = false
-        }
+        },
     },
+    data: () => ({
+        show: false,
+    }),
 }
 </script>

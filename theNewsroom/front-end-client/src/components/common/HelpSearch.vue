@@ -1,6 +1,6 @@
 <template>
 <div>
-    <v-dialog d-flex elevation="0" v-model="help" width="500">
+    <v-dialog d-flex elevation="0" v-model="show" width="500">
         <template v-slot:activator="{ on, attrs }">
             <v-btn icon v-bind="attrs" v-on="on">
                 <v-icon>mdi-help-circle-outline</v-icon>
@@ -26,26 +26,16 @@
 
 <script>
 export default {
-     props: {
+    props: {
         value: Boolean
-    },
-    data: () => ({
-        show: false
-    }),
-    computed: {
-        help: {
-            get() {
-                return this.value
-            },
-            set(value) {
-                this.$emit('input', value)
-            }
-        }
     },
     methods: {
         close() {
             this.show = false
-        }
+        },
     },
+    data: () => ({
+        show: false,
+    }),
 }
 </script>

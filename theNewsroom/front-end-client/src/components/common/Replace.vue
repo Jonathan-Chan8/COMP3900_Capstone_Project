@@ -38,7 +38,6 @@ export default {
     methods: {
         close() {
             this.show = false
-            this.closeTopic()
         },
     },
     data: () => ({
