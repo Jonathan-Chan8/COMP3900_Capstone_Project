@@ -116,6 +116,7 @@
             </v-layout>
         </v-container>
     </template>
+    {{getSelected}}
 
 
 </div>
@@ -366,6 +367,9 @@ export default {
                 this.saveTrend(name)
             }
         },
+        // saveTrendSelection(name) {
+
+        // },
         searchTopic() {
             if (this.keyword != '') {
                 this.search = true

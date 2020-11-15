@@ -3,7 +3,7 @@
 <template>
 
     <v-container fluid>
-        <h2 class="subheading grey--text text-center" v-if="getSaved.length == 0">Looks like you haven't saved any Trends yet! You can save a selection of topics on the Trends page.</h2>
+        <h2 class="subheading grey--text text-center" v-if="saved.length == 0">Looks like you haven't saved any Trends yet! You can save a selection of topics on the Trends page.</h2>
         <v-row v-else>
             <v-list two-line width=100% rounded>
                 <v-list-item>
@@ -40,6 +40,8 @@
 </template>
 
 {{configs}}
+<v-divider />
+{{saved}}
 
 </div>
 </template>
@@ -86,13 +88,32 @@ export default {
                 }
             },
             update(data) {
-                return {
-                    data: data.allUserconfigurations.nodes
-                }
+                data = data.allUserconfigurations.nodes.map(a => ({
+                    title: a.configName,
+                    topics: a.topicconfigurationsByUsrConfigId.nodes
+                }))
+
+                
+                return data
             },
             skip() {
                 return this.skipQuery
             },
+        }
+    },
+    watch: {
+        configs: {
+            handler: function() {
+                var i
+                for (i = 0; i < this.configs.length; i++) {
+                    var j
+                    for (j = 0; i < this.configs[i].topics.length; j++) {
+                        this.configs[i].topics[j] = {
+                            id: this.configs[i].topics[j].topicByTopicId.id, name: this.configs[i].topics[j].topicByTopicId.name
+                        }
+                    }
+                }
+            }
         }
     },
     methods: {
@@ -113,7 +134,8 @@ export default {
         },
         async getConfigs() {
             this.$apollo.queries.configs.skip = false
-            this.$apollo.queries.configs.refetch()
+            await this.$apollo.queries.configs.refetch()
+            this.saved = this.configs
         }
     },
     mounted: function() {

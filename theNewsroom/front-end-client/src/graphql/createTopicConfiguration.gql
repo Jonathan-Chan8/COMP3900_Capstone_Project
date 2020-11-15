@@ -3,8 +3,8 @@ mutation {
     (
     input: {
       topicconfiguration:{
-        usrConfigId: 1
-        topicId:1
+        usrConfigId: Int!
+        topicId: Int!
       }
     }
     ) {
