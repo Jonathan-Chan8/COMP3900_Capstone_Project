@@ -77,14 +77,14 @@ CREATE TABLE NewsCollectorInfo.TopicOfArticle (
 
 -- USER TABLES - this should be in a different schema, but just put it here for the meantime
 CREATE TABLE NewsCollectorInfo.User (
-	id 					INT 			NOT NULL, 
+	id 					VARCHAR(100) 			NOT NULL, 
 	PRIMARY KEY(id)
 );
 
 CREATE TABLE NewsCollectorInfo.UserConfiguration (
 	id 					INT 			GENERATED ALWAYS AS IDENTITY,
 	config_name 		VARCHAR(100)	NOT NULL,
-	usr_id				INT				NOT NULL, 
+	usr_id				VARCHAR(100)	NOT NULL, 
 	PRIMARY KEY(id),
 	CONSTRAINT foreign_key_user			FOREIGN KEY(usr_id)			REFERENCES NewsCollectorInfo.User(id)
 );	

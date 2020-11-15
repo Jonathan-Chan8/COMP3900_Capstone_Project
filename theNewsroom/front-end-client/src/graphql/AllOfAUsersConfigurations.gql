@@ -1,9 +1,4 @@
-# Grabs the names of all configurations a User has saved
-# Note: can extend to grab the exact configurations, but better to make 
-#   another query call for that once the user selects it based of the configName 
-#   they gave it
-
-query AllOfAUsersConfigurations($userId: Int!) {
+query AllOfAUsersConfigurations($userId: Int! = 2) {
 	allUserconfigurations (filter: {
     usrId: {
       equalTo: $userId
@@ -13,6 +8,14 @@ query AllOfAUsersConfigurations($userId: Int!) {
     nodes {
       id
       configName
+      topicconfigurationsByUsrConfigId {
+        nodes {
+          topicByTopicId{
+            id
+            name
+          }
+        }
+      }
     }
   }
 }

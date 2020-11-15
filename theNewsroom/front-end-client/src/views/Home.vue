@@ -22,7 +22,7 @@
             <!-- Login/Register/Saved -->
             <v-col   cols="12" md='6'>
                 <!-- Show login/register when user is not authenticated -->
-                <v-card  color='rgb(230, 235, 255)' v-if="!$auth.loading && !$auth.isAuthenticated" class="flex-wrap text-justify justify-space-between" height="100%" width="100%" hover>
+                <v-card  color='rgb(230, 235, 255)' v-if="!$auth.loading && !$auth.isAuthenticated" class="flex-wrap text-justify justify-space-between" height="100%" width="100%" hover @click.stop="login">
                     <v-card-title class="headline" v-text="unauth.title" />
                     <v-card-text >{{unauth.text}}</v-card-text>
                     <v-card-text class='text-center'> <strong>{{unauth.second_text}}</strong></v-card-text>
@@ -46,6 +46,9 @@
             </v-col>
         </v-row>
     </v-container>
+    {{auth}}
+
+    
 </div>
 </template>
 
@@ -53,6 +56,7 @@
 import Popup from "../components/common/Popup";
 import Search from "../components/common/Search";
 
+// import CREATE_USER from '../graphql/createUser.gql'
 import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
 import {
     mapMutations
@@ -67,8 +71,9 @@ export default {
 
     data() {
         return {
+            auth: this.$auth.isAuthenticated,
+            user_id: null,
             popup: false,
-            auth: true,
             keyword: '',
             search: false,
             absolute: true,
@@ -117,6 +122,14 @@ export default {
         }
     },
 
+    watch: {
+        auth: {
+            handler: function() {
+                console.log(this.auth)
+
+            }
+        }
+    },
     apollo: {
         totd: {
             query: ALL_TOPICS_WITH_FILTER,
@@ -146,7 +159,21 @@ export default {
 
         ]),
         login() {
-            this.$auth.loginWithPopup();
+             this.$auth.loginWithPopup()
+             
+
+             var user = this.$auth.getUser
+             const token =  this.$auth.getTokenSilently();
+                console.log(token, user);
+                // var id = this.$auth.user.sub
+                // console.log(id)
+                // this.$apollo.mutate({
+                //     mutation: CREATE_USER,
+                //     variables: {
+                //         id
+                //     }
+                // })
+
         },
         logout() {
             this.$auth.logout({
@@ -164,6 +191,7 @@ export default {
 
     },
     computed: {
+            
         show: {
             get() {
                 return this.value
