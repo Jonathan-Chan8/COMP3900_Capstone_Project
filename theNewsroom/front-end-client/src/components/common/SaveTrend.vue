@@ -39,7 +39,7 @@ import {
 
 
 import CREATE_USER_CONFIG from '../../graphql/createUserConfiguration.gql'
-import CREATE_TOPIC_CONFIG from '../../graphql/createUserConfiguration.gql'
+import CREATE_TOPIC_CONFIG from '../../graphql/createTopicConfiguration.gql'
 
 
 export default {
@@ -49,8 +49,7 @@ export default {
     data: () => ({
         title: null,
         save: false,
-        create_user_config: [],
-        create_topic_config: []
+        config_id: null
     }),
     computed: {
         ...mapGetters(['getSelected']),
@@ -63,7 +62,6 @@ export default {
             }
         }
     },
-    
     methods: {
         ...mapMutations([
             'saveTrend'
@@ -74,41 +72,44 @@ export default {
         async saveTrendSelection(configName) {
             if (configName.length > 3 && configName.length <= 20 && this.getSelected.length > 0) {
                 configName = configName.charAt(0).toUpperCase() + configName.slice(1)
+                await this.createUserConfig(configName)
                 this.close()
-                var usrId = this.$auth.user.sub
-                console.log('start create user')
-                const { id } = this.$data
+            }
+        },
+        async createUserConfig(configName) {
+            var usrId = this.$auth.user.sub
+            console.log('start create user')
+            this.$apollo.mutate({
+                mutation: CREATE_USER_CONFIG,
+                variables: {
+                    configName,
+                    usrId
+                },
+                update: (store, { data: { createUserconfiguration } }) => {
+                    this.createTopicConfig(createUserconfiguration.userconfiguration.id)
+                },
+            })
+            console.log('end create user')
+        },
+        async createTopicConfig(usrConfigId) {
+            var i
+            console.log('start create topic')
+            for (i = 0; i < this.getSelected.length; i++) {
+                console.log('create topic', i)
 
-                await this.$apollo.mutate({
-                    mutation: CREATE_USER_CONFIG,
+                var topicId = this.getSelected[i].id
+                var topicName = this.getSelected[i].name
+                this.$apollo.mutate({
+                mutation: CREATE_TOPIC_CONFIG,
                     variables: {
-                        configName,
-                        usrId
+                        usrConfigId,
+                        topicId,
+                        topicName
                     }
                 })
-                console.log('end create user')
-
-                var usrConfigId = id
-                var i
-                console.log('start create topic')
-                for (i = 0; i < this.getSelected.length; i++) {
-                    console.log('create topic', i)
-
-                    var topicId = this.getSelected[i].id
-                    var topicName = this.getSelected[i].name
-                    await this.$apollo.mutate({
-                    mutation: CREATE_TOPIC_CONFIG,
-                        variables: {
-                            usrConfigId,
-                            topicId,
-                            topicName
-                        }
-                    })
-                }
-                console.log('end create topic')
-
-        
             }
+            console.log('end create topic')
+
         }
     },
     

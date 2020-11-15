@@ -46,10 +46,6 @@
             </v-col>
         </v-row>
     </v-container>
-    <v-btn @click='createUser()' />
-    {{user}}
-
-    
 </div>
 </template>
 

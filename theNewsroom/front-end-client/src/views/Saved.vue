@@ -11,7 +11,7 @@
                     <span> Need Help?</span>
 
                 </v-list-item>
-                <v-list-item  class="item" v-for="config in configs" :key="config.title" depressed hover @click.stop="viewTrends(config.topics)">
+                <v-list-item  class="item" v-for="config in configs" :key="config.id" depressed hover @click.stop="viewTrends(config.topics)">
 
                     <v-col d-flex>
                         <v-list-item-title class="headline" v-text="config.title" />
@@ -45,6 +45,9 @@
 import Popup from "../components/common/Popup";
 import HelpSaved from "../components/common/HelpSaved";
 import USER_CONFIGS from "../graphql/AllOfAUsersConfigurations.gql"
+import DELETE_USER_CONFIG from "../graphql/deleteUserConfiguration.gql"
+import DELETE_TOPIC_CONFIG from "../graphql/deleteTopicConfiguration.gql"
+
 
 import {
     mapMutations
@@ -74,15 +77,17 @@ export default {
             query: USER_CONFIGS,
             variables() {
                 return {
-                    userId: this.userId
+                    usrId: this.usrId
                 }
             },
             update(data) {
                 return data.allUserconfigurations.nodes.map(a => ({
+                    id: a.id,
                     title: a.configName,
-                    topics: a.topicconfigurationsByUsrConfigId.nodes.map(el => ({
-                        id: el.topicId,
-                        name: el.topicName
+                    topics: a.topicconfigurationsByUsrConfigId.nodes.map(b => ({
+                        nodeId: b.id,
+                        id: b.topicId,
+                        name: b.topicName
                     }))
                 }))
             },
@@ -95,14 +100,16 @@ export default {
         ...mapMutations([
             'openTopic',
             'setSelected',
-            'deleteTrend',
         ]),
         open(title) {
             this.popup = true
             this.openTopic(title)
         },
         viewTrends(selection) {
-            this.setSelected(selection)
+            this.setSelected(selection.map(a => ({
+                    id: a.id,
+                    name: a.name
+                })))
             this.$router.push({
                 name: 'trends'
             })
@@ -110,15 +117,45 @@ export default {
         async getConfigs() {
             this.$apollo.queries.configs.skip = false
             await this.$apollo.queries.configs.refetch()
-        }
+        },
+        async deleteTrend(selection) {
+            await this.deleteTopicConfig(selection.topics)
+            await this.deleteUserConfig(selection.id)
+        },
+        async deleteTopicConfig(topics) {
+            var i
+            console.log('start delete topic')
+            for (i = 0; i < topics.length; i++) {
+                console.log('delete topic', i)
+                var id = topics[i].nodeId
+                this.$apollo.mutate({
+                    mutation: DELETE_TOPIC_CONFIG,
+                    variables: {
+                        id,
+                    }
+                })
+            }
+            console.log('end create topic')
+        },
+        async deleteUserConfig(id) {
+            console.log('start delete user')
+            this.$apollo.mutate({
+                mutation: DELETE_USER_CONFIG,
+                variables: {
+                    id,
+                },
+                update: () => {
+                    console.log('end delete user') 
+                    this.getConfigs()
+                },
+            })
+        },
+        
     },
     mounted: function() {
-        // this.userId = this.$auth.user.sub
-        this.userId = "hello"
-        console.log(this.userId)
+        this.usrId = this.$auth.user.sub
+        console.log(this.usrId)
         this.getConfigs()
-        // this.saved = this.configs
-    //     // this.$apollo.queries.saved.refetch()
     }
 
 }

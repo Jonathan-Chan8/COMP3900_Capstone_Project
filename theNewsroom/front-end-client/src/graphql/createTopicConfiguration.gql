@@ -1,11 +1,11 @@
-mutation {
+mutation ($usrConfigId: Int!, $topicId: Int!, $topicName: String!) {
   createTopicconfiguration
     (
     input: {
       topicconfiguration:{
-        usrConfigId: Int!
-        topicId: Int!
-        topicName: String!
+        usrConfigId: $usrConfigId
+        topicId: $topicId
+        topicName: $topicName
       }
     }
     ) {

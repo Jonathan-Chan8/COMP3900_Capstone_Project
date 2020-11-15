@@ -1,11 +1,10 @@
-
-mutation {
+mutation ($configName: String!, $usrId: String!){
   createUserconfiguration
     (
     input: {
       userconfiguration:{
-        configName: String
-        usrId: String
+        configName: $configName
+        usrId: $usrId
       }
     }
     ) {

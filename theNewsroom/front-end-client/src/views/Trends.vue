@@ -116,9 +116,6 @@
             </v-layout>
         </v-container>
     </template>
-    {{getSelected}}
-
-
 </div>
 </template>
 

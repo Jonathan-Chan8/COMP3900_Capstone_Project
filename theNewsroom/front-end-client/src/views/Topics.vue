@@ -63,13 +63,9 @@
                 <v-col />
             </v-layout>
         </v-container>
-
     </template>
 </div>
-
 </template>
-
-
 
 <script>
 import Popup from "../components/common/Popup"
