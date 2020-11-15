@@ -1,6 +1,6 @@
 
 query TopicsAndArticleCount($media: String = "", $limit: Int, $from: Datetime, $to: Datetime) {
-  allTopics(first:$limit) {
+  allTopics(first:$limit, orderBy: TOPICOFARTICLES_BY_TOPIC_ID__COUNT_DESC) {
     nodes {
       id
       name

@@ -11,11 +11,11 @@
         <v-row>
             <!-- Topic of the Day -->
             <v-col   cols="12" md='6'>
-                <v-card  color='rgb(230, 235, 255)' class="flex-wrap text-justify justify-space-between" height="100%" width="100%" hover @click="open(topics[0])">
+                <v-card  color='rgb(230, 235, 255)' class="flex-wrap text-justify justify-space-between" height="100%" width="100%" hover @click="open(totd)">
                     <v-card-title class="headline">Topic of the Day</v-card-title>
                     <v-spacer/>
-                    <v-card-text class="text-center font-weight-bold" v-resize-text v-text='topics[0].name' />
-                    <v-card-text class='text-center'> {{topics[0].topicofarticlesByTopicId.totalCount}} articles</v-card-text>
+                    <v-card-text class="text-center font-weight-bold" v-resize-text v-text='totd.name' />
+                    <v-card-text class='text-center'> {{totd.topicofarticlesByTopicId.totalCount}} articles</v-card-text>
                 </v-card>
                 <Popup v-model="popup" />
             </v-col>
@@ -92,14 +92,6 @@ export default {
 
                 route: '/saved'
             },
-            // totd: get_totd() ------ When we have connected to db
-            totd: {
-                id: 'totd',
-                topic: 'Coronavirus',
-                title: "Topic of the Day",
-                text: 'We will have here some function to request the most popular topic in the last 24 hours, and clicking it will open the associated overlay.',
-                route: ''
-            },
             cards: [{
                     id: 'topics',
                     title: 'What is Topics?',
@@ -116,20 +108,26 @@ export default {
                     route: '/trends'
                 }
             ],
-            topics: []
+            totd: {
+                id: null,
+                name: null,
+                topicofarticlesByTopicId: {
+                    totalCount: null
+                }
+            }
         }
     },
 
     apollo: {
-        topics: {
+        totd: {
             query: ALL_TOPICS_WITH_FILTER,
             variables() {
                 return {
-                    limit: 2
+                    limit: 1
                 }
             },
             update(data) {
-                return data.allTopics.nodes;
+                return data.allTopics.nodes[0];
             }
         }
     },
@@ -153,10 +151,8 @@ export default {
             this.openTopic(topic)
         },
         searchTopic() {
-            if (this.keyword != '') {
-                this.search = true
-                this.searchTopicKeyword(this.keyword)
-            }
+            this.search = true
+            this.searchTopicKeyword(this.keyword)
         },
 
     },
