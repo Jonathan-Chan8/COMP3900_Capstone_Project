@@ -189,7 +189,10 @@ export default {
         },
         open(topic) {
             this.popup = true
-            this.openTopic(topic)
+            this.openTopic({
+                id: topic.id,
+                name: topic.topicname
+            })
         },
         searchTopic() {
             this.search = true
