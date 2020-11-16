@@ -19,8 +19,29 @@ https://www.omgubuntu.co.uk/how-to-install-wsl2-on-windows-10
 1. Enable virtualization in BIOS (This will already be enabled if you are using WSL)
 2. Install WSL and Linux Kernel
     https://docs.microsoft.com/en-us/windows/wsl/install-win10
-    Linux Kernel: 
+
+    1. Enable WSL
+        `dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart`
+
+    2. a. If using Windows 10 (version 2004)
+
+    To enable Virtual Machine Platform on Windows 10 (2004) open PowerShell as Administrator and run:
+
+    `dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart`
+    
+
+    b. If using Windows 10 version 1903, 1903
+        
+    To enable Virtual Machine Platform on Windows 10 (1903, 1909) open PowerShell as Administrator and run:
+ 
+    `Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -NoRestart`
+ 
+   Open PowerShell as Administrator and run this command to set WSL 2 as the default version of WSL: 
+   3. `wsl --set-default-version 2`
+    
+    Install Linux Kernel update package: 
     https://docs.microsoft.com/en-us/windows/wsl/wsl2-kernel
+
 4. Install Ubuntu 20.04 from Microsoft Store 
  https://www.microsoft.com/en-au/p/ubuntu/9nblggh4msv6?activetab=pivot:overviewtab
 5. Install Docker 
@@ -37,14 +58,14 @@ https://www.omgubuntu.co.uk/how-to-install-wsl2-on-windows-10
     3. Add the repository
     `sudo add-apt-repository \ "deb [arch=amd64] https://download.docker.com/linux/ubuntu \ $(lsb_release -cs) \ stable"`
 
-    4. Install Docker Engine
+    1. Install Docker Engine
       `sudo apt-get update`
       `sudo apt-get install docker-ce docker-ce-cli containerd.io`
  
-    5. Install Docker Compose
+    2. Install Docker Compose
      `sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose`
      
-    7. Apply executable permissions to the binary
+    3. Apply executable permissions to the binary
         `sudo chmod +x /usr/local/bin/docker-compose`
  
 
@@ -125,8 +146,6 @@ https://docs.docker.com/engine/install/ubuntu/
 
 ## Installation
 
-
-
 ### using brew 
 ### non-brew
 
@@ -145,8 +164,5 @@ sudo apt install postgresql
 ## Windows Specific 
 * ERROR: Service 'graphql-engine' failed to build : cgroups: cannot find cgroup mount destination: unknown
  
-
-
-
 
 
