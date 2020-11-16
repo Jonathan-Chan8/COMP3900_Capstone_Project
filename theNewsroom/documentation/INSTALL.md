@@ -1,6 +1,6 @@
- THE NEWSROOM INSTALLATION INSTRUCTIONS
+THE NEWSROOM INSTALLATION INSTRUCTIONS
 
-NOTE: This project requires software that was not available on UNSW Vlab. This was approved by our tutor.
+NOTE: This project requires software that was not available on UNSW Vlab. This was approved by our tutor Ali Derejeh. 
 
 # WINDOWS 10 (Tested on Windows 10 1903) 
 
@@ -97,9 +97,9 @@ postgres uses localhost:5432
 # LINUX (Tested on Ubuntu 20.04) 
 
 1. Install Docker 
-    All the following Instructions can be found here 
-   Docker Engine: https://docs.docker.com/engine/install/ubuntu/
-    Docker 
+    All the following Instructions can be found here.
+    Docker Engine: https://docs.docker.com/engine/install/ubuntu/
+    Docker Compose: https://docs.docker.com/compose/install/
     
     1. Update packages and Install packages
      `sudo apt-get update`
@@ -141,6 +141,7 @@ Do the Docker Desktop install (if there is an option to include docker-compose i
 
 2. Install postgresql
     https://www.postgresql.org/download/ 
+
 3. Install npm
     https://www.npmjs.com/get-npm
  
