@@ -1,6 +1,6 @@
  THE NEWSROOM INSTALLATION INSTRUCTIONS
 
-# WINDOWS (Tested on Windows 10 1903) 
+# WINDOWS 10 (Tested on Windows 10 1903) 
 
 Before you start. 
 
@@ -11,47 +11,104 @@ https://github.com/unsw-cse-capstone-project/capstone-project-comp3900-w17a-212-
 https://www.omgubuntu.co.uk/how-to-install-wsl2-on-windows-10
 * Hyper V enabled (If you have WSL2 this will already be enabled) 
 * WSL2 Download Kernel 
-* Docker (version 19) (docker-compose)
-* Postgresql (version 13) 
 * Windows 1903 or higher
- ....
+...
 
 ## Pre-Installation
+
 1. Enable virtualization in BIOS (This will already be enabled if you are using WSL)
-2. Install WSL
-3. Install Ubuntu 20.04 from Microsoft Store 
-4. Install Docker
-5. Install postgres
-
-### Install Docker
-
-### Install Postgres 
-
-# Installation
-    sudo apt install postgresql 
+2. Install WSL and Linux Kernel
+    https://docs.microsoft.com/en-us/windows/wsl/install-win10
+    Linux Kernel: 
+    https://docs.microsoft.com/en-us/windows/wsl/wsl2-kernel
+4. Install Ubuntu 20.04 from Microsoft Store 
+ https://www.microsoft.com/en-au/p/ubuntu/9nblggh4msv6?activetab=pivot:overviewtab
+5. Install Docker 
+    All the following Instructions can be found here 
     https://docs.docker.com/engine/install/ubuntu/
-## Running the app
+    and 
+    
+    1. Update packages and Install packages
+     `sudo apt-get update`
+     `sudo apt-get install \ apt-transport-https \ ca-certificates \ curl \ gnupg-agent \ software-properties-common`
+    2. add Docker's GPG key
+     `curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -` 
+     
+    3. Add the repository
+    `sudo add-apt-repository \ "deb [arch=amd64] https://download.docker.com/linux/ubuntu \ $(lsb_release -cs) \ stable"`
+
+    4. Install Docker Engine
+      `sudo apt-get update`
+      `sudo apt-get install docker-ce docker-ce-cli containerd.io`
+ 
+    5. Install Docker Compose
+     `sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose`
+     
+    7. Apply executable permissions to the binary
+        `sudo chmod +x /usr/local/bin/docker-compose`
+ 
+
+6. Install Postgres
+     `sudo apt install postgresql`
+     
+
+## SETUP (IMPORTANT) 
+`sudo service postgresql stop`
+`sudo service docker start`
+`sudo mkdir /sys/fs/cgroup/systemd && sudo mount -t cgroup -o none, name=systemd cgroup /sys/fs/cgroup/systemd`
+
 
 
 ## Troubleshooting
 
+
+
 Ports required:
 
 The website runs on localhost:3000
-Graphiql
-localhost:5000
-postgres
-localhost:5432
+Graphiql uses localhost:5000
+postgres uses localhost:5432
 
 
 # LINUX (Tested on Ubuntu 20.04) 
+
+1. Install Docker 
+    All the following Instructions can be found here 
+   Docker Engine: https://docs.docker.com/engine/install/ubuntu/
+    Docker 
+    
+    1. Update packages and Install packages
+     `sudo apt-get update`
+     `sudo apt-get install \ apt-transport-https \ ca-certificates \ curl \ gnupg-agent \ software-properties-common`
+    2. add Docker's GPG key
+     `curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -` 
+     
+    3. Add the repository
+    `sudo add-apt-repository \ "deb [arch=amd64] https://download.docker.com/linux/ubuntu \ $(lsb_release -cs) \ stable"`
+
+    4. Install Docker Engine
+      `sudo apt-get update`
+      `sudo apt-get install docker-ce docker-ce-cli containerd.io`
+ 
+    5. Install Docker Compose
+     `sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose`
+     
+    7. Apply executable permissions to the binary
+        `sudo chmod +x /usr/local/bin/docker-compose`
+
+3. Install Postgres
+     `sudo apt install postgresql`
+     
+
+## SETUP (IMPORTANT) 
+`sudo service postgresql stop`
+`sudo service docker start`
 
 # OSX
 
 # Requirements
 
 ## Pre-Installation
-
 
 ### Install Docker
 1. https://docs.docker.com/docker-for-mac/install/
@@ -68,7 +125,6 @@ https://docs.docker.com/engine/install/ubuntu/
 
 ## Installation
 
-## Troubleshooting
 
 
 ### using brew 
@@ -81,7 +137,13 @@ sudo apt install postgresql
 
 
 ### Troubleshooting
-* Exit Error 34 Docker port is 5432 postgresql default port...
+* Exit Error 34 Docker port is 5432 postgresql default port...o
+
+
+
+
+## Windows Specific 
+* ERROR: Service 'graphql-engine' failed to build : cgroups: cannot find cgroup mount destination: unknown
  
 
 
