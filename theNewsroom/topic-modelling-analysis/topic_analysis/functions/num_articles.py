@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon Nov  9 18:38:15 2020
+Created on Sat Nov 14 20:09:43 2020
 
-@author: admin
+@author: Jono
+
+This function obtains the number of articles in thenewsroom_database
+
 """
-
 
 from psycopg2 import connect, Error
 
 #------------------ Connect to thenewsroom_database ------------------#
 
-def retrieve_article_content():
+def thenewsroom_db_num_articles():
 
-    print ('Connecting to thenewsroom_database')
     try:
         # declare a new PostgreSQL connection object
         conn = connect(
@@ -31,15 +32,14 @@ def retrieve_article_content():
         conn = None
         cur = None
     
-    #------------- Retrieve article content for processing ---------------#
+#------------- Retrieve number of articles in database ---------------#
     
     # only attempt to execute SQL if cursor is valid
     if cur != None:
     
         try:
-            cur.execute(""" SELECT content FROM NewsCollectorInfo.ArticleContent """)
-            ArticleContent_All = cur.fetchall()
-            print("Article content retrieved")
+            cur.execute(""" SELECT COUNT(*) FROM NewsCollectorInfo.Articles """)
+            num_articles = cur.fetchone()
             
         except (Exception, Error) as error:
             print("\nexecute_sql() error:", error)
@@ -48,10 +48,5 @@ def retrieve_article_content():
     # close the cursor and connection
     cur.close()
     conn.close()
-    
-    # Convert ArticleContent_All from list of tuples, to list of strings
-    for i in range(len(ArticleContent_All)):
-        ArticleContent_All[i] = ArticleContent_All[i][0]    
-    
-    
-    return ArticleContent_All # Contains list of articles contents to be processed
+        
+    return num_articles[0]

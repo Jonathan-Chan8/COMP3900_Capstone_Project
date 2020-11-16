@@ -19,7 +19,8 @@ from nltk.stem.porter import *
 from collections import defaultdict
 
 # Add stopwords to those provided by gensim.STOPWORDS, here
-all_stop_words = STOPWORDS.union(set(['say']))
+all_stop_words = STOPWORDS.union(set(["say","like","think","time","go","thing","know"])) # THIS ISN'T WORKING?
+
 
 def lemmatize_stemming(text):
     stemmer = SnowballStemmer("english")
