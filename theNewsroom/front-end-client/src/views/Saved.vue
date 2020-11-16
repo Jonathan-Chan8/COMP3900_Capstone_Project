@@ -50,7 +50,8 @@ import DELETE_TOPIC_CONFIG from "../graphql/deleteTopicConfiguration.gql"
 
 
 import {
-    mapMutations
+    mapMutations,
+    mapGetters
 } from 'vuex';
 
 export default {
@@ -71,6 +72,8 @@ export default {
         skipQuery: false
     }),
     computed: {
+        ...mapGetters(['numSelected', 'getSelected', 'getRelated']),
+
     },
     apollo: {
         configs: {
@@ -106,10 +109,14 @@ export default {
             this.openTopic(title)
         },
         viewTrends(selection) {
-            this.setSelected(selection.map(a => ({
+            console.log(selection)
+
+            selection = selection.map(a => ({
                     id: a.id,
                     name: a.name
-                })))
+                }))
+
+            this.setSelected(selection)
             this.$router.push({
                 name: 'trends'
             })
@@ -150,7 +157,7 @@ export default {
     },
     mounted: function() {
         this.getConfigs()
-    }
+    },
 }
 </script>
 
