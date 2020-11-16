@@ -1,10 +1,8 @@
  THE NEWSROOM INSTALLATION INSTRUCTIONS
 
+NOTE: This project requires software that was not available on UNSW Vlab. This was approved by our tutor.
+
 # WINDOWS 10 (Tested on Windows 10 1903) 
-
-Before you start. 
-
-https://github.com/unsw-cse-capstone-project/capstone-project-comp3900-w17a-212-monolith/archive/master.zip
 
 ## Requirements
 
@@ -12,7 +10,7 @@ https://www.omgubuntu.co.uk/how-to-install-wsl2-on-windows-10
 * Hyper V enabled (If you have WSL2 this will already be enabled) 
 * WSL2 Download Kernel 
 * Windows 1903 or higher
-...
+
 
 ## Pre-Installation
 
@@ -70,12 +68,13 @@ https://www.omgubuntu.co.uk/how-to-install-wsl2-on-windows-10
     3. Apply executable permissions to the binary
         `sudo chmod +x /usr/local/bin/docker-compose`
  
-
 5. Install Postgres
      `sudo apt install postgresql`
      
 6. Install npm
     `sudo apt install npm`
+
+
 
 ## SETUP (IMPORTANT) 
 `sudo service postgresql stop`
@@ -131,7 +130,7 @@ postgres uses localhost:5432
 `sudo service postgresql stop`
 `sudo service docker start`
 
-# OSX
+# MAC OSX
 
 # Requirements
 
@@ -150,14 +149,10 @@ https://docs.docker.com/engine/install/ubuntu/
 ## SETUP (IMPORTANT) 
 `service start docker`
 
-
-### Troubleshooting
+## Troubleshooting
 * Exit Error 34 Docker port is 5432 postgresql default port...o
 
-
-
-
-## Windows Specific 
+### Windows Specific 
 * ERROR: Service 'graphql-engine' failed to build : cgroups: cannot find cgroup mount destination: unknown
  
 

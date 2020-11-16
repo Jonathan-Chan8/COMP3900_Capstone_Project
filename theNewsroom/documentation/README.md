@@ -1,4 +1,4 @@
-README for The Newsroom application
+README.md for The Newsroom application
 
 # SETUP  
 
@@ -12,14 +12,14 @@ README for The Newsroom application
 1. cd into the project folder. 
 2. `cd /theNewsroom/API`
 3. Execute the following command `sudo docker-compose up` on Linux/Windows 
-or just `docker-compose up` on MAC OSX
+or on Mac OSX just use `docker-compose up`
 
 (to tear it down, do `docker-compose down` in the same directory.)
 
-## start a second terminal
+## Then start a second terminal
 1. cd into the project folder. 
 2. `cd /theNewsroom/front-end-client`
 3. `npm install`
 4. PORT=3000 npm run dev
 
-To see the website now visit localhost:3000 in a browser.
+To see the website now visit address localhost:3000 in a browser.
