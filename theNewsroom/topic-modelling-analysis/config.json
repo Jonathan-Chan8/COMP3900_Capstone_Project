@@ -1,5 +1,0 @@
-{
-    "graphQL_server": {
-        "URLendpoint": "http://localhost:5000/graphql"
-    }
-}
