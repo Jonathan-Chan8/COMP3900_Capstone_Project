@@ -74,7 +74,7 @@
                                 </v-list-item-group>
                             </v-list-group>
                             <template v-if="!$auth.loading & $auth.isAuthenticated">
-                                <v-list-group color="none">
+                                <v-list-group color="none" @click="getConfigs()">
                                     <template v-slot:activator>
                                         <v-list-item-content>
                                             <v-list-item-title class='font-weight-light list-title'>Saved Trends</v-list-item-title>
@@ -158,6 +158,7 @@ export default {
         trends: [],
         date: null,
         topic_id: null,
+        usr_id: '',
         skipQuery: true,
         replace: false,
         options: {
@@ -199,6 +200,18 @@ export default {
                     highlightDataSeries: true
                 },
             },
+            noData: {
+                text: 'Select topics to see how they trend over time!',
+                align: 'center',
+                verticalAlign: 'middle',
+                offsetX: 0,
+                offsetY: 0,
+                style: {
+                    color: undefined,
+                    fontSize: '20px',
+                    fontFamily: undefined
+                }
+            },
             chart: {
                 selection: {
                     enabled: true
@@ -237,12 +250,11 @@ export default {
         getSelected: {
             handler: function() {
                 this.callTrends()
-                // this.checkRemove()
                 if (this.getSelected.length == 0) {
                     this.trends = []
                 }
             },
-        }
+        },
     },
     apollo: {
         related_topics: {
@@ -290,7 +302,7 @@ export default {
             query: USER_CONFIGS,
             variables() {
                 return {
-                    usrId: this.$auth.user.sub
+                    usrId: this.usr_id
                 }
             },
             update(data) {
@@ -328,6 +340,8 @@ export default {
                 this.$apollo.queries.result.skip = false
                 await this.$apollo.queries.result.refetch()
             }
+            // This line is not redundant. It refreshes the value, particularly useful for automatically updating the graph when dates are changed.
+            this.trends = this.trends.map(a => a)
             console.log('Trend data fetched.')
         },
         formatDate(date) {
@@ -400,8 +414,13 @@ export default {
             this.end_date = this.end_date.toISOString().slice(0, 10)
         }
         this.dates = [this.start_date, this.end_date]
-        this.callTrends()
+
+        if (!this.$auth.loading && this.$auth.isAuthenticated) {
+            this.usr_id = this.$auth.user.sub
+        }
+
         this.getConfigs()
+        this.callTrends()
 
         console.log("Mounted")
     },
