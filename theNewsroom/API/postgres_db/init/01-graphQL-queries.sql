@@ -27,3 +27,14 @@ RETURNS SETOF ArticleCountByDate AS $$
 $$ LANGUAGE sql STABLE;
 
 
+CREATE TYPE TopTopic AS (
+    id          INT,
+    topicName   VARCHAR(100),
+    num         INT
+)
+
+CREATE OR REPLACE FUNCTION NewsCollectorInfo.GetTopTopic(startDate date, endDate date)
+RETURNS SETOF TopTopic AS $$
+    SELECT * 
+        FROM 
+$$ LANGUAGE sql STABLE;
