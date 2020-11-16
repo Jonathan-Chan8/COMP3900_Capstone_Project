@@ -1,12 +1,27 @@
 README.md for The Newsroom application
 
+# Sumission 
+* Note: Our project exceeded the 100MB limit for submitting by zip file. We are instead submitting by the alternative Github method. 
+* The final submission is on our branch "submission". The branch can be found at https://github.com/unsw-cse-capstone-project/capstone-project-comp3900-w17a-212-monolith/tree/submission
+* This submission branch was last updated before 11:59pm on the 16/11/2020.
+
 # SETUP  
 
 1. See INSTALL.md for installion instruction for the operating systems WINDOWS 10 / LINUX (UBUNTU) / MAC OSX
 
-2. `git clone ttps://github.com/unsw-cse-capstone-project/capstone-project-comp3900-w17a-212-monolith.git`
+2. Install git-lfs
+    ## Windows (WSL2) / Linux  
+    `sudo apt install` 
+    `sudo apt install git lfs`
+    
+    ## MAC OSX 
+    `brew install git-lfs`
+    `brew upgrade git-lfs`  
+    
+4. `git clone ttps://github.com/unsw-cse-capstone-project/capstone-project-comp3900-w17a-212-monolith.git`
+    Note: you made need to do git pull after installing git-lfs 
 
-3. Two termials are required for this step. One for running the database and one for running the front end.
+6. Two termials are required for this step. One for running the database and one for running the front end.
 
 ## First teminal, Starting docker-compose to run
 1. cd into the project folder. 
@@ -22,4 +37,4 @@ or on Mac OSX just use `docker-compose up`
 3. `npm install`
 4. PORT=3000 npm run dev
 
-To see the website now visit address localhost:3000 in a browser.
+To [see](see) the website now visit address localhost:3000 in a browser.
