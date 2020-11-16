@@ -27,3 +27,26 @@ RETURNS SETOF ArticleCountByDate AS $$
 $$ LANGUAGE sql STABLE;
 
 
+CREATE TYPE TopTopic AS (
+    id              INT,
+    topicName       VARCHAR(100),
+    numOfArticles   INT
+);
+
+-- Fetches the most popular topic
+CREATE OR REPLACE FUNCTION NewsCollectorInfo.GetTopTopic(startDate date, endDate date)
+RETURNS TopTopic AS $$
+    SELECT topics.id, topics.name, numOfArticles
+        FROM (SELECT topic_id, COUNT(*) as numOfArticles
+                    FROM newscollectorinfo.topicofarticle as topicInfo 
+                    INNER JOIN (SELECT id, CAST(publication_date AS DATE)
+                                    FROM newscollectorinfo.Articles) as articleInfo
+                        ON topicInfo.article_id = articleInfo.id
+                    WHERE publication_date >= startDate
+                        AND publication_date <= endDate
+                    GROUP BY topic_id) as topicCount
+        INNER JOIN newscollectorinfo.topics as topics
+            ON topics.id = topicCount.topic_id
+        ORDER BY numOfArticles DESC
+        LIMIT 1
+$$ LANGUAGE sql STABLE;

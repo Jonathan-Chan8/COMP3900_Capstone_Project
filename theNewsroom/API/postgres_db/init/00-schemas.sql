@@ -60,13 +60,13 @@ CREATE TABLE NewsCollectorInfo.Articles (
 	article_type 		TYPEOFARTICLE 	NOT NULL,
 	publication_date 	TIMESTAMP 		NOT NULL, 
 	author				VARCHAR(50),
-	text_summary_id		INT,
+	text_summary		INT,
 	media_outlet_id	 	INT    			NOT NULL,
 	content_id			INT,
 	PRIMARY KEY(id),
 	CONSTRAINT foreign_key_content 		FOREIGN KEY(content_id) 	 REFERENCES NewsCollectorInfo.ArticleContent(id),
 	CONSTRAINT foreign_key_media_outlet FOREIGN KEY(media_outlet_id) REFERENCES NewsCollectorInfo.MediaOutlets(id),
-	CONSTRAINT foreign_key_summary		FOREIGN KEY(text_summary_id) REFERENCES NewsCollectorInfo.ArticleSummary(id)
+	CONSTRAINT foreign_key_summary		FOREIGN KEY(text_summary) REFERENCES NewsCollectorInfo.ArticleSummary(id)
 );
 
 CREATE TABLE NewsCollectorInfo.TopicOfArticle (
