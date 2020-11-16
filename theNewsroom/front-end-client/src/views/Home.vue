@@ -46,8 +46,6 @@
             </v-col>
         </v-row>
     </v-container>
-    {{totd}}
-
 </div>
 </template>
 
@@ -113,7 +111,11 @@ export default {
                     route: '/trends'
                 }
             ],
-            totd: ''
+            totd: {
+                id: null,
+                topicname: null,
+                numofarticles: null
+            }
         }
     },
 
