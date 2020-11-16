@@ -77,7 +77,7 @@ export default {
             query: USER_CONFIGS,
             variables() {
                 return {
-                    usrId: this.usrId
+                    usrId: this.$auth.user.sub
                 }
             },
             update(data) {
@@ -119,14 +119,14 @@ export default {
             await this.$apollo.queries.configs.refetch()
         },
         async deleteTrend(selection) {
+            console.log("Deleting saved congifuration...")
             await this.deleteTopicConfig(selection.topics)
             await this.deleteUserConfig(selection.id)
+            console.log("Saved congifuration deleted")
         },
         async deleteTopicConfig(topics) {
             var i
-            console.log('start delete topic')
             for (i = 0; i < topics.length; i++) {
-                console.log('delete topic', i)
                 var id = topics[i].nodeId
                 this.$apollo.mutate({
                     mutation: DELETE_TOPIC_CONFIG,
@@ -135,29 +135,23 @@ export default {
                     }
                 })
             }
-            console.log('end create topic')
         },
         async deleteUserConfig(id) {
-            console.log('start delete user')
             this.$apollo.mutate({
                 mutation: DELETE_USER_CONFIG,
                 variables: {
                     id,
                 },
                 update: () => {
-                    console.log('end delete user') 
                     this.getConfigs()
                 },
             })
         },
-        
     },
     mounted: function() {
-        this.usrId = this.$auth.user.sub
         console.log(this.usrId)
         this.getConfigs()
     }
-
 }
 </script>
 

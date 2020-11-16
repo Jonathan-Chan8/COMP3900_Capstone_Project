@@ -186,7 +186,7 @@ export default {
         this.end_date = this.end_date.toISOString().slice(0, 10)
         this.dates = [this.start_date, this.end_date]
 
-        console.log("Mounted!")
+        console.log("Mounted.")
     },
     computed: {
         todaysDate() {

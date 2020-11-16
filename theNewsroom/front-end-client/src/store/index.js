@@ -29,7 +29,6 @@ export default new Vuex.Store({
 				content: '',
 			},
 		},
-		saved: [],
 		popups: [],
 		selected: [],
 		related: []
@@ -68,20 +67,6 @@ export default new Vuex.Store({
 		setSelected(state, selection) {
 			state.selected = selection.map(a => a)
 		},
-		
-		saveTrend(state, name) {
-			var trend = state.selected.map(a => a)			
-			state.saved.push({
-				title: name,
-				topics: trend
-			})
-		},
-
-		deleteTrend(state, trend) {
-			let index = state.saved.findIndex(item => item == trend)
-			state.saved.splice(index, 1)
-		},
-	
 		openArticle(state, article) {
 			state.current_article = article.articleByArticleId
 		},
@@ -122,10 +107,6 @@ export default new Vuex.Store({
 
 		getPopups: state => {
 			return state.popups
-		},
-
-		getSaved: state => {
-			return state.saved
 		},
 
 		getArticle: state => {

@@ -166,7 +166,6 @@ export default {
         ]),
         async createUser() {
             var userId = this.$auth.user.sub
-            console.log(userId)
             this.user_id = userId
 
             this.$apollo.queries.user.skip = false
@@ -178,9 +177,9 @@ export default {
                         userId
                     }
                 })
-                console.log("User Created")
+                console.log("New User: ", userId)
             } else {
-                console.log("User Exists")
+                console.log("Existing User: ", userId)
             }
             
         },
