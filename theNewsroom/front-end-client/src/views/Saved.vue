@@ -22,14 +22,12 @@
                                     <v-btn dark rounded width=100% depressed @click.stop="open(topic)" v-text='topic.name' />
                                 </v-col>
                             </v-row>
-                            <v-row class="edit" dense>
-                                <v-spacer />
-                                <v-col>
+                            <v-spacer />
+                            <v-col class="edit" dense>
                                     <v-btn outlined text rounded width=100% depressed @click.stop="deleteTrend(config)">
                                         Delete
                                     </v-btn>
-                                </v-col>
-                            </v-row>
+                            </v-col>
                         </v-card-actions>
                     </v-col>
                 </v-list-item>
