@@ -1,6 +1,5 @@
 # THE NEWSROOM INSTALLATION INSTRUCTIONS
 
-
 ## Requirements
 
 Ports required:
@@ -15,30 +14,51 @@ localhost:5432
 
 Before you start. 
 
+https://github.com/unsw-cse-capstone-project/capstone-project-comp3900-w17a-212-monolith/archive/master.zip
+
 ### Requirements
+
+https://www.omgubuntu.co.uk/how-to-install-wsl2-on-windows-10
+*  Hyper V enabled (If you have WSL2 this will already be enabled) 
 * WSL2 Kernel
 * Docker (version 19) (docker-compose)
 * Postgresql (version 13) 
+* Windows 1903 or higher
  
-Installing on Windows 10 is a little more complicated but it still works. 
+### Steps 
 
-* Enable virtualization in Bios
+#### Pre-Installation
+1. Enable virtualization in BIOS (This will already be enabled if you are using WSL)
+2. Install WSL
+3. Install Ubuntu 20.04 from Microsoft Store 
+4. 
+5. git clone https://github.com/unsw-cse-capstone-project/capstone-project-comp3900-w17a-212-monolith.git 
 
-* Install WSL
+
 * Install POSTGRESQL 13
-* Install Docker o
+* Install Docker
 
 
 ### Troubleshooting
 
+
 ## OSX
+### Requirements
+
+
+### Steps 
+
+### using brew 
+### non-brew
+
 * Install POSTGRESQL 13
 * Install Docker 
-
 
 ### Troubleshooting
 
 ## LINUX
+ 
+
 
 https://docs.docker.com/engine/install/ubuntu/
 sudo apt install postgresql 
