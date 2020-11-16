@@ -65,6 +65,7 @@ export default {
         ]),
         close() {
             this.save = false
+            this.$emit('saved');
         },
         async saveTrendSelection(configName) {
             if (configName.length > 3 && configName.length <= 20 && this.getSelected.length > 0) {

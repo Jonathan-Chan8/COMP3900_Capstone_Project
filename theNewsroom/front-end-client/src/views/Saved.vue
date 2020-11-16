@@ -38,7 +38,6 @@
         <Popup v-model="popup" />
     </v-container>
 </template>
-{{configs}}
 </div>
 </template>
 

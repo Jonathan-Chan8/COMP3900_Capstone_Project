@@ -89,11 +89,10 @@
                             </template>
                             <v-list-item>
                                 <v-spacer />
-                                <SaveTrend v-if="!$auth.loading & $auth.isAuthenticated" />
+                                <SaveTrend v-if="!$auth.loading & $auth.isAuthenticated" v-on:saved="getConfigs()"/>
                                 <v-btn rounded depressed @click="reset">
                                     Reset </v-btn>
                                 <HelpTrends />
-
                             </v-list-item>
                         </v-list>
                     </v-card>
@@ -112,6 +111,7 @@
             </v-layout>
         </v-container>
     </template>
+
 </div>
 </template>
 
@@ -140,7 +140,6 @@ export default {
     },
     data: () => ({
         search: false,
-        save: false,
         popup: false,
         start_date: null,
         end_date: null,
@@ -316,7 +315,10 @@ export default {
                         name: b.topicName
                     }))
                 }))
-            }
+            },
+            skip() {
+                return this.skipQuery
+            },
         }
     },
     methods: {
@@ -398,11 +400,11 @@ export default {
                 this.addSelected(topic)
             }
         },
-        // async getConfigs() {
-        //     this.$apollo.queries.configs.skip = false
-        //     await this.$apollo.queries.configs.refetch()
-        //     console.log("Configurations fetched.")
-        // },
+        async getConfigs() {
+            this.$apollo.queries.configs.skip = false
+            await this.$apollo.queries.configs.refetch()
+            console.log("Configurations fetched.")
+        },
     },
     mounted: function() {
         if (this.start_date == null) {
@@ -417,7 +419,7 @@ export default {
             this.usr_id = this.$auth.user.sub
         }
         this.callTrends()
-        // this.getConfigs()
+        this.getConfigs()
         console.log("Mounted")
     },
     computed: {
