@@ -13,8 +13,8 @@
                 <v-card  color='rgb(230, 235, 255)' class="flex-wrap text-justify justify-space-between" height="100%" width="100%" hover @click="open(totd)">
                     <v-card-title class="headline">Topic of the Day</v-card-title>
                     <v-spacer/>
-                    <v-card-text class="text-center font-weight-bold" v-resize-text v-text='totd.name' />
-                    <v-card-text class='text-center'> {{totd.topicofarticlesByTopicId.totalCount}} articles</v-card-text>
+                    <v-card-text class="text-center font-weight-bold" v-resize-text v-text='totd.topicname' />
+                    <v-card-text class='text-center'> {{totd.numofarticles}} articles</v-card-text>
                 </v-card>
                 <Popup v-model="popup" />
             </v-col>
@@ -46,6 +46,8 @@
             </v-col>
         </v-row>
     </v-container>
+    {{totd}}
+
 </div>
 </template>
 
@@ -55,8 +57,7 @@ import Search from "../components/common/Search";
 
 import CREATE_USER from '../graphql/createUser.gql'
 import CHECK_USER from '../graphql/checkUser.gql'
-
-import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
+import GET_TOP_TOPIC from '../graphql/GetTopTopic.gql'
 import {
     mapMutations
 } from 'vuex';
@@ -112,34 +113,26 @@ export default {
                     route: '/trends'
                 }
             ],
-            totd: {
-                id: null,
-                name: null,
-                topicofarticlesByTopicId: {
-                    totalCount: null
-                }
-            }
+            totd: ''
         }
     },
 
     apollo: {
         totd: {
-            query: ALL_TOPICS_WITH_FILTER,
+            query: GET_TOP_TOPIC,
             variables() {
                 return {
                     limit: 1,
                     // The $to and $from here are pre-set for submission
-                    to: "2020-11-15",
-                    from: "2020-11-15",
+                    startDate: "2020-11-11",
+                    endDate: "2020-11-11",
                     // // If the database has been updated for the current date, pass the current date as argument
                     // to: (new Date()).toISOString().slice(0, 10),
                     // from: (new Date()).toISOString().slice(0, 10),
-                    
-
                 }
             },
             update(data) {
-                return data.allTopics.nodes[0];
+                return data.gettoptopic;
             }
         },
         user : {
