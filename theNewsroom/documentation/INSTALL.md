@@ -17,6 +17,7 @@ https://www.omgubuntu.co.uk/how-to-install-wsl2-on-windows-10
 ## Pre-Installation
 
 1. Enable virtualization in BIOS (This will already be enabled if you are using WSL)
+
 2. Install WSL and Linux Kernel
     https://docs.microsoft.com/en-us/windows/wsl/install-win10
 
@@ -42,9 +43,10 @@ https://www.omgubuntu.co.uk/how-to-install-wsl2-on-windows-10
     Install Linux Kernel update package: 
     https://docs.microsoft.com/en-us/windows/wsl/wsl2-kernel
 
-4. Install Ubuntu 20.04 from Microsoft Store 
+3. Install Ubuntu 20.04 from Microsoft Store 
  https://www.microsoft.com/en-au/p/ubuntu/9nblggh4msv6?activetab=pivot:overviewtab
-5. Install Docker 
+ 
+4. Install Docker 
     All the following Instructions can be found here 
     https://docs.docker.com/engine/install/ubuntu/
     and 
@@ -58,20 +60,22 @@ https://www.omgubuntu.co.uk/how-to-install-wsl2-on-windows-10
     3. Add the repository
     `sudo add-apt-repository \ "deb [arch=amd64] https://download.docker.com/linux/ubuntu \ $(lsb_release -cs) \ stable"`
 
-    1. Install Docker Engine
+    4. Install Docker Engine
       `sudo apt-get update`
       `sudo apt-get install docker-ce docker-ce-cli containerd.io`
  
-    2. Install Docker Compose
+    5. Install Docker Compose
      `sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose`
      
     3. Apply executable permissions to the binary
         `sudo chmod +x /usr/local/bin/docker-compose`
  
 
-6. Install Postgres
+5. Install Postgres
      `sudo apt install postgresql`
      
+6. Install npm
+    `sudo apt install npm`
 
 ## SETUP (IMPORTANT) 
 `sudo service postgresql stop`
@@ -112,14 +116,16 @@ postgres uses localhost:5432
       `sudo apt-get install docker-ce docker-ce-cli containerd.io`
  
     5. Install Docker Compose
-     `sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose`
-     
-    7. Apply executable permissions to the binary
+     `sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose` 
+    
+    6. Apply executable permissions to the binary
         `sudo chmod +x /usr/local/bin/docker-compose`
 
 3. Install Postgres
-     `sudo apt install postgresql`
-     
+    `sudo apt install postgresql`
+
+5. Install npm
+    `sudo apt install npm`
 
 ## SETUP (IMPORTANT) 
 `sudo service postgresql stop`
@@ -131,28 +137,18 @@ postgres uses localhost:5432
 
 ## Pre-Installation
 
-### Install Docker
 1. https://docs.docker.com/docker-for-mac/install/
 Do the Docker Desktop install (if there is an option to include docker-compose in the download, say yes)
+
+2. Install postgresql
+    https://www.postgresql.org/download/ 
+3. Install npm
+    https://www.npmjs.com/get-npm
  
-### Install Postgresql
-1. https://docs.docker.com/docker-for-mac/install/
-Do the Docker Desktop install (if there is an option to include docker-compose in the download, say yes)
-    sudo apt install postgresql 
 https://docs.docker.com/engine/install/ubuntu/
 
-## start docker 
-`sudo service start docker`
-
-## Installation
-
-### using brew 
-### non-brew
-
-
-https://docs.docker.com/engine/install/ubuntu/
-sudo apt install postgresql 
-* Install postgresql 
+## SETUP (IMPORTANT) 
+`service start docker`
 
 
 ### Troubleshooting
