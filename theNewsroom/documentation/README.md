@@ -1,9 +1,25 @@
-README.md for The Newsroom application
+# README
+
+# COMP3900 group
+comp3900-w17a-212-monolith
+
+# CREATED BY
+Lance Young
+Ronan O’Hara
+Liam Dale
+Jonathan Chan
+James Tatham
+
+# Project
+The Newsroom
 
 # Sumission 
 * Note: Our project exceeded the 100MB limit for submitting by zip file. We are instead submitting by the alternative Github method. 
 * The final submission is on our branch "submission". The branch can be found at https://github.com/unsw-cse-capstone-project/capstone-project-comp3900-w17a-212-monolith/tree/submission
 * This submission branch was last updated before 11:59pm on the 16/11/2020.
+
+# If you need any help, please contact 
+James Tatham - z5168119@unsw.edu.au - 0458732989
 
 # SETUP  
 
@@ -38,3 +54,5 @@ or on Mac OSX just use `docker-compose up`
 4. PORT=3000 npm run dev
 
 To [see](see) the website now visit address localhost:3000 in a browser.
+
+
