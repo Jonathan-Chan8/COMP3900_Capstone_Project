@@ -67,9 +67,7 @@ sudo apt install postgresql
 
 ### Troubleshooting
 * Exit Error 34 Docker port is 5432 postgresql default port...
-* 
-
-Might have to shutdown default port 
+ 
 
 
 
