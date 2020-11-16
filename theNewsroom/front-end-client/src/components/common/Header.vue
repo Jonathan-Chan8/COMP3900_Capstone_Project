@@ -52,11 +52,50 @@
 </template>
 
 <script>
+import CREATE_USER from '../../graphql/createUser.gql'
+import CHECK_USER from '../../graphql/checkUser.gql'
+
 export default {
     name: "Header",
+    apollo: {
+        user : {
+            query: CHECK_USER,
+            variables() {
+                return {
+                    userId: this.user_id
+                }
+            },
+            update(data) {
+                return data;
+            },
+            skip() {
+                return this.skipQuery
+            },
+        }
+    },
     methods: {
-        login() {
-            this.$auth.loginWithPopup();
+        async createUser() {
+            var userId = this.$auth.user.sub
+            this.user_id = userId
+
+            this.$apollo.queries.user.skip = false
+            await this.$apollo.queries.user.refetch()
+            if (this.user.allUsers.nodes.length == 0) {
+                this.$apollo.mutate({
+                    mutation: CREATE_USER,
+                    variables: {
+                        userId
+                    }
+                })
+                console.log("New User: ", userId)
+            } else {
+                console.log("Existing User: ", userId)
+            }
+            
+        },
+        async login() {
+            await this.$auth.loginWithPopup();
+            this.createUser();
         },
         logout() {
             this.$auth.logout({

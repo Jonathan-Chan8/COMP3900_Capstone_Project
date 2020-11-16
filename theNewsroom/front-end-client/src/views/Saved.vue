@@ -3,7 +3,7 @@
 <template>
 
     <v-container fluid>
-        <h2 class="subheading grey--text text-center" v-if="getSaved.length == 0">Looks like you haven't saved any Trends yet! You can save a selection of topics on the Trends page.</h2>
+        <h2 class="subheading grey--text text-center" v-if="configs.length == 0">Looks like you haven't saved any Trends yet! You can save a selection of topics on the Trends page.</h2>
         <v-row v-else>
             <v-list two-line width=100% rounded>
                 <v-list-item>
@@ -11,7 +11,7 @@
                     <span> Need Help?</span>
 
                 </v-list-item>
-                <v-list-item  class="item" v-for="config in getSaved" :key="config.title" depressed hover @click.stop="viewTrends(config.topics)">
+                <v-list-item  class="item" v-for="config in configs" :key="config.id" depressed hover @click.stop="viewTrends(config.topics)">
 
                     <v-col d-flex>
                         <v-list-item-title class="headline" v-text="config.title" />
@@ -38,17 +38,18 @@
         <Popup v-model="popup" />
     </v-container>
 </template>
-
 </div>
 </template>
 
 <script>
 import Popup from "../components/common/Popup";
 import HelpSaved from "../components/common/HelpSaved";
+import USER_CONFIGS from "../graphql/AllOfAUsersConfigurations.gql"
+import DELETE_USER_CONFIG from "../graphql/deleteUserConfiguration.gql"
+import DELETE_TOPIC_CONFIG from "../graphql/deleteTopicConfiguration.gql"
+
 
 import {
-    mapGetters,
-    mapState,
     mapMutations
 } from 'vuex';
 
@@ -65,29 +66,91 @@ export default {
         },
         dialog: false,
         popup: false,
+        userId: '',
+        configs: [],
+        skipQuery: false
     }),
     computed: {
-        ...mapState(['saved']),
-        ...mapGetters(['getSaved']),
+    },
+    apollo: {
+        configs: {
+            query: USER_CONFIGS,
+            variables() {
+                return {
+                    usrId: this.$auth.user.sub
+                }
+            },
+            update(data) {
+                return data.allUserconfigurations.nodes.map(a => ({
+                    id: a.id,
+                    title: a.configName,
+                    topics: a.topicconfigurationsByUsrConfigId.nodes.map(b => ({
+                        nodeId: b.id,
+                        id: b.topicId,
+                        name: b.topicName
+                    }))
+                }))
+            },
+            skip() {
+                return this.skipQuery
+            },
+        }
     },
     methods: {
         ...mapMutations([
             'openTopic',
             'setSelected',
-            'deleteTrend',
         ]),
         open(title) {
             this.popup = true
             this.openTopic(title)
         },
         viewTrends(selection) {
-            this.setSelected(selection)
+            this.setSelected(selection.map(a => ({
+                    id: a.id,
+                    name: a.name
+                })))
             this.$router.push({
                 name: 'trends'
             })
         },
+        async getConfigs() {
+            this.$apollo.queries.configs.skip = false
+            await this.$apollo.queries.configs.refetch()
+        },
+        async deleteTrend(selection) {
+            console.log("Deleting saved congifuration...")
+            await this.deleteTopicConfig(selection.topics)
+            await this.deleteUserConfig(selection.id)
+            console.log("Saved congifuration deleted")
+        },
+        async deleteTopicConfig(topics) {
+            var i
+            for (i = 0; i < topics.length; i++) {
+                var id = topics[i].nodeId
+                this.$apollo.mutate({
+                    mutation: DELETE_TOPIC_CONFIG,
+                    variables: {
+                        id,
+                    }
+                })
+            }
+        },
+        async deleteUserConfig(id) {
+            this.$apollo.mutate({
+                mutation: DELETE_USER_CONFIG,
+                variables: {
+                    id,
+                },
+                update: () => {
+                    this.getConfigs()
+                },
+            })
+        },
     },
-
+    mounted: function() {
+        this.getConfigs()
+    }
 }
 </script>
 

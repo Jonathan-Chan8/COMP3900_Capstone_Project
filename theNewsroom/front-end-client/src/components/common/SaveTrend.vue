@@ -36,13 +36,20 @@ import {
     mapGetters,
     mapMutations
 } from 'vuex';
+
+
+import CREATE_USER_CONFIG from '../../graphql/createUserConfiguration.gql'
+import CREATE_TOPIC_CONFIG from '../../graphql/createTopicConfiguration.gql'
+
+
 export default {
     props: {
         value: Boolean
     },
     data: () => ({
         title: null,
-        save: false
+        save: false,
+        config_id: null
     }),
     computed: {
         ...mapGetters(['getSelected']),
@@ -62,11 +69,42 @@ export default {
         close() {
             this.save = false
         },
-        saveTrendSelection(title) {
-            if (this.title.length > 3 && this.title.length <= 20 && this.getSelected.length > 0) {
-                this.saveTrend(title.charAt(0).toUpperCase() + title.slice(1))
+        async saveTrendSelection(configName) {
+            if (configName.length > 3 && configName.length <= 20 && this.getSelected.length > 0) {
+                configName = configName.charAt(0).toUpperCase() + configName.slice(1)
+                await this.createUserConfig(configName)
                 this.close()
             }
+        },
+        async createUserConfig(configName) {
+            var usrId = this.$auth.user.sub
+            this.$apollo.mutate({
+                mutation: CREATE_USER_CONFIG,
+                variables: {
+                    configName,
+                    usrId
+                },
+                update: (store, { data: { createUserconfiguration } }) => {
+                    this.createTopicConfig(createUserconfiguration.userconfiguration.id)
+                },
+            })
+        },
+        async createTopicConfig(usrConfigId) {
+            var i
+            for (i = 0; i < this.getSelected.length; i++) {
+                var topicId = this.getSelected[i].id
+                var topicName = this.getSelected[i].name
+                this.$apollo.mutate({
+                mutation: CREATE_TOPIC_CONFIG,
+                    variables: {
+                        usrConfigId,
+                        topicId,
+                        topicName
+                    }
+                })
+            }
+            console.log('end create topic')
+
         }
     },
     

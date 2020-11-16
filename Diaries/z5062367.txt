@@ -72,10 +72,9 @@ Week 9:
 
 
 Week 10:
-  - We planned to...
-  - What we finished included...
-  - The main obstacles we faced were...  . We overcame these by... 
-  - We didn't finish...
+  - We planned to... finish all the tasks in Jira and prepare the report. This mainly included stuff on the front end as the back end had a reasonably working model.
+  - What we finished included... We completed the jira tasks and the report by the due date
+  - We didn't finish... everything we set out to in the proposal, but that reflected use spreading ourselves too thin not realising the time required to implement certain aspects of the design. However the product still fulfills the objectives and requirements.
 
 
 

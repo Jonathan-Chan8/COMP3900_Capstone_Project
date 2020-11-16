@@ -81,7 +81,7 @@
                                         </v-list-item-content>
                                     </template>
                                     <v-list-item-group color="none">
-                                        <v-list-item class='item' v-for="config in getSaved" :key="config.title" @click="setSelected(config.topics)">
+                                        <v-list-item class='item' v-for="config in configs" :key="config.id" @click="setSelected(config.topics)">
                                             <v-list-item-title v-text=" config.title" />
                                         </v-list-item>
                                     </v-list-item-group>
@@ -105,7 +105,7 @@
                 <v-flex align-center xs12 md8>
                     <template>
                         <div>
-                            <apexchart type="line" :options="options" :series="graph"></apexchart>
+                            <apexchart type="line" :options="options" :series="trends"></apexchart>
                         </div>
                     </template>
                 </v-flex>
@@ -116,8 +116,6 @@
             </v-layout>
         </v-container>
     </template>
-
-
 </div>
 </template>
 
@@ -134,6 +132,8 @@ import {
 } from 'vuex';
 import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
 import TOPIC_ARTICLES_DATE from '../graphql/TopicArticlesByDate.gql'
+import USER_CONFIGS from "../graphql/AllOfAUsersConfigurations.gql"
+
 export default {
     name: "Trends",
     components: {
@@ -144,8 +144,22 @@ export default {
         Replace
     },
     data: () => ({
-        el: '#app',
-        
+        search: false,
+        save: false,
+        popup: false,
+        start_date: null,
+        end_date: null,
+        dates: [],
+        keyword: '',
+        menu: false,
+        related_topics: [],
+        configs: [],
+        result: null,
+        trends: [],
+        date: null,
+        topic_id: null,
+        skipQuery: true,
+        replace: false,
         options: {
             stroke: {
                 curve: 'smooth',
@@ -218,50 +232,15 @@ export default {
                 },
             },
         },
-        search: false,
-        save: false,
-        popup: false,
-        start_date: null,
-        end_date: null,
-        dates: [],
-        keyword: '',
-        menu: false,
-        related_topics: [],
-        result: null,
-        trends: [],
-        date: null,
-        topic_id: null,
-        graph: [],
-        skipQuery: true,
-        replace: false,
     }),
     watch: {
         getSelected: {
             handler: function() {
-            console.log('Selected watcher start')
-            this.callTrends()
-            this.checkRemove()
-
-            if (this.getSelected.length == 0) {
-                this.graph = []
-            }
-            console.log('Selected watcher end')
-            },
-        },
-        result: {
-            handler: function() {
-                console.log('Result watcher start')
-                let index = this.trends.findIndex(item => item.name == this.result.name)
-                if (index == -1 ) {
-                    console.log('push')
-                    this.trends.push(this.result)
-                } else {
-                    console.log('replace')
-                    this.trends[index] = this.result
-                    console.log('replace 2')
+                this.callTrends()
+                // this.checkRemove()
+                if (this.getSelected.length == 0) {
+                    this.trends = []
                 }
-                this.checkRemove()
-                console.log('Result watcher end')
             },
         }
     },
@@ -287,21 +266,46 @@ export default {
                 }
             },
             update(data) {
-                console.log(this.topic_id, this.start_date, this.end_date)
-                return {
+                console.log('Result fetched for Topic ID:', this.topic_id)
+                var result = {
                     name: data.topicById.name, 
                     data: data.aggregatearticlecountbydays.nodes.map(a => ({
                         x: a.x,
                         y: a.y
-                    }))
+                    }))}
+
+                let index = this.trends.findIndex(item => item.name == result.name)
+                if (index == -1 ) {
+                    this.trends.push(result)
+                } else {
+                    this.trends[index] = result
                 }
+                this.checkRemove()
             },
             skip() {
                 return this.skipQuery
             },
-            options: {
-                // fetchPolicy: 'cache-first',
-            }
+        },
+        configs: {
+            query: USER_CONFIGS,
+            variables() {
+                return {
+                    usrId: this.$auth.user.sub
+                }
+            },
+            update(data) {
+                return data.allUserconfigurations.nodes.map(a => ({
+                    id: a.id,
+                    title: a.configName,
+                    topics: a.topicconfigurationsByUsrConfigId.nodes.map(b => ({
+                        id: b.topicId,
+                        name: b.topicName
+                    }))
+                }))
+            },
+            skip() {
+                return this.skipQuery
+            },
         }
     },
     methods: {
@@ -317,15 +321,14 @@ export default {
             }
         },
         async callTrends() {
+            console.log("Fetching trend data for", this.dateRange)
             var i
             for (i = 0; i < this.getSelected.length; i++) {
                 this.topic_id =  this.getSelected[i].id
                 this.$apollo.queries.result.skip = false
                 await this.$apollo.queries.result.refetch()
-                console.log('Result fetched')
             }
-            this.graph = this.trends.map(a => a)
-            console.log('Exiting call')
+            console.log('Trend data fetched.')
         },
         formatDate(date) {
             let month = `${date.getMonth() + 1}`;
@@ -341,7 +344,6 @@ export default {
             'openTopic',
             'setSelected',
             'emptySelected',
-            'saveTrend',
             'searchTopicKeyword'
         ]),
         open(topic) {
@@ -360,12 +362,6 @@ export default {
             this.dates = [this.start_date, this.end_date]
             this.callTrends()
         },
-        saveTrendSelection(name) {
-            if (this.name.length > 3 && this.name.length <= 20 && this.selected.length > 0) {
-                this.dialog = false
-                this.saveTrend(name)
-            }
-        },
         searchTopic() {
             if (this.keyword != '') {
                 this.search = true
@@ -373,7 +369,6 @@ export default {
             }
         },
         reset() {
-            console.log('Reset')
             this.dates = []
             this.end_date = new Date()
             this.start_date = new Date()
@@ -390,7 +385,11 @@ export default {
             } else {
                 this.addSelected(topic)
             }
-        }
+        },
+        async getConfigs() {
+            this.$apollo.queries.configs.skip = false
+            await this.$apollo.queries.configs.refetch()
+        },
     },
     mounted: function() {
         if (this.start_date == null) {
@@ -402,11 +401,13 @@ export default {
         }
         this.dates = [this.start_date, this.end_date]
         this.callTrends()
-        console.log("Mounted!")
+        this.getConfigs()
+
+        console.log("Mounted")
     },
     computed: {
-        ...mapState(['saved', 'selected', 'related']),
-        ...mapGetters(['numSelected', 'getSelected', 'getSaved', 'getRelated']),
+        ...mapState(['selected', 'related']),
+        ...mapGetters(['numSelected', 'getSelected', 'getRelated']),
         todaysDate() {
             const today = new Date();
             return this.formatDate(today);

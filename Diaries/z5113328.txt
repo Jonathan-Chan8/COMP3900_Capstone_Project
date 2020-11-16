@@ -37,6 +37,18 @@ Week 5:
 Week 6:
     -   This week, I focused on ensuring that we have a state system present in the application to retain important information, such as a user's selected topics. I also tried to structure the application so that, when the back end is ready, we can simply replace hardcoded data with query functions to retrive the appropriate information. The front end now has almost all functionality complete, excluding that which is reliant on the database (eg. we have filters for searching through topics, but at the moment these filters simply store themselves in variables to be used in queries).
 
+Week 7:
+    - This week is focusing on improving the Trends page by inputting the graph. James founda plugin called ApexCharts that is perfect for our purpose, however, navigating the Apollo and GraphQ queries is tricky and this component may take some time to realise.
+
+Week 8: 
+    - Still working on the Trends graph. This, along with storing user information in the database, are the only tasks left for the front-end. Jono and Lance continue to work on our topic analysis backend.
+
+Week 9:
+    - Trends graph is complete, by using asycnhronous methods for queries and making sure to only show results when we are certain they were refetched has allowed us to create a reactive Trends graph. This was one of the mot difficult aspects of the project so far. 
+
+Week 10:
+    - Jono and Lance are nearing completion of Topic Analysis. Everything else is working. We have a working user database that will create new users, or fetch existing users, and save/update/delete configurations appropriately. The state system is now only for currently selected topics and maintaining the popup stack. The system is in an almost fully functional state. The onyl frontend function still to be completed is retreiving related topics for a given toic of selection of topics. Since we need the topic analysis to have this work, for now we simply return the most popular topics. 
+
 
 
 
