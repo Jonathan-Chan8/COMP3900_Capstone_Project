@@ -15,6 +15,7 @@ query TopArticlesFromTopic($topicId: Int!, $numOfArticles: Int! = 5) {
           webContentUrl
           author
           mediaoutletByMediaOutletId {
+
             name
           }
           articlecontentByContentId {

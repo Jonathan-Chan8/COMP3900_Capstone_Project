@@ -23,8 +23,11 @@ Vue.config.productionTip = false
 
 // Import the Auth0 configuration
 import { domain, clientId, audience } from "../auth_config.json"
-import { Auth0Plugin } from "./auth/"
 import { createProvider } from './plugins/vue-apollo'
+
+// Import getInstance from the auth wrapper
+import { Auth0Plugin } from './auth';
+
 
 // Install the authentication plugin here
 Vue.use(Auth0Plugin, {
@@ -32,6 +35,7 @@ Vue.use(Auth0Plugin, {
   clientId,
   audience,
   onRedirectCallback: appState => {
+
     router.push(
       appState && appState.targetUrl
         ? appState.targetUrl
@@ -39,8 +43,6 @@ Vue.use(Auth0Plugin, {
     )
   }
 })
-
-
 
 new Vue({
   el: '#app',
@@ -50,3 +52,25 @@ new Vue({
   apolloProvider: createProvider(),
   render: h => h(App)
 })
+
+// const instance = getInstance();
+// import CREATE_USER from './graphql/createUser.gql'
+
+// instance.$watch("isAuthenticated", async isAuthenticated => {
+//   if (isAuthenticated) {
+//     const token = await instance.getTokenSilently();
+//     console.log(token);
+//     var id = instance.user.sub
+//             console.log(id)
+//             Vue.apolloProvider.mutate({
+//                 mutation: CREATE_USER,
+//                 variables: {
+//                     id
+//                 }
+//             })
+//   }
+// });
+
+
+
+

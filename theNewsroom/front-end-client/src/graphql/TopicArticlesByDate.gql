@@ -24,6 +24,10 @@
 
 
 query TopicArticlesByDate($topicId: Int!, $startdate: Date!, $enddate: Date!) {
+topicById(id: $topicId) {
+  id
+  name
+}
  aggregatearticlecountbydays(topicid: $topicId, startdate: $startdate, enddate: $enddate) {
   nodes {
     x

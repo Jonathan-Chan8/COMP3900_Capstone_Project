@@ -12,31 +12,11 @@
 
     <!-- Full screen size -->
     <v-toolbar-items class="d-none d-md-block">
-        <v-btn text v-for="item in menu" :key="item.icon" :to="item.route" depressed>{{ item.title }}
-        </v-btn>
-
+        <v-btn text depressed to='/topics'>Topics</v-btn>
+        <v-btn text depressed to='/trends'>Trends</v-btn>
         <v-btn text depressed v-if="!$auth.loading && !$auth.isAuthenticated" @click="login">Log In / Register</v-btn>
-
-        <!-- show saved/logout when authenticated -->
-        <v-menu v-else offset-y>
-            <template v-slot:activator=" { on }">
-                <v-btn text v-on="on">
-                    My Account
-                </v-btn>
-            </template>
-            <v-list class="responsiveMenu">
-                <!-- show saved/logout when authenticated -->
-                <v-list-item text v-if="$auth.isAuthenticated" to='/profile'>
-                    Profile
-                </v-list-item>
-                <v-list-item text v-if="$auth.isAuthenticated" to='/saved'>
-                    Saved Trends
-                </v-list-item>
-                <v-list-item text v-if="$auth.isAuthenticated" @click="logout">
-                    Log Out
-                </v-list-item>
-            </v-list>
-        </v-menu>
+        <v-btn v-if="!$auth.loading && $auth.isAuthenticated" depressed to='/saved'>Saved</v-btn>
+        <v-btn v-if="!$auth.loading && $auth.isAuthenticated" text depressed @click="logout">Log Out</v-btn>
 
     </v-toolbar-items>
 
@@ -47,10 +27,7 @@
                 <v-app-bar-nav-icon v-on="on" />
             </template>
             <v-list class="responsiveMenu" size="auto">
-                <!-- Always shown -->
                 <v-list-item text v-for="item in menu" :key="item.icon" :to="item.route" depressed v-text='item.title' />
-
-                <!-- show login/register when not authenticated -->
                 <template v-if="!$auth.loading && !$auth.isAuthenticated">
                     <v-list-item text @click="login">
                         Log In
@@ -59,14 +36,9 @@
                         Register
                     </v-list-item>
                 </template>
-
-                <!-- show saved/logout when authenticated -->
                 <template v-else>
-                    <v-list-item text to='/profile'>
-                        Profile
-                    </v-list-item>
                     <v-list-item text to='/saved'>
-                        Saved Trends
+                        Saved
                     </v-list-item>
                     <v-list-item text @click="logout">
                         Log Out
@@ -80,20 +52,11 @@
 </template>
 
 <script>
+import CREATE_USER from '../../graphql/createUser.gql'
+import CHECK_USER from '../../graphql/checkUser.gql'
+
 export default {
     name: "Header",
-    methods: {
-        // Log the user in
-        login() {
-            this.$auth.loginWithPopup();
-        },
-        // Log the user out
-        logout() {
-            this.$auth.logout({
-                returnTo: window.location.origin
-            });
-        }
-    },
     data: () => ({
         auth: true,
         drawer: false,
@@ -106,17 +69,59 @@ export default {
                 icon: 'topics',
                 title: 'Topics',
                 route: '/topics'
-
             },
             {
                 icon: 'trends',
                 title: 'Trends',
                 route: '/trends'
             },
-
         ]
-
     }),
+    apollo: {
+        user : {
+            query: CHECK_USER,
+            variables() {
+                return {
+                    userId: this.$auth.user.sub
+                }
+            },
+            update(data) {
+                return data;
+            },
+            skip() {
+                return this.skipQuery
+            },
+        }
+    },
+    methods: {
+        async createUser() {
+            var userId = this.$auth.user.sub
+            this.$apollo.queries.user.skip = false
+            await this.$apollo.queries.user.refetch()
+            if (this.user.allUsers.nodes.length == 0) {
+                this.$apollo.mutate({
+                    mutation: CREATE_USER,
+                    variables: {
+                        userId
+                    }
+                })
+                console.log("New User: ", userId)
+            } else {
+                console.log("Existing User: ", userId)
+            }
+            
+        },
+        async login() {
+            await this.$auth.loginWithPopup();
+            this.createUser();
+        },
+        logout() {
+            this.$auth.logout({
+                returnTo: window.location.origin
+            });
+        }
+    },
+    
 }
 </script>
 
