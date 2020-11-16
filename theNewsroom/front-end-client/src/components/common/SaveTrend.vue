@@ -78,7 +78,6 @@ export default {
         },
         async createUserConfig(configName) {
             var usrId = this.$auth.user.sub
-            console.log('start create user')
             this.$apollo.mutate({
                 mutation: CREATE_USER_CONFIG,
                 variables: {
@@ -89,14 +88,10 @@ export default {
                     this.createTopicConfig(createUserconfiguration.userconfiguration.id)
                 },
             })
-            console.log('end create user')
         },
         async createTopicConfig(usrConfigId) {
             var i
-            console.log('start create topic')
             for (i = 0; i < this.getSelected.length; i++) {
-                console.log('create topic', i)
-
                 var topicId = this.getSelected[i].id
                 var topicName = this.getSelected[i].name
                 this.$apollo.mutate({

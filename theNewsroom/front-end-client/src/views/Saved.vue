@@ -149,7 +149,6 @@ export default {
         },
     },
     mounted: function() {
-        console.log(this.usrId)
         this.getConfigs()
     }
 }
