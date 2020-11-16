@@ -1,5 +1,6 @@
 README for The Newsroom application
 
+# SETUP STEPS 
 
 1. See INSTALL.md for installion instruction for WINDOWS 10 / LINUX (UBUNTU) / MAC OSX
 
@@ -8,4 +9,5 @@ README for The Newsroom application
 3. Two termials are required for this step. One for running the backend and one for running the front end.
 
 4. 
+
 
