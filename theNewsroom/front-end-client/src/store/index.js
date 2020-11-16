@@ -87,10 +87,9 @@ export default new Vuex.Store({
 			return state.selected.length
 		},
 		isSelected: state => {
-			if (state.selected.includes(state.current_topic)) {
-				return true
-			}
-			return false
+			let index = state.selected.findIndex(item => item.id == state.current_topic.id)
+			if (index == -1) return false
+			return true
 		},
 		getSelected: state => {
 			return state.selected
