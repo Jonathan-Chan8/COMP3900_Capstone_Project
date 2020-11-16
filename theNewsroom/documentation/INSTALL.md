@@ -14,14 +14,18 @@ https://www.omgubuntu.co.uk/how-to-install-wsl2-on-windows-10
 * Docker (version 19) (docker-compose)
 * Postgresql (version 13) 
 * Windows 1903 or higher
- 
+ ....
 
 ## Pre-Installation
 1. Enable virtualization in BIOS (This will already be enabled if you are using WSL)
 2. Install WSL
 3. Install Ubuntu 20.04 from Microsoft Store 
 4. Install Docker
-5. Install Postgresql
+5. Install postgres
+
+### Install Docker
+
+### Install Postgres 
 
 # Installation
     sudo apt install postgresql 
@@ -40,7 +44,6 @@ postgres
 localhost:5432
 
 
-
 # LINUX (Tested on Ubuntu 20.04) 
 
 # OSX
@@ -48,13 +51,21 @@ localhost:5432
 # Requirements
 
 ## Pre-Installation
-https://docs.docker.com/docker-for-mac/install/
+
 
 ### Install Docker
+1. https://docs.docker.com/docker-for-mac/install/
+Do the Docker Desktop install (if there is an option to include docker-compose in the download, say yes)
  
 ### Install Postgresql
+1. https://docs.docker.com/docker-for-mac/install/
+Do the Docker Desktop install (if there is an option to include docker-compose in the download, say yes)
     sudo apt install postgresql 
 https://docs.docker.com/engine/install/ubuntu/
+
+## start docker 
+`sudo service start docker`
+
 ## Installation
 
 ## Troubleshooting
