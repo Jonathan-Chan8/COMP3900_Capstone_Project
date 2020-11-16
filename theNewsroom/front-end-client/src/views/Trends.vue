@@ -201,7 +201,7 @@ export default {
                 offsetY: 0,
                 style: {
                     color: undefined,
-                    fontSize: '20px',
+                    fontSize: '14px',
                     fontFamily: undefined
                 }
             },
@@ -274,7 +274,6 @@ export default {
                 }
             },
             update(data) {
-                console.log('Result fetched for Topic ID:', this.topic_id)
                 var result = {
                     name: data.topicById.name, 
                     data: data.aggregatearticlecountbydays.nodes.map(a => ({

@@ -129,8 +129,8 @@ export default {
                 return {
                     limit: 1,
                     // The $to and $from here are pre-set for submission
-                    to: "2020-11-13",
-                    from: "2020-11-13",
+                    to: "2020-11-15",
+                    from: "2020-11-15",
                     // // If the database has been updated for the current date, pass the current date as argument
                     // to: (new Date()).toISOString().slice(0, 10),
                     // from: (new Date()).toISOString().slice(0, 10),

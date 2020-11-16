@@ -25,7 +25,7 @@
             <v-divider />
             <v-card-actions>
                 <v-row dense>
-                    <v-btn  v-if='isSelected' rounded depressed @click='removeSelected(current_topic)'>
+                    <v-btn v-if='isSelected' rounded depressed @click='removeSelected(current_topic)'>
                         Remove
                     </v-btn>
                     <v-btn  v-else rounded depressed @click='add(current_topic)'>
