@@ -57,12 +57,32 @@ import CHECK_USER from '../../graphql/checkUser.gql'
 
 export default {
     name: "Header",
+    data: () => ({
+        auth: true,
+        drawer: false,
+        saved: {
+            icon: 'saved',
+            title: 'Saved Trends',
+            route: '/saved'
+        },
+        menu: [{
+                icon: 'topics',
+                title: 'Topics',
+                route: '/topics'
+            },
+            {
+                icon: 'trends',
+                title: 'Trends',
+                route: '/trends'
+            },
+        ]
+    }),
     apollo: {
         user : {
             query: CHECK_USER,
             variables() {
                 return {
-                    userId: this.user_id
+                    userId: this.$auth.user.sub
                 }
             },
             update(data) {
@@ -76,8 +96,6 @@ export default {
     methods: {
         async createUser() {
             var userId = this.$auth.user.sub
-            this.user_id = userId
-
             this.$apollo.queries.user.skip = false
             await this.$apollo.queries.user.refetch()
             if (this.user.allUsers.nodes.length == 0) {
@@ -103,26 +121,7 @@ export default {
             });
         }
     },
-    data: () => ({
-        auth: true,
-        drawer: false,
-        saved: {
-            icon: 'saved',
-            title: 'Saved Trends',
-            route: '/saved'
-        },
-        menu: [{
-                icon: 'topics',
-                title: 'Topics',
-                route: '/topics'
-            },
-            {
-                icon: 'trends',
-                title: 'Trends',
-                route: '/trends'
-            },
-        ]
-    }),
+    
 }
 </script>
 

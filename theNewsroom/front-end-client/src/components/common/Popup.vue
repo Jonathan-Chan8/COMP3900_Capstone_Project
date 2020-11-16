@@ -1,51 +1,50 @@
 <template>
-<v-dialog d-flex elevation="0" v-model="show" width="1000px" height="500px">
-    <v-card class=" flex-wrap text-justify justify-space-between">
-        <v-card-title class="headline font-weight-bold" v-text='current_topic.name' />
-        <v-divider />
-        <v-card-title class="subheading">
-            Related Topics
-        </v-card-title>
-        <v-card-actions>
-            <v-row dense>
-                <v-col v-for="(topic, index) in topics" :key="index" md=6>
-                    <v-btn color="rgb(230, 235, 255)" rounded width=100% depressed @click.stop="nextTopic(topic)" v-text='topic.name' />
-                </v-col>
-            </v-row>
-        </v-card-actions>
-        <v-divider />
-        <v-card-title class="subheading">
-            Top Articles
-        </v-card-title>
-        <v-list depressed rounded >
-                <v-list-item class="item align-items=center" v-for="article in articles" :key="article.id" depressed @click='open(article)'>
-                    <v-list-item-title v-text='article.articleByArticleId.title.slice(0, 100)' />
-                </v-list-item>
-        </v-list>
-        <v-divider />
-        <v-card-actions>
-            <v-row dense>
-                <v-btn  v-if='isSelected' rounded depressed @click='removeSelected(current_topic)'>
-                    Remove
-                </v-btn>
-                <v-btn  v-else rounded depressed @click='add(current_topic)'>
-                    Add
-                </v-btn>
-                <v-spacer />
-                <v-btn  v-if='!isRoot' rounded depressed @click="previousTopic">
-                    Previous
-                </v-btn>
-                <v-btn  rounded depressed @click.stop="close">
-                    Close
-                </v-btn>
-                <HelpPopup />
-            </v-row>
-        </v-card-actions>
-    </v-card>
-    <Article v-model="article" />
-    <Replace v-model="replace" />
-
-</v-dialog>
+    <v-dialog d-flex elevation="0" v-model="show" width="1000px" height="500px">
+        <v-card class=" flex-wrap text-justify justify-space-between">
+            <v-card-title class="headline font-weight-bold" v-text='current_topic.name' />
+            <v-divider />
+            <v-card-title class="subheading">
+                Related Topics
+            </v-card-title>
+            <v-card-actions>
+                <v-row dense>
+                    <v-col v-for="(topic, index) in topics" :key="index" md=6>
+                        <v-btn color="rgb(230, 235, 255)" rounded width=100% depressed @click.stop="nextTopic(topic)" v-text='topic.name' />
+                    </v-col>
+                </v-row>
+            </v-card-actions>
+            <v-divider />
+            <v-card-title class="subheading">
+                Top Articles
+            </v-card-title>
+            <v-list depressed rounded >
+                    <v-list-item class="item align-items=center" v-for="article in articles" :key="article.id" depressed @click='open(article)'>
+                        <v-list-item-title v-text='article.articleByArticleId.title.slice(0, 100)' />
+                    </v-list-item>
+            </v-list>
+            <v-divider />
+            <v-card-actions>
+                <v-row dense>
+                    <v-btn  v-if='isSelected' rounded depressed @click='removeSelected(current_topic)'>
+                        Remove
+                    </v-btn>
+                    <v-btn  v-else rounded depressed @click='add(current_topic)'>
+                        Add
+                    </v-btn>
+                    <v-spacer />
+                    <v-btn  v-if='!isRoot' rounded depressed @click="previousTopic">
+                        Previous
+                    </v-btn>
+                    <v-btn  rounded depressed @click.stop="close">
+                        Close
+                    </v-btn>
+                    <HelpPopup />
+                </v-row>
+            </v-card-actions>
+        </v-card>
+        <Article v-model="article" />
+        <Replace v-model="replace" />
+    </v-dialog>
 </template>
 
 <script>
@@ -73,8 +72,7 @@ export default {
     },
     computed: {
         ...mapState(['popups', 'selected', 'current_topic']),
-        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getSelected', 'getPopups', 'numSelected']),
-
+        ...mapGetters(['isRoot', 'numSelected', 'isSelected', 'getPopups']),
         show: {
             get() {
                 return this.value

@@ -47,10 +47,8 @@ export default {
     props: {
         value: Boolean
     },
-
     computed: {
         ...mapState(['current_article']),
-
         show: {
             get() {
                 return this.value
@@ -68,6 +66,5 @@ export default {
     data: () => ({
 
     }),
-
 }
 </script>

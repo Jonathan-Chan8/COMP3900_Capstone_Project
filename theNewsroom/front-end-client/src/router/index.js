@@ -9,7 +9,6 @@ import Credits from '../views/Credits';
 import Vue from 'vue'
 import Router from 'vue-router'
 import { authGuard } from "../auth/authGuard";
-import ExternalApiView from "../views/ExternalApi.vue";
 
 
 Vue.use(Router)
@@ -18,12 +17,6 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
-    {
-        path: "/external-api",
-        name: "external-api",
-        component: ExternalApiView,
-        beforeEnter: authGuard
-      },
         {   
             path: '*', 
             name: 'notfound',

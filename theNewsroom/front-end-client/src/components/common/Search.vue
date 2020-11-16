@@ -5,7 +5,6 @@
         <v-divider />
         <h2 class="subheading grey--text text-center" v-if="results.length == 0">Sorry, your search returned no results!</h2>
         <v-card-actions v-else>
-
             <v-flex align-center xs12>
                 <v-data-table :mobile-breakpoint="0" :headers="headers" :items="results" :sort-by="['topicofarticlesByTopicId.totalCount']" :sort-desc="[true]">
                     <template v-slot:item="{ item }">
@@ -27,24 +26,21 @@
                 <HelpSearch />
             </v-row>
         </v-card-actions>
-
     </v-card>
-
     <Popup v-model="popup" />
-
 </v-dialog>
 </template>
 
 <script>
-import Popup from "./Popup"
-import HelpSearch from "./HelpSearch"
-
-import SEARCH_FOR_TOPIC from '../../graphql/SearchForTopic.gql'
-
 import {
     mapState,
     mapMutations
 } from 'vuex';
+
+import Popup from "./Popup"
+import HelpSearch from "./HelpSearch"
+
+import SEARCH_FOR_TOPIC from '../../graphql/SearchForTopic.gql'
 
 export default {
     props: {
@@ -67,13 +63,7 @@ export default {
     },
     methods: {
         ...mapMutations([
-            'addSelected',
-            'removeSelected',
             'openTopic',
-            'nextTopic',
-            'previousTopic',
-            'closeTopic',
-            'openArticle',
         ]),
         open(topic) {
             this.popup = true
