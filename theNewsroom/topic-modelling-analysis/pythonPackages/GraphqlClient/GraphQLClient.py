@@ -1,6 +1,7 @@
 from gql import Client, gql
 from gql.transport.aiohttp import AIOHTTPTransport
 import json
+import logging
 
 class GraphQLClient:
     _client = None
@@ -16,9 +17,9 @@ class GraphQLClient:
       transport = AIOHTTPTransport(url=config["graphQL_server"]["URLendpoint"])
       self._client = Client(transport=transport, fetch_schema_from_transport=True)
 
-    def executeQuery(self, query):
+    def executeQuery(self, query, parameters=None):
       try:
-        return self._client.execute(gql(query))
+        return self._client.execute(gql(query), variable_values=parameters)
       except Exception as e:
-        print(F"Unable to execute query: |||{query}||| - Exception: {e}")
+        exit(f"Unable to execute query: |||{query}||| - Exception: {e}")
   
