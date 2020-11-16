@@ -344,7 +344,6 @@ export default {
             'openTopic',
             'setSelected',
             'emptySelected',
-            'saveTrend',
             'searchTopicKeyword'
         ]),
         open(topic) {
@@ -407,7 +406,7 @@ export default {
         console.log("Mounted")
     },
     computed: {
-        ...mapState(['saved', 'selected', 'related']),
+        ...mapState(['selected', 'related']),
         ...mapGetters(['numSelected', 'getSelected', 'getRelated']),
         todaysDate() {
             const today = new Date();
