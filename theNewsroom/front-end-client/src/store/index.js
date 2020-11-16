@@ -5,8 +5,6 @@ Vue.use(Vuex)
 
 // const URI = whatever we use for db
 
-
-
 export default new Vuex.Store({
 	
 	state: {
@@ -36,8 +34,12 @@ export default new Vuex.Store({
 
 	mutations: {
 		addSelected(state, topic) {
-			if (!state.selected.includes(topic) && state.selected.length < 5){
-				state.selected.push(topic)
+			let index = state.selected.findIndex(item => item.id == topic.id)
+			if (index == -1 && state.selected.length < 5){
+				state.selected.push({
+					id: topic.id,
+					name: topic.name
+				})
 			}
 		},
 		removeSelected(state, topic) {
@@ -54,16 +56,13 @@ export default new Vuex.Store({
 		previousTopic(state) {
 			state.current_topic = state.popups.pop()
 		},
-		
 		closeTopic(state) {
 			state.current_topic = ''
 			state.popups = []
 		},
-
 		emptySelected(state) {
 			state.selected = []
 		},
-
 		setSelected(state, selection) {
 			state.selected = selection.map(a => a)
 		},
@@ -84,35 +83,28 @@ export default new Vuex.Store({
 			if (state.popups.length === 0) return true
 			return false
 		},
-
 		numSelected: state => {
 			return state.selected.length
 		},
-
 		isSelected: state => {
 			if (state.selected.includes(state.current_topic)) {
 				return true
 			}
 			return false
 		},
-
 		getSelected: state => {
 			return state.selected
 		},
-
 		getRelated: state => {
 			// This will return the related topics based on the current topic (for popups) or selected topics (for trends)
 			return state.related
 		},
-
 		getPopups: state => {
 			return state.popups
 		},
-
 		getArticle: state => {
 			return state.current_article
 		},
-
 		maxSelected: state => {
 			if (state.selected.length < 5) return false
 			return true

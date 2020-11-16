@@ -74,7 +74,7 @@
                                 </v-list-item-group>
                             </v-list-group>
                             <template v-if="!$auth.loading & $auth.isAuthenticated">
-                                <v-list-group color="none" @click="getConfigs()">
+                                <v-list-group color="none">
                                     <template v-slot:activator>
                                         <v-list-item-content>
                                             <v-list-item-title class='font-weight-light list-title'>Saved Trends</v-list-item-title>
@@ -86,22 +86,18 @@
                                         </v-list-item>
                                     </v-list-item-group>
                                 </v-list-group>
-
                             </template>
-
                             <v-list-item>
                                 <v-spacer />
-                                <SaveTrend v-if="!$auth.loading & $auth.isAuthenticated" />
+                                <SaveTrend v-if="!$auth.loading & $auth.isAuthenticated" v-on:saved="getConfigs()"/>
                                 <v-btn rounded depressed @click="reset">
                                     Reset </v-btn>
                                 <HelpTrends />
-
                             </v-list-item>
                         </v-list>
                     </v-card>
                 </v-flex>
                 <v-spacer />
-
                 <v-flex align-center xs12 md8>
                     <template>
                         <div>
@@ -109,13 +105,13 @@
                         </div>
                     </template>
                 </v-flex>
-
                 <Popup v-model="popup" />
                 <Replace v-model="replace" />
                 <v-col />
             </v-layout>
         </v-container>
     </template>
+
 </div>
 </template>
 
@@ -133,7 +129,6 @@ import {
 import ALL_TOPICS_WITH_FILTER from '../graphql/TopicsAndArticleCount.gql'
 import TOPIC_ARTICLES_DATE from '../graphql/TopicArticlesByDate.gql'
 import USER_CONFIGS from "../graphql/AllOfAUsersConfigurations.gql"
-
 export default {
     name: "Trends",
     components: {
@@ -145,7 +140,6 @@ export default {
     },
     data: () => ({
         search: false,
-        save: false,
         popup: false,
         start_date: null,
         end_date: null,
@@ -182,7 +176,6 @@ export default {
                 enabled: true,
                 followCursor: true,
                 shared: true,
-
             },
             markers: {
                 size: 0,
@@ -208,7 +201,7 @@ export default {
                 offsetY: 0,
                 style: {
                     color: undefined,
-                    fontSize: '20px',
+                    fontSize: '14px',
                     fontFamily: undefined
                 }
             },
@@ -265,7 +258,10 @@ export default {
                 }
             },
             update(data) {
-                return data.allTopics.nodes;
+                return data.allTopics.nodes.map(a => ({
+                    id: a.id,
+                    name: a.name
+                }));
             }
         },
         result: {
@@ -278,14 +274,12 @@ export default {
                 }
             },
             update(data) {
-                console.log('Result fetched for Topic ID:', this.topic_id)
                 var result = {
                     name: data.topicById.name, 
                     data: data.aggregatearticlecountbydays.nodes.map(a => ({
                         x: a.x,
                         y: a.y
                     }))}
-
                 let index = this.trends.findIndex(item => item.name == result.name)
                 if (index == -1 ) {
                     this.trends.push(result)
@@ -301,8 +295,14 @@ export default {
         configs: {
             query: USER_CONFIGS,
             variables() {
+                var id
+                if (!this.$auth.loading && this.$auth.isAuthenticated) {
+                    id = this.$auth.user.sub
+                } else {
+                    id = ''
+                }
                 return {
-                    usrId: this.usr_id
+                    usrId: id
                 }
             },
             update(data) {
@@ -387,7 +387,6 @@ export default {
             this.end_date = new Date()
             this.start_date = new Date()
             this.start_date.setMonth(this.end_date.getMonth() - 1)
-
             this.start_date = this.start_date.toISOString().slice(0, 10)                    
             this.end_date = this.end_date.toISOString().slice(0, 10)
             this.dates = [this.start_date, this.end_date]
@@ -403,6 +402,7 @@ export default {
         async getConfigs() {
             this.$apollo.queries.configs.skip = false
             await this.$apollo.queries.configs.refetch()
+            console.log("Configurations fetched.")
         },
     },
     mounted: function() {
@@ -414,14 +414,11 @@ export default {
             this.end_date = this.end_date.toISOString().slice(0, 10)
         }
         this.dates = [this.start_date, this.end_date]
-
         if (!this.$auth.loading && this.$auth.isAuthenticated) {
             this.usr_id = this.$auth.user.sub
         }
-
-        this.getConfigs()
         this.callTrends()
-
+        this.getConfigs()
         console.log("Mounted")
     },
     computed: {

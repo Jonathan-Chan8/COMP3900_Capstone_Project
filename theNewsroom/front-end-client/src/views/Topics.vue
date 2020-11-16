@@ -157,8 +157,6 @@ export default {
             }
             this.dates = [this.start_date, this.end_date]
 
-            this.start_date = new Date(this.start_date)
-            this.end_date = new Date(this.end_date)
         },
         searchTopic() {
             if (this.keyword != '') {
@@ -178,14 +176,7 @@ export default {
         }
     },
      mounted: function() {
-        this.end_date = new Date()
-        this.start_date = new Date()
-        this.start_date.setMonth(this.end_date.getMonth() - 1)
-
-        this.start_date = this.start_date.toISOString().slice(0, 10)                    
-        this.end_date = this.end_date.toISOString().slice(0, 10)
-        this.dates = [this.start_date, this.end_date]
-
+        this.reset()
         console.log("Mounted.")
     },
     computed: {

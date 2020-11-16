@@ -6,7 +6,6 @@
                 <v-icon>mdi-help-circle-outline</v-icon>
             </v-btn>
         </template>
-
         <v-card>
             <v-card-title class="headline">
                 Need Help?
@@ -18,7 +17,6 @@
                 <p><b>Remove from Trends</b> will remove the current topic and from your selected topics.</p>
                 <p><b>Previous</b> will display the last topic you were viewing. Selecting topics from <i>Related Topics</i> will keep a log of which topics you have visited, so you can always return.</p>
                 <p><b>Close</b> will close this popup. Clicking anywhere other than this popup will also close it.</p>
-
             </v-card-text>
             <v-card-actions>
                 <v-btn width=100% rounded depressed @click.stop="close">
