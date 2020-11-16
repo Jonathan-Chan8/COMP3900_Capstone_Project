@@ -387,7 +387,7 @@ export default {
             this.dates = []
             this.end_date = new Date()
             this.start_date = new Date()
-            this.start_date.setMonth(this.end_date.getMonth() - 72)
+            this.start_date.setMonth(this.end_date.getMonth() - 1)
 
             this.start_date = this.start_date.toISOString().slice(0, 10)                    
             this.end_date = this.end_date.toISOString().slice(0, 10)
