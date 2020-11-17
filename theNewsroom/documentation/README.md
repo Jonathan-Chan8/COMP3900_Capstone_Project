@@ -28,16 +28,21 @@ James Tatham - z5168119@unsw.edu.au - 0458732989
 2. Install git-lfs
     ## Windows (WSL2) / Linux  
     `sudo apt install` 
-    `sudo apt install git lfs`
+    `sudo apt install git-lfs`
     
     ## MAC OSX 
     `brew install git-lfs`
     `brew upgrade git-lfs`  
     
 4. `git clone ttps://github.com/unsw-cse-capstone-project/capstone-project-comp3900-w17a-212-monolith.git`
-    Note: you made need to do git pull after installing git-lfs 
+ 
+    Note: you made need to do git pull
+    after installing git-lfs 
 
-6. Two termials are required for this step. One for running the database and one for running the front end.
+5. then checkout to the submission branch using git
+    `git checkout submission`
+
+7. Two termials are required for this step. One for running the database and one for running the front end.
 
 ## First teminal, Starting docker-compose to run
 1. cd into the project folder. 
