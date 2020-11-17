@@ -132,7 +132,7 @@ export default {
             var i
             for (i = 0; i < topics.length; i++) {
                 var id = topics[i].nodeId
-                this.$apollo.mutate({
+                await this.$apollo.mutate({
                     mutation: DELETE_TOPIC_CONFIG,
                     variables: {
                         id,
@@ -141,7 +141,7 @@ export default {
             }
         },
         async deleteUserConfig(id) {
-            this.$apollo.mutate({
+            await this.$apollo.mutate({
                 mutation: DELETE_USER_CONFIG,
                 variables: {
                     id,
