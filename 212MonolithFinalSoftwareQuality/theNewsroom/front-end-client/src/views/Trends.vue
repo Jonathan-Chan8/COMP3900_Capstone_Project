@@ -81,7 +81,7 @@
                                         </v-list-item-content>
                                     </template>
                                     <v-list-item-group color="none">
-                                        <v-list-item class='item' v-for="config in configs" :key="config.id" @click="selectSaved(config.topics)">
+                                        <v-list-item class='item' v-for="config in configs" :key="config.id" @click="selectSaved(config.id)">
                                             <v-list-item-title v-text=" config.title" />
                                         </v-list-item>
                                     </v-list-item-group>
@@ -307,6 +307,8 @@ export default {
                 }
             },
             update(data) {
+                console.log(data)
+
                 return data.allUserconfigurations.nodes.map(a => ({
                     id: a.id,
                     title: a.configName,
@@ -405,8 +407,12 @@ export default {
             await this.$apollo.queries.configs.refetch()
             console.log("Configurations fetched.")
         },
-        async selectSaved(topics) {
-            this.setSelected(topics)
+        async selectSaved(id) {
+            // Ensure config is updated
+            await this.getConfigs()
+            let index = this.configs.findIndex(item => item.id == id)
+            this.setSelected(this.configs[index].topics)
+            this.trends = []
             this.$apollo.queries.result.skip = false
             await this.$apollo.queries.result.refetch()
         }
