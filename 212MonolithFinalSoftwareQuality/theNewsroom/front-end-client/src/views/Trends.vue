@@ -81,7 +81,7 @@
                                         </v-list-item-content>
                                     </template>
                                     <v-list-item-group color="none">
-                                        <v-list-item class='item' v-for="config in configs" :key="config.id" @click="setSelected(config.topics)">
+                                        <v-list-item class='item' v-for="config in configs" :key="config.id" @click="selectSaved(config.topics)">
                                             <v-list-item-title v-text=" config.title" />
                                         </v-list-item>
                                     </v-list-item-group>
@@ -111,6 +111,7 @@
             </v-layout>
         </v-container>
     </template>
+    {{configs}}
 
 </div>
 </template>
@@ -174,7 +175,7 @@ export default {
             },
             tooltip: {
                 enabled: true,
-                followCursor: true,
+                // followCursor: true,
                 shared: true,
             },
             markers: {
@@ -404,6 +405,11 @@ export default {
             await this.$apollo.queries.configs.refetch()
             console.log("Configurations fetched.")
         },
+        async selectSaved(topics) {
+            this.setSelected(topics)
+            this.$apollo.queries.result.skip = false
+            await this.$apollo.queries.result.refetch()
+        }
     },
     mounted: function() {
         if (this.start_date == null) {
