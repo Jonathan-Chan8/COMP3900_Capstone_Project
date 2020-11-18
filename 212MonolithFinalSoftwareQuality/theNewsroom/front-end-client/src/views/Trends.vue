@@ -111,8 +111,6 @@
             </v-layout>
         </v-container>
     </template>
-    {{configs}}
-
 </div>
 </template>
 
